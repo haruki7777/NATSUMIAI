@@ -1,3 +1,6 @@
+// === JavaScript 파일 로딩 시작을 알리는 alert ===
+alert('script.js 파일 로딩 시작!');
+
 // HTML 요소들을 저장할 변수들을 먼저 선언 (DOMContentLoaded 안에서 할당할 것임)
 let userInput;
 let sendButton;
@@ -24,6 +27,9 @@ let allChatHistories = [];
 
 // 페이지 로드 시 모든 HTML 요소들이 준비되면 실행될 함수
 document.addEventListener('DOMContentLoaded', () => {
+    // === DOMContentLoaded 실행 시작을 알리는 alert ===
+    alert('DOMContentLoaded 실행 시작!');
+
     // === HTML 요소들을 찾아서 변수에 할당하는 코드 ===
     // 이 코드들이 HTML이 다 로드된 후에 실행되도록 DOMContentLoaded 안으로 옮겼어요!
     userInput = document.getElementById('user-input');
@@ -36,9 +42,15 @@ document.addEventListener('DOMContentLoaded', () => {
     deleteSelectedButton = document.getElementById('delete-selected-button');
     backToChatButton = document.getElementById('back-to-chat-button');
 
+    // === 요소들을 찾았는지 확인하는 alert (있다면 뜰 것임) ===
+    if (sendButton) { alert("Send button found!"); } else { alert("Send button NOT found!"); }
+    if (userInput) { alert("User input found!"); } else { alert("User input NOT found!"); }
+    if (viewHistoryButton) { alert("View history button found!"); } else { alert("View history button NOT found!"); }
+
+
     // === 버튼 클릭 이벤트 리스너들을 연결하는 코드 ===
     // 이제 HTML 요소들이 다 로드된 후에 연결됨!
-    // sendButton 요소가 제대로 찾아졌는지 확인하는 코드 추가
+    // sendButton 요소가 제대로 찾아졌는지 확인 후 이벤트 리스너 연결
     if (sendButton) {
         sendButton.addEventListener('click', async () => {
             await processUserInput(); // 입력 처리 함수 호출
@@ -50,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // userInput 요소가 제대로 찾아졌는지 확인하는 코드 추가
+    // userInput 요소가 제대로 찾아졌는지 확인 후 이벤트 리스너 연결
     if (userInput) {
          userInput.addEventListener('keypress', async (event) => {
             if (event.key === 'Enter') {
@@ -66,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // viewHistoryButton 요소가 제대로 찾아졌는지 확인하는 코드 추가
+    // viewHistoryButton 요소가 제대로 찾아졌는지 확인 후 이벤트 리스너 연결
     if (viewHistoryButton) {
         viewHistoryButton.addEventListener('click', () => {
             showHistoryList(); // 기록 목록 화면 보여주는 함수 호출
@@ -76,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
          console.error("Error: '대화 기록 보기' 버튼 요소를 찾을 수 없습니다! index.html의 id='view-history-button' 확인!"); // 버튼 못 찾았을 때 에러 로그
     }
 
-    // deleteSelectedButton 요소가 제대로 찾아졌는지 확인하는 코드 추가
+    // deleteSelectedButton 요소가 제대로 찾아졌는지 확인 후 이벤트 리스너 연결
     if (deleteSelectedButton) {
         deleteSelectedButton.addEventListener('click', () => {
             deleteSelectedHistories(); // 선택 삭제 함수 호출
@@ -86,7 +98,8 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error("Error: '선택 삭제' 버튼 요소를 찾을 수 없습니다! index.html의 id='delete-selected-button' 확인!"); // 버튼 못 찾았을 때 에러 로그
     }
 
-    if (backToChatButton) { // 채팅으로 돌아가기 버튼 찾았는지 확인
+    // backToChatButton 요소가 제대로 찾아졌는지 확인 후 이벤트 리스너 연결
+    if (backToChatButton) {
         backToChatButton.addEventListener('click', () => {
             // Logic to return to chat is inside the function itself
             showMainChatArea(); // 주 대화 영역으로 전환 함수 호출
@@ -122,6 +135,9 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("No chat history found. Starting a new chat."); // 콘솔 로그 추가
     }
     // userInput.focus(); // DOMContentLoaded 안에서 userInput을 찾은 후에 호출하도록 위로 이동
+
+    // === DOMContentLoaded 실행 완료를 알리는 alert ===
+    alert('DOMContentLoaded 실행 완료! 이제 버튼 눌러봐!');
 });
 
 
@@ -154,7 +170,7 @@ async function processUserInput() {
 
     // === 하루키! 이 alert로 버튼 눌림 확인! ===
     // 이 팝업창이 뜨면 버튼 클릭 감지 및 processUserInput 함수 실행은 성공한 거야!
-    alert('버튼이 눌렸어! processUserInput 함수 실행!');
+    alert('버튼이 눌렸어! processUserInput 함수 실행 시작!');
     // ========================================
 
     // userInput, sendButton 요소가 있는지 다시 한번 확인 (안정성 향상)
@@ -192,6 +208,7 @@ async function processUserInput() {
     // AI 비서에게 질문 보내고 답변 받기 (핵심!)
     try {
         // Render 서버 API로 요청 보내기
+        console.log(`Sending request to API: ${API_ENDPOINT}`); // 콘솔 로그 추가
         const response = await fetch(API_ENDPOINT, {
             method: 'POST', // 데이터를 보낼 때는 보통 POST 방식!
             headers: {
@@ -199,6 +216,8 @@ async function processUserInput() {
             },
             body: JSON.stringify({ message: question }) // 질문을 JSON 형식으로 만들어서 보내기. 하루키 서버가 { message: "질문 내용" } 이런 형식을 기대한다고 가정!
         });
+         console.log("API response received."); // 콘솔 로그 추가
+
 
         // 로딩 인디케이터 제거 (선택 사항)
         // if (loadingIndicator && chatBox.contains(loadingIndicator)) {
@@ -218,6 +237,7 @@ async function processUserInput() {
 
         // 서버에서 온 응답 데이터를 JSON 형식으로 받기
         const data = await response.json();
+         console.log("API response data:", data); // 콘솔 로그 추가
         // 하루키 서버에서 'answer'라는 키로 답변을 줄 거라고 가정!
         // 하루키 서버 응답 형식이 다르면 아래 'data.answer' 부분을 바꿔줘야 해요!
         const aiResponse = data.answer;
@@ -226,10 +246,12 @@ async function processUserInput() {
              // AI 비서의 답변을 대화창에 표시하고 기록 저장
              addMessageToCurrentChatHistory('ai', aiResponse); // 기록에 추가
              addMessageToChat('ai', aiResponse); // 화면에 표시
+             console.log("AI response added to chat."); // 콘솔 로그 추가
         } else {
             // === 서버 응답 형식 오류 메시지 츤데레 말투! ===
              addMessageToChat('ai', '뭐야 이 이상한 답장은?! 제대로 된 걸 보내라고!'); // 화면에 표시
               addMessageToCurrentChatHistory('ai', '뭐야 이 이상한 답장은?! 제대로 된 걸 보내라고!'); // 기록에 추가
+             console.warn("API response data did not contain 'answer' field or it was empty."); // 콘솔 로그 추가
 
         }
 
@@ -246,6 +268,7 @@ async function processUserInput() {
         const errorMessage = '죄송해요, 답변을 가져오는데 문제가 발생했어요. (Console 확인)'; // 콘솔 확인 메시지 포함
         addMessageToChat('ai', errorMessage); // 화면에 표시
          addMessageToCurrentChatHistory('ai', errorMessage); // 기록에 추가
+        console.error("Error message added to chat."); // 콘솔 로그 추가
 
     } finally {
         // 모든 처리가 끝나면 입력창과 버튼 다시 활성화
@@ -254,6 +277,7 @@ async function processUserInput() {
         userInput.focus(); // 입력창에 커서 두기
         saveAllHistories(); // 모든 변경사항 저장
         console.log("Process input finished. Elements enabled."); // 콘솔 로그 추가
+         alert('processUserInput 함수 실행 완료!'); // === 함수 실행 완료 alert ===
     }
 }
 
