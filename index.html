@@ -1,48 +1,46 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>하루키의 멋진 AI 비서</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>하루키 AI 비서</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div id="chat-container">
-        <div id="chat-box"></div>
-        <div id="input-area">
-            <input type="text" id="user-input" placeholder="메시지를 입력하세요...">
-            <button id="send-button">전송</button>
-        </div>
+    <div id="app-container">
+        <header>
+            <h1>하루키의 멋진 AI 비서</h1>
+        </header>
+
+        <main>
+            <section id="main-chat-area">
+                <div id="chat-box">
+                    <p class="ai-message">어서 말해봐, 뭐 궁금한 거라도 있냐?</p>
+                </div>
+                <div id="input-area">
+                    <input type="text" id="user-input" placeholder="말해봐, 하루키!" autocomplete="off" />
+                    <button id="send-button">보내기</button>
+                </div>
+            </section>
+
+            <section id="history-area" class="hidden">
+                <h2>대화 기록</h2>
+                <ul id="history-list"></ul>
+                <div id="history-controls">
+                    <button id="delete-selected-button">선택 삭제</button>
+                    <button id="back-to-chat-button">채팅으로 돌아가기</button>
+                </div>
+            </section>
+
+            <button id="view-history-button" class="small-btn">기록 보기</button>
+            <button id="new-chat-button" class="small-btn">새 대화 시작</button>
+        </main>
+
+        <footer>
+            <p>© 2025 하루키. AI 비서는 츤데레 감성으로 작동합니다.</p>
+        </footer>
     </div>
 
-    <script>
-        const chatBox = document.getElementById('chat-box');
-        const userInput = document.getElementById('user-input');
-        const sendButton = document.getElementById('send-button');
-
-        function appendMessage(sender, message) {
-            const messageElement = document.createElement('div');
-            messageElement.classList.add('message', sender);
-            messageElement.textContent = message;
-            chatBox.appendChild(messageElement);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-
-        sendButton.addEventListener('click', () => {
-            const message = userInput.value.trim();
-            if (message) {
-                appendMessage('user', message);
-                userInput.value = '';
-                // 여기서 실제 응답 처리 로직이 들어가면 돼!
-                setTimeout(() => appendMessage('bot', 'AI 응답 예시야. 여기에 실제 응답이 들어갈 거야!'), 500);
-            }
-        });
-
-        userInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendButton.click();
-            }
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
