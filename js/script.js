@@ -5,7 +5,11 @@ const chatBox = document.getElementById('chat-box'); // 대화 내용 보여줄 
 const clearHistoryButton = document.getElementById('clear-history-button'); // 기록 삭제 버튼
 
 // 하루키 Render 서버의 API 주소! >>> 이 부분을 꼭 하루키 서버 주소로 바꿔주세요! <<<
-const API_ENDPOINT = 'https://natsumi-mi-shu.onrender.com/natsumi'; // <<-- 여기에 하루키 서버 주소 넣기!
+// 코멘트만 따옴표 밖으로 뺐어!
+const API_ENDPOINT = 'https://natsumi-mi-shu.onrender.com/natsumi'; // <-- 여기에 하루키 서버 주소 넣기!
+
+// 아니면 그냥 주소만 깔끔하게 남겨도 돼!
+// const API_ENDPOINT = 'https://natsumi-mi-shu.onrender.com/natsumi';
 
 // 대화 기록을 localStorage에 저장할 때 사용할 키 이름
 const HISTORY_STORAGE_KEY = 'haruki-ai-chat-history';
