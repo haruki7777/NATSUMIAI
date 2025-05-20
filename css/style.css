@@ -12,17 +12,17 @@ body {
 
     /* === 하루키! 여기에 원하는 배경을 넣어줘! === */
     /* 단색 배경을 원하면 아래 주석을 풀고 색깔 코드를 바꿔줘! */
-    /* background-color: #f0f0f0; /* 조금 밝은 회색 배경 (OpenAI 느낌) */
+     background-color: #f0f0f0; /* 조금 밝은 회색 배경 (OpenAI 느낌) */
     /* background-color: lightblue; */ /* 예시: 하늘색 */
     /* background-color: #abcdef; */ /* 예시: 다른 색깔 */
 
     /* 배경 이미지를 원하면 아래 주석을 풀고 'your-background-image.jpg'를 이미지 파일 이름으로 바꿔줘! */
     /* 이미지 파일은 index.html과 같은 폴더에 있어야 해! */
-     background-image: url('images/BACKGROUND.jpeg'); */
-     background-size: cover; */ /* 화면 전체를 꽉 채우도록 크기 조절 */
-     background-position: center; */ /* 이미지를 가운데 정렬 */
-     background-repeat: no-repeat; */ /* 이미지 반복 안 함 */
-     background-attachment: fixed; */ /* 스크롤 해도 배경 이미지는 고정 */
+    /* background-image: url('images/BACKGROUND.jpeg'); */
+    /* background-size: cover; */ /* 화면 전체를 꽉 채우도록 크기 조절 */
+    /* background-position: center; */ /* 이미지를 가운데 정렬 */
+    /* background-repeat: no-repeat; */ /* 이미지 반복 안 함 */
+    /* background-attachment: fixed; */ /* 스크롤 해도 배경 이미지는 고정 */
     /* =========================================== */
 }
 
@@ -46,6 +46,26 @@ h1 {
     font-weight: 700; /* 제목 굵게 */
     text-align: center;
 }
+
+/* 주 대화 영역과 기록 영역 전환 */
+#main-chat-area {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    /* 기본적으로 보이게 설정. .hidden 클래스가 붙으면 숨김 */
+}
+
+#history-area {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+     /* 기본적으로 숨김. .hidden 클래스가 없으면 보임 */
+}
+
+.hidden {
+    display: none; /* 요소를 숨기는 클래스 */
+}
+
 
 #chat-container {
     width: 100%;
@@ -130,7 +150,16 @@ h1 {
     box-shadow: 0 0 0 0.2rem rgba(26, 115, 232, 0.25); /* 포커스 시 그림자 효과 */
 }
 
-#send-button, #clear-history-button {
+#bottom-buttons {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* 버튼들을 가운데 정렬 */
+    gap: 10px; /* 버튼들 사이 간격 */
+    margin-top: 10px;
+}
+
+
+#send-button, #bottom-buttons button, #history-buttons button {
     padding: 12px 25px; /* 패딩 조정 */
     background-color: #1a73e8; /* 버튼 색상 */
     color: white;
@@ -143,18 +172,72 @@ h1 {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* 버튼 그림자 */
 }
 
-#send-button:hover, #clear-history-button:hover {
+#send-button:hover, #bottom-buttons button:hover, #history-buttons button:hover {
     background-color: #0f4e8c; /* 호버 시 색상 변경 */
 }
 
-#clear-history-button {
-    background-color: #6c757d; /* 삭제 버튼은 회색 계열로 (덜 눈에 띄게) */
-    margin-top: 10px;
-    box-shadow: none; /* 그림자 없앰 */
+/* 기록 삭제 버튼은 좀 다른 색깔로 */
+#history-buttons #delete-selected-button {
+     background-color: #dc3545; /* 삭제 버튼은 빨간색 */
+}
+#history-buttons #delete-selected-button:hover {
+     background-color: #c82333;
 }
 
-#clear-history-button:hover {
-    background-color: #545b62;
+#history-area h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #000;
+    font-size: 1.8em;
+}
+
+#history-list {
+    list-style: none; /* 목록 점 없애기 */
+    padding: 0;
+    margin: 0 0 20px 0;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    max-height: 400px; /* 목록 최대 높이 */
+    overflow-y: auto; /* 목록 넘치면 스크롤 */
+    background-color: #fff;
+}
+
+#history-list li {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer; /* 마우스 올리면 손가락 모양 */
+    display: flex; /* 체크박스랑 내용 정렬 */
+    align-items: center; /* 세로 가운데 정렬 */
+    justify-content: space-between; /* 체크박스 왼/오른쪽 끝에 */
+    transition: background-color 0.2s ease;
+}
+
+#history-list li:last-child {
+    border-bottom: none; /* 마지막 목록 아이템 아래 테두리 없애기 */
+}
+
+#history-list li:hover {
+    background-color: #f8f8f8; /* 마우스 올리면 배경색 */
+}
+
+#history-list li input[type="checkbox"] {
+    margin-right: 10px;
+     /* 체크박스 스타일 커스터마이징은 복잡해서 기본으로 둠 */
+}
+
+#history-list li span {
+    flex-grow: 1; /* 내용이 공간을 차지하게 */
+    white-space: nowrap; /* 줄바꿈 방지 */
+    overflow: hidden; /* 넘치는 내용 숨김 */
+    text-overflow: ellipsis; /* 넘치는 내용 ... 으로 표시 */
+}
+
+
+#history-buttons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
 }
 
 
@@ -204,7 +287,7 @@ h1 {
         gap: 8px;
     }
 
-    #user-input, #send-button, #clear-history-button {
+    #user-input, #send-button {
         width: 100%; /* 모바일에서 너비 꽉 채우기 */
         margin-right: 0;
         /* text-align: center; */
@@ -214,7 +297,19 @@ h1 {
          padding: 12px; /* 모바일 버튼 패딩 */
      }
 
-     #clear-history-button {
-         padding: 10px;
+     #bottom-buttons, #history-buttons {
+         flex-direction: column; /* 모바일에서 버튼 세로 정렬 */
+         gap: 8px;
+     }
+     #bottom-buttons button, #history-buttons button {
+         width: 100%; /* 모바일에서 버튼 너비 꽉 채우기 */
+         text-align: center;
+     }
+
+     #history-area h2 {
+         font-size: 1.5em;
+     }
+     #history-list li {
+         padding: 10px 12px;
      }
 }
