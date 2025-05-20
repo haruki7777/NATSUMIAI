@@ -1,46 +1,83 @@
-// === script.js 시작 ===
-console.log('🔧 script.js 로딩 완료! 준비됐어?');
+console.log('1. script.js 로딩 완료!');
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('📦 DOMContentLoaded! HTML 다 불러왔어~');
+    console.log('2. DOMContentLoaded 실행!');
 
-    // 버튼 ID 목록과 각각의 메시지
-    const buttons = [
-        {
-            id: 'send-button',
-            name: '보내기 버튼',
-            message: '보내기 버튼 눌림!',
-            log: '📤 Send button clicked!'
-        },
-        {
-            id: 'menu-toggle-button',
-            name: '메뉴 버튼',
-            message: '메뉴 버튼 눌림!',
-            log: '📋 Menu button clicked!'
-        },
-        {
-            id: 'new-chat-button',
-            name: '새 채팅 버튼',
-            message: '새 채팅 버튼 눌림!',
-            log: '🆕 New chat button clicked!'
-        }
-    ];
+    const sendButton = document.getElementById('send-button');
+    const userInput = document.getElementById('user-input');
+    const chatBox = document.getElementById('chat-box');
+    const menuToggleButton = document.getElementById('menu-toggle-button');
+    const newChatButton = document.getElementById('new-chat-button');
 
-    buttons.forEach(button => {
-        const el = document.getElementById(button.id);
-        if (el) {
-            console.log(`✅ ${button.name} (${button.id}) 찾았어!`);
+    // 메시지 추가 함수
+    function addMessageToChat(sender, message) {
+        const p = document.createElement('p');
+        p.classList.add(sender === 'user' ? 'user-message' : 'ai-message');
+        p.textContent = message;
+        chatBox.appendChild(p);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
 
-            el.addEventListener('click', () => {
-                console.log(button.log);
-                alert(button.message);
+    // 서버에 메시지 보내고 AI 응답 받기
+    async function sendMessageToServer(message) {
+        try {
+            const res = await fetch('https://natsumi-mi-shu.onrender.com/natsumi', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: message })
             });
-
-            console.log(`🎯 ${button.name}에 이벤트 리스너 연결 완료!`);
-        } else {
-            console.warn(`⚠️ ${button.name} (${button.id}) 못 찾았어. index.html 확인해봐!`);
+            const data = await res.json();
+            return data.reply || '응답이 없네... 멍청아!';
+        } catch (err) {
+            console.error('서버 통신 에러:', err);
+            return '서버 에러! 나중에 다시 시도해라!';
         }
-    });
+    }
 
-    console.log('✨ 모든 버튼 리스너 연결 시도 완료!');
+    // 보내기 버튼 클릭 또는 Enter 누를 때 실행
+    async function handleSend() {
+        const message = userInput.value.trim();
+        if (!message) return;
+
+        addMessageToChat('user', message);
+        userInput.value = '';
+
+        // 로딩 표시
+        const loadingP = document.createElement('p');
+        loadingP.classList.add('ai-message');
+        loadingP.textContent = '... AI가 생각중...';
+        chatBox.appendChild(loadingP);
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        const aiReply = await sendMessageToServer(message);
+        loadingP.remove();
+
+        addMessageToChat('ai', aiReply);
+    }
+
+    // 이벤트 리스너 연결
+    if (sendButton) {
+        sendButton.addEventListener('click', handleSend);
+    }
+    if (userInput) {
+        userInput.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                handleSend();
+            }
+        });
+    }
+    if (menuToggleButton) {
+        menuToggleButton.addEventListener('click', () => {
+            const menu = document.getElementById('fixed-menu');
+            if (menu) menu.classList.toggle('hidden');
+        });
+    }
+    if (newChatButton) {
+        newChatButton.addEventListener('click', () => {
+            chatBox.innerHTML = '';
+            addMessageToChat('ai', '새 채팅 시작! 뭐 물어볼래?');
+        });
+    }
+
+    console.log('3. 이벤트 리스너 전부 연결 완료!');
 });
