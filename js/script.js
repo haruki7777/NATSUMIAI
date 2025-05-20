@@ -5,11 +5,7 @@ const chatBox = document.getElementById('chat-box'); // 대화 내용 보여줄 
 const clearHistoryButton = document.getElementById('clear-history-button'); // 기록 삭제 버튼
 
 // 하루키 Render 서버의 API 주소! >>> 이 부분을 꼭 하루키 서버 주소로 바꿔주세요! <<<
-// 코멘트만 따옴표 밖으로 뺐어!
-const API_ENDPOINT = 'https://natsumi-mi-shu.onrender.com/natsumi'; // <-- 여기에 하루키 서버 주소 넣기!
-
-// 아니면 그냥 주소만 깔끔하게 남겨도 돼!
-// const API_ENDPOINT = 'https://natsumi-mi-shu.onrender.com/natsumi';
+const API_ENDPOINT = 'https://natsumi-mi-shu.onrender.com/natsumi'; // <<-- 여기에 하루키 서버 주소 넣기!
 
 // 대화 기록을 localStorage에 저장할 때 사용할 키 이름
 const HISTORY_STORAGE_KEY = 'haruki-ai-chat-history';
@@ -36,6 +32,12 @@ userInput.addEventListener('keypress', async (event) => {
 
 // 입력 처리 및 API 통신을 담당하는 함수
 async function processUserInput() {
+
+    // === 하루키! 이 줄을 추가해서 버튼이 눌리는지 테스트해봐! ===
+    alert('버튼이 눌렸어! processUserInput 함수 실행!');
+    // ==========================================================
+
+
     const question = userInput.value.trim(); // 사용자가 입력한 질문 가져오기 (앞뒤 공백 제거)
 
     // 질문이 비어있으면 아무것도 안 해
@@ -81,7 +83,7 @@ async function processUserInput() {
         if (!response.ok) {
             // 서버에서 에러 메시지가 있다면 가져오기
             const errorText = await response.text();
-            // === 서버 오류 메시지 츤데레 말투로 변경! ===
+            // === 서버 오류 메시지 츤데레 말투! ===
             throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}. 엣, 서버가 말을 안 듣네. 답답하구만!`);
         }
 
@@ -96,7 +98,7 @@ async function processUserInput() {
             addMessageToChat('ai', aiResponse);
             saveChatHistory(); // 메시지 추가 후 기록 저장
         } else {
-            // === 서버 응답 형식 오류 메시지 츤데레 말투로 변경! ===
+            // === 서버 응답 형식 오류 메시지 츤데레 말투! ===
              addMessageToChat('ai', '뭐야 이 이상한 답장은?! 제대로 된 걸 보내라고!');
              saveChatHistory(); // 에러 메시지도 기록에 저장
         }
@@ -110,7 +112,7 @@ async function processUserInput() {
         //    chatBox.removeChild(loadingIndicator);
         // }
 
-        // === 에러 발생 시 최종 출력 메시지 츤데레 말투로 변경! ===
+        // === 에러 발생 시 최종 출력 메시지 츤데레 말투! ===
         addMessageToChat('ai', '죄송해요, 답변을 가져오는데 문제가 발생했어요. (Console 확인)'); // 콘솔 확인하라는 메시지도 넣어줬어!
         saveChatHistory(); // 에러 메시지도 기록에 저장
     } finally {
@@ -179,7 +181,7 @@ function saveChatHistory() {
             '뭐야 할말이라도 있는거야?',
             '엣, 서버가 말을 안 듣네. 답답하구만!',
             '뭐야 이 이상한 답장은?! 제대로 된 걸 보내라고!',
-            '죄송해요, 답변을 가져오는데 문제가 발생했어요. (Console 확인)',
+            '죄송해요, 답변을 가져오는데 문제가 발생했어요. (Console 확인)', // 콘솔 확인 메시지도 포함
             '흥, 깨끗하게 시작하는 것도 나쁘지 않겠지. 자, 말 걸어 봐.',
             '안녕하세요! 새로운 대화를 시작해볼까요?' // 혹시 이전 버전 메시지가 남아있을까봐
         ];
