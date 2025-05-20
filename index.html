@@ -4,22 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>하루키 AI 비서</title>
-    <!-- CSS 파일 연결 (이 파일을 이쁘게 꾸밀 거야!) -->
+    <!-- CSS 파일 연결 (새로운 이쁜 디자인!) -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>하루키의 멋진 AI 비서</h1>
+    <div id="app-container"> <!-- 전체 앱을 감싸는 컨테이너 -->
+        <h1>하루키의 멋진 AI 비서</h1>
 
-    <div id="chat-container">
-        <div id="chat-box">
-            <!-- AI 비서랑 대화 내용이 여기에 나타날 거야! -->
-            <p class="ai-message"><strong>AI 비서:</strong> 안녕! 반가워!!( っ꒪⌓꒪)っ—̳͟͞͞♡</p>
+        <div id="chat-container">
+            <div id="chat-box">
+                <!-- 대화 내용이 여기에 나타날 거야! (이전 기록도 로딩될 거야!) -->
+                <p class="ai-message">안녕하세요! 무엇을 도와드릴까요?</p> <!-- 초기 메시지 -->
+            </div>
+            <div id="input-area"> <!-- 입력창과 버튼을 묶는 영역 -->
+                <input type="text" id="user-input" placeholder="여기에 질문을 입력하세요!">
+                <button id="send-button">보내기</button>
+            </div>
         </div>
-        <input type="text" id="user-input" placeholder="여기에 질문을 입력해줘!!">
-        <button id="send-button">보내기</button>
+
+        <!-- 기록 삭제 버튼 추가! -->
+        <button id="clear-history-button">대화 기록 삭제</button>
     </div>
 
-    <!-- JavaScript 파일 연결 (뇌랑 통신하고 버튼 작동시키는 마법!) -->
+    <!-- JavaScript 파일 연결 (뇌 연결, 버튼 작동, 기록 저장/삭제 마법!) -->
     <script src="script.js"></script>
 </body>
 </html>
