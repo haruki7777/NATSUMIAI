@@ -12,7 +12,7 @@ body {
 
     /* === 하루키! 여기에 원하는 배경을 넣어줘! === */
     /* 단색 배경을 원하면 아래 주석을 풀고 색깔 코드를 바꿔줘! */
-    /* background-color: #f7f7f7; */ /* 현재 기본 배경색 */
+     background-color: #f0f0f0; /* 조금 밝은 회색 배경 (OpenAI 느낌) */
     /* background-color: lightblue; */ /* 예시: 하늘색 */
     /* background-color: #abcdef; */ /* 예시: 다른 색깔 */
 
@@ -28,21 +28,23 @@ body {
 
 #app-container {
     width: 100%;
-    max-width: 700px; /* 최대 너비 좀 더 넓게 */
-    background-color: #fff; /* 앱 컨테이너 배경은 하얗게 (배경 이미지가 비치지 않게) */
+    max-width: 800px; /* 최대 너비 좀 더 넓게 */
+    background-color: #fff; /* 앱 컨테이너 배경은 하얗게 */
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08); /* 그림자 연하게 */
+    padding: 30px; /* 패딩 늘림 */
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 h1 {
-    color: #1a73e8; /* 구글 느낌 파란색 */
+    color: #000; /* 제목 색깔 검정 */
     margin-top: 0;
-    margin-bottom: 25px;
-    font-size: 1.8em;
+    margin-bottom: 30px;
+    font-size: 2em; /* 제목 크기 키움 */
+    font-weight: 700; /* 제목 굵게 */
+    text-align: center;
 }
 
 #chat-container {
@@ -52,15 +54,15 @@ h1 {
 }
 
 #chat-box {
-    height: 400px; /* 대화창 높이 늘림 */
+    height: 450px; /* 대화창 높이 늘림 */
     overflow-y: auto;
-    border: 1px solid #e0e0e0; /* 테두리 색상 변경 */
+    /* border: 1px solid #e0e0e0; */ /* 테두리 제거 */
     border-radius: 8px;
     padding: 15px;
     margin-bottom: 15px;
     display: flex;
     flex-direction: column;
-    gap: 10px; /* 메시지 버블 간 간격 */
+    gap: 12px; /* 메시지 버블 간 간격 */
     background-color: #fff; /* 대화창 배경도 하얗게 */
 }
 
@@ -79,29 +81,29 @@ h1 {
 
 #chat-box p {
     margin: 0; /* 기본 마진 제거 */
-    padding: 10px 15px;
-    border-radius: 18px; /* 버블 모양으로 둥글게 */
-    max-width: 85%; /* 버블 최대 너비 */
+    padding: 12px 16px; /* 패딩 늘림 */
+    border-radius: 10px; /* 버블 모양 둥글기 줄임 */
+    max-width: 80%; /* 버블 최대 너비 */
     word-wrap: break-word;
-    line-height: 1.5; /* 줄 간격 */
-    position: relative; /* 꼬리 만들 때 필요 */
+    line-height: 1.6; /* 줄 간격 */
+    position: relative;
 }
 
 .user-message {
     align-self: flex-end; /* 사용자 메시지는 오른쪽에 */
-    background-color: #1a73e8; /* 사용자 메시지 배경 파란색 */
-    color: white; /* 사용자 메시지 글자 하얗게 */
-    border-bottom-right-radius: 5px; /* 오른쪽 아래 모서리만 덜 둥글게 (꼬리처럼) */
+    background-color: #e9e9eb; /* 사용자 메시지 배경 연한 회색 */
+    color: #333; /* 사용자 메시지 글자색 */
+    border-radius: 10px 10px 2px 10px; /* 오른쪽 아래 모서리만 덜 둥글게 */
 }
 
 .ai-message {
     align-self: flex-start; /* AI 메시지는 왼쪽에 */
-    background-color: #e0e0e0; /* AI 메시지 배경 연한 회색 */
-    color: #333; /* AI 메시지 글자색 */
-    border-bottom-left-radius: 5px; /* 왼쪽 아래 모서리만 덜 둥글게 */
+    background-color: #1a73e8; /* AI 메시지 배경 파란색 (OpenAI 스타일) */
+    color: white; /* AI 메시지 글자색 하얗게 */
+    border-radius: 10px 10px 10px 2px; /* 왼쪽 아래 모서리만 덜 둥글게 */
 }
 
-/* 메시지 이름 (나, AI 비서) 숨기기 - 버블 형태에 더 어울려 */
+/* 메시지 이름 (나, AI 비서) 숨기기 */
 #chat-box p strong {
     display: none;
 }
@@ -115,28 +117,30 @@ h1 {
 
 #user-input {
     flex-grow: 1; /* 입력창이 남은 공간 다 차지 */
-    padding: 12px;
+    padding: 12px 15px; /* 패딩 조정 */
     border: 1px solid #ccc;
-    border-radius: 20px; /* 둥근 입력창 */
+    border-radius: 24px; /* 더 둥근 입력창 */
     font-size: 1rem;
-    outline: none; /* 클릭 시 파란 테두리 없애기 */
-    transition: border-color 0.3s ease;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 #user-input:focus {
     border-color: #1a73e8; /* 클릭 시 테두리 색상 변경 */
+    box-shadow: 0 0 0 0.2rem rgba(26, 115, 232, 0.25); /* 포커스 시 그림자 효과 */
 }
 
 #send-button, #clear-history-button {
-    padding: 12px 20px;
+    padding: 12px 25px; /* 패딩 조정 */
     background-color: #1a73e8; /* 버튼 색상 */
     color: white;
     border: none;
-    border-radius: 20px; /* 둥근 버튼 */
+    border-radius: 24px; /* 더 둥근 버튼 */
     cursor: pointer;
     font-size: 1rem;
     transition: background-color 0.3s ease;
     flex-shrink: 0; /* 줄바꿈 안 되게 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* 버튼 그림자 */
 }
 
 #send-button:hover, #clear-history-button:hover {
@@ -144,13 +148,15 @@ h1 {
 }
 
 #clear-history-button {
-    background-color: #dc3545; /* 삭제 버튼은 빨간색 */
+    background-color: #6c757d; /* 삭제 버튼은 회색 계열로 (덜 눈에 띄게) */
     margin-top: 10px;
+    box-shadow: none; /* 그림자 없앰 */
 }
 
 #clear-history-button:hover {
-    background-color: #c82333;
+    background-color: #545b62;
 }
+
 
 /* 로딩 인디케이터 스타일 (script.js에서 주석 풀면 사용) */
 /*
@@ -159,8 +165,13 @@ h1 {
     color: #888;
     align-self: flex-start;
     margin-left: 15px; // AI 메시지와 동일하게 왼쪽 정렬
+    background-color: #e0e0e0; // AI 메시지 배경색과 동일하게
+    padding: 10px 15px;
+    border-radius: 10px;
+    max-width: 80%;
 }
 */
+
 
 /* 모바일 반응형 */
 @media (max-width: 600px) {
@@ -174,7 +185,7 @@ h1 {
     }
 
     #chat-box {
-        height: 300px; /* 모바일에서 높이 조정 */
+        height: 350px; /* 모바일에서 높이 조정 */
         padding: 10px;
         gap: 8px;
     }
@@ -182,7 +193,11 @@ h1 {
     #chat-box p {
         padding: 8px 12px;
         max-width: 90%; /* 모바일에서 너비 조정 */
+        border-radius: 8px; /* 모바일에서 버블 둥글기 조금 줄임 */
     }
+     .user-message { border-radius: 8px 8px 2px 8px; }
+     .ai-message { border-radius: 8px 8px 8px 2px; }
+
 
     #input-area {
         flex-direction: column; /* 모바일에서 입력창과 버튼 세로로 쌓기 */
@@ -192,7 +207,7 @@ h1 {
     #user-input, #send-button, #clear-history-button {
         width: 100%; /* 모바일에서 너비 꽉 채우기 */
         margin-right: 0;
-        /* text-align: center; */ /* 입력창 텍스트 정렬은 빼는게 자연스러움 */
+        /* text-align: center; */
     }
 
      #send-button {
