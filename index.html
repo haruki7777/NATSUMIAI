@@ -41,8 +41,9 @@
                  <!-- 대화 기록 목록이 JavaScript로 여기에 추가될 거야 -->
              </ul>
              <div id="history-buttons">
-                 <button id="delete-selected-button">선택 삭제</button> <!-- 선택 삭제 버튼 -->
-                 <button id="back-to-chat-button">채팅으로 돌아가기</button> <!-- 채팅으로 돌아가는 버튼 -->
+                 <!-- 버튼들은 이제 고정 메뉴로 이동 -->
+                 <!-- <button id="delete-selected-button">선택 삭제</button> -->
+                 <!-- <button id="back-to-chat-button">채팅으로 돌아가기</button> -->
              </div>
         </div>
 
@@ -50,9 +51,11 @@
 
     <!-- === 화면 상단 오른쪽 고정 메뉴 영역 추가! === -->
     <div id="fixed-menu">
-         <button id="view-history-button" class="menu-button chat-view-button">대화 기록 보기</button> <!-- 채팅 화면일 때 보이는 버튼 -->
-         <button id="delete-selected-button" class="menu-button history-view-button hidden">선택 삭제</button> <!-- 기록 화면일 때 보이는 버튼 (처음엔 숨김) -->
-         <button id="back-to-chat-button" class="menu-button history-view-button hidden">채팅으로 돌아가기</button> <!-- 기록 화면일 때 보이는 버튼 (처음엔 숨김) -->
+         <!-- '대화 기록 보기' 버튼은 채팅 화면일 때 보임 -->
+         <button id="view-history-button" class="menu-button chat-view-button">대화 기록 보기</button>
+         <!-- '선택 삭제', '채팅으로 돌아가기' 버튼은 기록 화면일 때 보임 (처음엔 숨김) -->
+         <button id="delete-selected-button" class="menu-button history-view-button hidden">선택 삭제</button>
+         <button id="back-to-chat-button" class="menu-button history-view-button hidden">채팅으로 돌아가기</button>
     </div>
 
 
