@@ -50,8 +50,9 @@
 
     <!-- === 화면 상단 오른쪽 고정 메뉴 영역 추가! === -->
     <div id="fixed-menu">
-         <button id="view-history-button">대화 기록 보기</button> <!-- 기록 보기 버튼을 여기로 옮김 -->
-         <!-- 나중에 다른 메뉴 버튼들을 여기에 추가할 수 있어요! -->
+         <button id="view-history-button" class="menu-button chat-view-button">대화 기록 보기</button> <!-- 채팅 화면일 때 보이는 버튼 -->
+         <button id="delete-selected-button" class="menu-button history-view-button hidden">선택 삭제</button> <!-- 기록 화면일 때 보이는 버튼 (처음엔 숨김) -->
+         <button id="back-to-chat-button" class="menu-button history-view-button hidden">채팅으로 돌아가기</button> <!-- 기록 화면일 때 보이는 버튼 (처음엔 숨김) -->
     </div>
 
 
