@@ -1,241 +1,125 @@
-const userInput = document.getElementById('user-input');
-const sendButton = document.getElementById('send-button');
-const chatBox = document.getElementById('chat-box');
-const viewHistoryButton = document.getElementById('view-history-button');
-const historyArea = document.getElementById('history-area');
-const mainChatArea = document.getElementById('main-chat-area');
-const historyList = document.getElementById('history-list');
-const deleteSelectedButton = document.getElementById('delete-selected-button');
-const backToChatButton = document.getElementById('back-to-chat-button');
-const newChatButton = document.getElementById('new-chat-button');
+const menuBtn = document.getElementById('menuBtn');
+const menuList = document.getElementById('menuList');
+const historyList = document.getElementById('historyList');
+const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+const backToChatBtn = document.getElementById('backToChatBtn');
+const toggleMenuBtn = document.getElementById('toggleMenuBtn');
+const newChatBtn = document.getElementById('newChatBtn');
+const userInput = document.getElementById('userInput');
+const sendBtn = document.getElementById('sendBtn');
+const responseDiv = document.getElementById('response');
 
-// Render 서버 주소, 하루키 서버에 맞게 바꿔라~!
-const API_ENDPOINT = 'https://natsumi-mi-shu.onrender.com/natsumi';
+let chatHistory = [];
+let inChatMode = true; // true면 채팅 모드, false면 새대화 모드(초기화된 상태)
 
-// 로컬 스토리지 키명
-const HISTORY_STORAGE_KEY = 'haruki-ai-chat-history-list';
-
-let allChatHistories = [];
-let currentChatId = null;
-
-document.addEventListener('DOMContentLoaded', () => {
-    loadAllHistories();
-
-    if (allChatHistories.length > 0) {
-        // 가장 최근 대화로 복귀
-        const lastValidChat = allChatHistories.slice().reverse().find(chat => chat && chat.id);
-        if (lastValidChat) {
-            currentChatId = lastValidChat.id;
-            renderChatMessages(currentChatId);
-        } else {
-            allChatHistories = [];
-            startNewChat();
-        }
-    } else {
-        startNewChat();
-    }
-
-    userInput.focus();
+// 메뉴 점세개 눌렀을 때 토글
+menuBtn.addEventListener('click', () => {
+  menuList.classList.toggle('hidden');
 });
 
-// 새 대화 시작 함수
-function startNewChat() {
-    currentChatId = `chat-${Date.now()}`;
-    allChatHistories.push({ id: currentChatId, messages: [] });
-    saveAllHistories();
-    renderChatMessages(currentChatId);
-    chatBox.innerHTML = '';
-    appendAiMessage('뭐야 할말이라도 있는거야?');
+// 메뉴 내 기록 보여주기
+function renderHistory() {
+  historyList.innerHTML = '';
+
+  if (chatHistory.length === 0) {
+    historyList.innerHTML = '<p style="color:#ccc; font-size:0.9rem; text-align:center;">기록이 없습니다</p>';
+    return;
+  }
+
+  chatHistory.forEach((item, index) => {
+    const div = document.createElement('div');
+    div.classList.add('history-item');
+    div.title = item; // 전체 내용 툴팁으로 보여줌
+
+    // 대화 내용 텍스트 (길면 말줄임표 처리)
+    const span = document.createElement('span');
+    span.textContent = item.length > 20 ? item.slice(0, 20) + '...' : item;
+    div.appendChild(span);
+
+    // 삭제 버튼
+    const delBtn = document.createElement('button');
+    delBtn.classList.add('delete-btn');
+    delBtn.textContent = '×';
+    delBtn.addEventListener('click', (e) => {
+      e.stopPropagation(); // 클릭 이벤트가 div로 안 넘어가게
+      chatHistory.splice(index, 1);
+      renderHistory();
+    });
+    div.appendChild(delBtn);
+
+    // 클릭하면 해당 기록으로 질문창에 복사
+    div.addEventListener('click', () => {
+      userInput.value = item;
+      menuList.classList.add('hidden');
+    });
+
+    historyList.appendChild(div);
+  });
 }
 
-// 저장된 기록 로드
-function loadAllHistories() {
-    const data = localStorage.getItem(HISTORY_STORAGE_KEY);
-    if (data) {
-        try {
-            allChatHistories = JSON.parse(data);
-            if (!Array.isArray(allChatHistories)) allChatHistories = [];
-            allChatHistories = allChatHistories.filter(chat => chat && chat.id && Array.isArray(chat.messages));
-        } catch (e) {
-            console.error('기록 불러오기 실패:', e);
-            allChatHistories = [];
-            localStorage.removeItem(HISTORY_STORAGE_KEY);
-        }
-    } else {
-        allChatHistories = [];
-    }
-}
-
-// 기록 저장
-function saveAllHistories() {
-    try {
-        localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(allChatHistories));
-    } catch (e) {
-        console.error('기록 저장 실패:', e);
-    }
-}
-
-// 메시지 추가 (대화기록 + 화면)
-function addMessageToCurrentChatHistory(sender, text) {
-    const chat = allChatHistories.find(c => c.id === currentChatId);
-    if (!chat) {
-        startNewChat();
-        addMessageToCurrentChatHistory(sender, text);
-        return;
-    }
-    chat.messages.push({ sender, text });
-    saveAllHistories();
-}
-
-function appendUserMessage(text) {
-    const p = document.createElement('p');
-    p.classList.add('user-message');
-    p.textContent = text;
-    chatBox.appendChild(p);
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-function appendAiMessage(text) {
-    const p = document.createElement('p');
-    p.classList.add('ai-message');
-    p.textContent = text;
-    chatBox.appendChild(p);
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-function renderChatMessages(chatId) {
-    chatBox.innerHTML = '';
-    const chat = allChatHistories.find(c => c.id === chatId);
-    if (!chat) return;
-
-    for (const msg of chat.messages) {
-        if (msg.sender === 'user') {
-            appendUserMessage(msg.text);
-        } else {
-            appendAiMessage(msg.text);
-        }
-    }
-}
-
-// 보내기 버튼 클릭 또는 Enter 입력 시 처리
-async function processUserInput() {
-    const question = userInput.value.trim();
-    if (!question) return;
-
-    addMessageToCurrentChatHistory('user', question);
-    appendUserMessage(question);
-    userInput.value = '';
-    userInput.disabled = true;
-    sendButton.disabled = true;
-
-    try {
-        const response = await fetch(API_ENDPOINT, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: question }),
-        });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error(`서버 오류: ${response.status}, 내용: ${errorText}`);
-            throw new Error('서버가 말을 안 듣는 것 같아...');
-        }
-
-        const data = await response.json();
-        const answer = data.answer || '뭐야, 이상한 답변이야!';
-
-        addMessageToCurrentChatHistory('ai', answer);
-        appendAiMessage(answer);
-
-    } catch (error) {
-        console.error('API 통신 에러:', error);
-        const errorMsg = '죄송해요, 답변을 받을 수 없어요. 콘솔 확인해봐요.';
-        addMessageToCurrentChatHistory('ai', errorMsg);
-        appendAiMessage(errorMsg);
-    } finally {
-        userInput.disabled = false;
-        sendButton.disabled = false;
-        userInput.focus();
-    }
-}
-
-sendButton.addEventListener('click', processUserInput);
-userInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        processUserInput();
-    }
-});
-
-// 기록 보기 버튼 클릭
-viewHistoryButton.addEventListener('click', () => {
-    mainChatArea.classList.add('hidden');
-    historyArea.classList.remove('hidden');
-    renderHistoryList();
+// 기록 전체 삭제
+clearHistoryBtn.addEventListener('click', () => {
+  if (confirm('기록 전체를 삭제할까?')) {
+    chatHistory = [];
+    renderHistory();
+  }
 });
 
 // 채팅으로 돌아가기 버튼 클릭
-backToChatButton.addEventListener('click', () => {
-    historyArea.classList.add('hidden');
-    mainChatArea.classList.remove('hidden');
+backToChatBtn.addEventListener('click', () => {
+  if (!inChatMode) {
+    inChatMode = true;
+    responseDiv.textContent = '';
+    userInput.disabled = false;
+    sendBtn.disabled = false;
+    menuList.classList.add('hidden');
+  }
 });
 
-// 새 대화 시작 버튼 클릭
-newChatButton.addEventListener('click', () => {
-    startNewChat();
+// 새 대화 버튼 클릭
+newChatBtn.addEventListener('click', () => {
+  if (confirm('새 대화를 시작할까? 기존 기록은 유지돼~')) {
+    inChatMode = false;
+    responseDiv.textContent = '새 대화 중... 아무거나 물어봐~';
+    userInput.value = '';
+    userInput.disabled = false;
+    sendBtn.disabled = false;
+  }
 });
 
-// 기록 목록 렌더링
-function renderHistoryList() {
-    historyList.innerHTML = '';
-    allChatHistories.forEach(chat => {
-        const li = document.createElement('li');
-
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.value = chat.id;
-        checkbox.classList.add('history-checkbox');
-
-        const label = document.createElement('label');
-        label.textContent = `대화 - ${new Date(parseInt(chat.id.split('-')[1], 10)).toLocaleString()}`;
-        label.addEventListener('click', () => {
-            currentChatId = chat.id;
-            renderChatMessages(chat.id);
-            historyArea.classList.add('hidden');
-            mainChatArea.classList.remove('hidden');
-        });
-
-        li.appendChild(checkbox);
-        li.appendChild(label);
-        historyList.appendChild(li);
-    });
-}
-
-// 선택된 기록 삭제
-deleteSelectedButton.addEventListener('click', () => {
-    const checkedBoxes = document.querySelectorAll('.history-checkbox:checked');
-    if (checkedBoxes.length === 0) {
-        alert('삭제할 대화를 선택해!');
-        return;
-    }
-
-    if (!confirm('정말 선택한 대화를 삭제할 거야?')) return;
-
-    checkedBoxes.forEach(cb => {
-        const idToDelete = cb.value;
-        allChatHistories = allChatHistories.filter(chat => chat.id !== idToDelete);
-        if (currentChatId === idToDelete) {
-            currentChatId = null;
-        }
-    });
-
-    saveAllHistories();
-    renderHistoryList();
-
-    if (!currentChatId && allChatHistories.length > 0) {
-        currentChatId = allChatHistories[allChatHistories.length - 1].id;
-        renderChatMessages(currentChatId);
-    } else if (!currentChatId) {
-        startNewChat();
-    }
+// 메뉴 닫기 버튼 클릭
+toggleMenuBtn.addEventListener('click', () => {
+  menuList.classList.add('hidden');
 });
+
+// 보내기 버튼 클릭
+sendBtn.addEventListener('click', () => {
+  if (!inChatMode) {
+    alert('채팅 모드에서만 대화를 보낼 수 있어! 새 대화 버튼 눌러서 다시 돌아와.');
+    return;
+  }
+
+  const input = userInput.value.trim();
+
+  if (!input) {
+    responseDiv.textContent = '뭐라도 입력해야 말이지...';
+    return;
+  }
+
+  responseDiv.textContent = '잠깐만 기다려봐, 지금 처리 중이야...';
+
+  setTimeout(() => {
+    // 가상의 답변 생성 (원래는 AI API 연동하는 자리)
+    const answer = `너가 물어본 건 "${input}" 야. 근데 난 아직 AI가 아니니까 그냥 흉내 내는 중~ㅋㅋ`;
+
+    // 기록에 저장
+    chatHistory.push(input);
+    renderHistory();
+
+    responseDiv.textContent = answer;
+    userInput.value = '';
+  }, 1000);
+});
+
+// 처음 페이지 로드 시 기록 렌더링
+renderHistory();
