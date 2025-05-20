@@ -1,20 +1,51 @@
 // HTML 요소들을 JavaScript에서 사용할 수 있게 가져오기!
 const userInput = document.getElementById('user-input'); // 입력창
 const sendButton = document.getElementById('send-button'); // 보내기 버튼
-const chatBox = document.getElementById('chat-box'); // 대화 내용 보여줄 공간
-const clearHistoryButton = document.getElementById('clear-history-button'); // 기록 삭제 버튼
+const chatBox = document.getElementById('chat-box'); // 주 대화 내용 보여줄 공간
+const viewHistoryButton = document.getElementById('view-history-button'); // 기록 보기 버튼
+const historyArea = document.getElementById('history-area'); // 기록 목록 영역
+const mainChatArea = document.getElementById('main-chat-area'); // 주 대화 영역
+const historyList = document.getElementById('history-list'); // 기록 목록 ul 태그
+const deleteSelectedButton = document.getElementById('delete-selected-button'); // 선택 삭제 버튼
+const backToChatButton = document.getElementById('back-to-chat-button'); // 채팅으로 돌아가기 버튼
+
 
 // 하루키 Render 서버의 API 주소! >>> 이 부분을 꼭 하루키 서버 주소로 바꿔주세요! <<<
 const API_ENDPOINT = 'https://natsumi-mi-shu.onrender.com/natsumi'; // <<-- 여기에 하루키 서버 주소 넣기!
 
 // 대화 기록을 localStorage에 저장할 때 사용할 키 이름
-const HISTORY_STORAGE_KEY = 'haruki-ai-chat-history';
+const HISTORY_STORAGE_KEY = 'haruki-ai-chat-history-list'; // 기록 저장 키 이름 변경! (이제 목록을 저장)
 
-// 페이지 로드 시 저장된 대화 기록 불러오기
+// 현재 활성 대화의 ID
+let currentChatId = null;
+// 모든 대화 기록을 저장하는 배열
+let allChatHistories = [];
+
+
+// 페이지 로드 시 저장된 모든 대화 기록 불러오기 및 초기 설정
 document.addEventListener('DOMContentLoaded', () => {
-    loadChatHistory();
+    loadAllHistories(); // 모든 기록 불러오기
+    if (allChatHistories.length > 0) {
+         // 저장된 기록이 있으면 마지막 대화를 현재 대화로 설정
+        currentChatId = allChatHistories[allChatHistories.length - 1].id;
+        renderChatMessages(currentChatId); // 마지막 대화 내용을 화면에 표시
+    } else {
+         // 저장된 기록이 없으면 새 대화 시작
+        startNewChat();
+    }
     userInput.focus(); // 페이지 로드 시 입력창에 커서 두기
 });
+
+// 새 대화를 시작하는 함수
+function startNewChat() {
+    currentChatId = `chat-${Date.now()}`; // 현재 시간을 기반으로 고유 ID 생성
+    allChatHistories.push({ id: currentChatId, messages: [] }); // 새로운 대화 객체를 목록에 추가
+    saveAllHistories(); // 변경사항 저장
+    renderChatMessages(currentChatId); // 새 대화 화면을 비우고 초기 메시지 표시
+     // 새 대화 시작 시 초기 메시지 추가
+     addMessageToChat('ai', '뭐야 할말이라도 있는거야?', false); // 초기 메시지는 기록에 저장 안 함
+}
+
 
 // '보내기' 버튼을 클릭했을 때 작동하는 함수
 sendButton.addEventListener('click', async () => {
@@ -45,9 +76,9 @@ async function processUserInput() {
         return;
     }
 
-    // 사용자의 질문을 대화창에 표시하고 기록 저장
-    addMessageToChat('user', question);
-    saveChatHistory(); // 메시지 추가 후 기록 저장
+     // 현재 대화에 사용자 메시지 추가 및 화면 표시
+    addMessageToCurrentChatHistory('user', question);
+    addMessageToChat('user', question, true); // 화면에 표시하고 기록에 저장하도록 true 전달
 
     // 입력창 비우기
     userInput.value = '';
@@ -95,12 +126,11 @@ async function processUserInput() {
 
         if (aiResponse) { // 답변 내용이 있을 때만 표시
              // AI 비서의 답변을 대화창에 표시하고 기록 저장
-            addMessageToChat('ai', aiResponse);
-            saveChatHistory(); // 메시지 추가 후 기록 저장
+             addMessageToCurrentChatHistory('ai', aiResponse);
+             addMessageToChat('ai', aiResponse, true); // 화면에 표시하고 기록에 저장하도록 true 전달
         } else {
             // === 서버 응답 형식 오류 메시지 츤데레 말투! ===
-             addMessageToChat('ai', '뭐야 이 이상한 답장은?! 제대로 된 걸 보내라고!');
-             saveChatHistory(); // 에러 메시지도 기록에 저장
+             addMessageToChat('ai', '뭐야 이 이상한 답장은?! 제대로 된 걸 보내라고!', true); // 화면에 표시하고 기록에 저장하도록 true 전달
         }
 
     } catch (error) {
@@ -113,93 +143,31 @@ async function processUserInput() {
         // }
 
         // === 에러 발생 시 최종 출력 메시지 츤데레 말투! ===
-        addMessageToChat('ai', '죄송해요, 답변을 가져오는데 문제가 발생했어요. (Console 확인)'); // 콘솔 확인하라는 메시지도 넣어줬어!
-        saveChatHistory(); // 에러 메시지도 기록에 저장
+        addMessageToChat('ai', '죄송해요, 답변을 가져오는데 문제가 발생했어요. (Console 확인)', true); // 화면에 표시하고 기록에 저장하도록 true 전달
+
     } finally {
         // 모든 처리가 끝나면 입력창과 버튼 다시 활성화
         userInput.disabled = false;
         sendButton.disabled = false;
         userInput.focus(); // 입력창에 커서 두기
+        saveAllHistories(); // 변경사항 저장
     }
 }
 
-
-// 대화 기록을 localStorage에서 불러와서 화면에 표시하는 함수
-function loadChatHistory() {
-    const history = localStorage.getItem(HISTORY_STORAGE_KEY);
-    if (history) {
-        try {
-            const messages = JSON.parse(history);
-            // 기존 초기 메시지는 제거 (선택 사항: HTML에 처음부터 넣어둔 메시지)
-            const initialMessage = chatBox.querySelector('.ai-message');
-             // 초기 메시지 내용으로 구분해서 제거
-             if (initialMessage && initialMessage.textContent.includes('뭐야 할말이라도 있는거야?')) {
-                initialMessage.remove();
-            }
-
-             // 저장된 메시지들을 화면에 추가
-            messages.forEach(msg => {
-                addMessageToChat(msg.sender, msg.text);
-            });
-        } catch (e) {
-            console.error("Failed to parse chat history from localStorage:", e);
-            // 파싱 실패 시 기록 삭제 (잘못된 형식일 경우)
-            localStorage.removeItem(HISTORY_STORAGE_KEY);
-        }
-
+// 현재 활성 대화 기록에 메시지를 추가하는 함수
+function addMessageToCurrentChatHistory(sender, text) {
+    // 현재 대화 찾기
+    const currentChat = allChatHistories.find(chat => chat.id === currentChatId);
+    if (currentChat) {
+        // 메시지 객체를 현재 대화의 messages 배열에 추가
+        currentChat.messages.push({ sender: sender, text: text });
     }
-     // 스크롤을 항상 맨 아래로 내려서 최신 메시지가 보이게
-     chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-// 현재 대화창의 메시지들을 가져와서 localStorage에 저장하는 함수
-function saveChatHistory() {
-    const messages = [];
-    // 대화창의 모든 <p> 태그(메시지) 가져오기
-    chatBox.querySelectorAll('p').forEach(p => {
-        // 로딩 인디케이터는 저장하지 않음 (선택 사항)
-        // if (p.classList.contains('loading-indicator')) {
-        //     return;
-        // }
-
-        let sender = 'ai'; // 기본적으로 AI 메시지로 가정
-        if (p.classList.contains('user-message')) {
-            sender = 'user'; // 사용자 메시지면 sender를 'user'로
-        } else if (p.classList.contains('ai-message')) { // AI 메시지 확인
-             sender = 'ai';
-        } else {
-             // 사용자나 AI 메시지 클래스가 없는 p 태그는 저장 안 함 (예: 초기 메시지 삭제 전 등)
-             return;
-        }
-
-
-        // 메시지 내용을 가져오기 (텍스트만)
-        const text = p.textContent; // innerText도 가능
-
-        // 츤데레 고정 메시지는 저장하지 않음 (선택 사항) - 그래야 새로 로드할 때 중복 안 됨
-        const fixedTsundereMessages = [
-            '뭐야 할말이라도 있는거야?',
-            '엣, 서버가 말을 안 듣네. 답답하구만!',
-            '뭐야 이 이상한 답장은?! 제대로 된 걸 보내라고!',
-            '죄송해요, 답변을 가져오는데 문제가 발생했어요. (Console 확인)', // 콘솔 확인 메시지도 포함
-            '흥, 깨끗하게 시작하는 것도 나쁘지 않겠지. 자, 말 걸어 봐.',
-            '안녕하세요! 새로운 대화를 시작해볼까요?' // 혹시 이전 버전 메시지가 남아있을까봐
-        ];
-        if (fixedTsundereMessages.includes(text.trim())) { // 앞뒤 공백 제거하고 비교
-             return; // 고정 메시지면 저장 안 함
-        }
-
-
-        messages.push({ sender: sender, text: text });
-    });
-    // JSON 문자열로 변환하여 localStorage에 저장
-    localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(messages));
 }
 
 
 // 대화창에 메시지를 추가하고 스크롤을 내리는 함수
-// sender: 'user' or 'ai', message: 내용
-function addMessageToChat(sender, message) {
+// sender: 'user' or 'ai', message: 내용, save: 기록에 저장할지 여부 (기본 true)
+function addMessageToChat(sender, message, save = true) {
     const messageElement = document.createElement('p'); // <p> 태그 만들기
 
     if (sender === 'user') {
@@ -214,41 +182,200 @@ function addMessageToChat(sender, message) {
 
     // 스크롤을 항상 맨 아래로 내려서 최신 메시지가 보이게
     chatBox.scrollTop = chatBox.scrollHeight;
+
+    // if (save) { // 이 부분은 이제 addMessageToCurrentChatHistory에서 처리
+    //     saveChatHistory();
+    // }
 }
 
 
-// '대화 기록 삭제' 버튼 클릭 시 작동하는 함수
-clearHistoryButton.addEventListener('click', () => {
-    // 사용자에게 진짜 삭제할 건지 확인
-    const confirmDelete = confirm('정말로 대화 기록을 모두 삭제하시겠습니까?');
+// 모든 대화 기록을 localStorage에서 불러와서 allChatHistories 배열에 저장하는 함수
+function loadAllHistories() {
+    const historyJson = localStorage.getItem(HISTORY_STORAGE_KEY);
+    if (historyJson) {
+        try {
+            // JSON 문자열을 JavaScript 객체 배열로 변환
+            allChatHistories = JSON.parse(historyJson);
+            // 만약 빈 배열이 로드되었거나 형식이 이상하면 초기화
+            if (!Array.isArray(allChatHistories)) {
+                allChatHistories = [];
+            }
+        } catch (e) {
+            console.error("Failed to parse chat history list from localStorage:", e);
+            allChatHistories = []; // 에러 발생 시 초기화
+             // 파싱 실패 시 localStorage 기록 삭제 (잘못된 형식일 경우)
+            localStorage.removeItem(HISTORY_STORAGE_KEY);
+        }
+    } else {
+        allChatHistories = []; // 저장된 기록이 없으면 빈 배열로 시작
+    }
+}
+
+// 현재 allChatHistories 배열의 모든 대화 기록을 localStorage에 저장하는 함수
+function saveAllHistories() {
+    try {
+        // allChatHistories 배열을 JSON 문자열로 변환하여 localStorage에 저장
+        localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(allChatHistories));
+    } catch (e) {
+         console.error("Failed to save chat history list to localStorage:", e);
+    }
+}
+
+
+// 특정 대화의 메시지들을 화면의 chatBox에 렌더링하는 함수
+function renderChatMessages(chatId) {
+    // chatBox 내용 비우기
+    chatBox.innerHTML = '';
+
+    // 해당 ID를 가진 대화 찾기
+    const chatToRender = allChatHistories.find(chat => chat.id === chatId);
+
+    if (chatToRender && chatToRender.messages.length > 0) {
+        // 해당 대화의 메시지들을 순서대로 화면에 추가
+        chatToRender.messages.forEach(msg => {
+            // addMessageToChat 함수를 사용하여 메시지 추가 (이때는 기록 저장 안 함)
+            addMessageToChat(msg.sender, msg.text, false);
+        });
+    } else {
+        // 대화가 없거나 비어있으면 초기 메시지 표시
+        addMessageToChat('ai', '뭐야 할말이라도 있는거야?', false); // 초기 메시지는 기록에 저장 안 함
+    }
+     // 스크롤을 항상 맨 아래로 내려서 최신 메시지가 보이게
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+// 대화 기록 목록 화면을 보여주는 함수
+function showHistoryList() {
+    // 주 대화 영역 숨기고 기록 목록 영역 보여주기
+    mainChatArea.classList.add('hidden');
+    historyArea.classList.remove('hidden');
+
+    // 기록 목록 ul 비우기
+    historyList.innerHTML = '';
+
+    // 저장된 모든 대화 기록을 기반으로 목록 생성
+    if (allChatHistories.length > 0) {
+        // 최신 대화가 위에 오도록 역순으로 정렬 (선택 사항)
+        const reversedHistories = [...allChatHistories].reverse();
+
+        reversedHistories.forEach(chat => {
+            // 목록 아이템 (li) 생성
+            const listItem = document.createElement('li');
+            listItem.dataset.chatId = chat.id; // data-chat-id 속성에 대화 ID 저장 (삭제/보기 시 사용)
+
+            // 체크박스 생성
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.classList.add('history-checkbox');
+
+            // 대화 내용 미리보기 (첫 메시지나 시간 정보 사용)
+            const chatPreview = document.createElement('span');
+            const firstMessage = chat.messages.find(msg => msg.sender === 'user' && msg.text.trim() !== ''); // 첫 사용자 메시지 찾기
+            const previewText = firstMessage ? firstMessage.text.substring(0, 50) + (firstMessage.text.length > 50 ? '...' : '') : '새로운 대화'; // 첫 메시지 50자 또는 '새로운 대화'
+             // 시간 정보도 추가하면 좋음 (chat 객체에 timestamp 속성을 저장했다고 가정)
+             // const date = chat.timestamp ? new Date(chat.timestamp).toLocaleString() : '시간 정보 없음';
+             // chatPreview.textContent = `${date} - ${previewText}`;
+
+            chatPreview.textContent = previewText; // 일단 첫 메시지 내용만 표시
+
+
+            // 목록 아이템에 체크박스와 미리보기 추가
+            listItem.appendChild(checkbox);
+            listItem.appendChild(chatPreview);
+             // 목록 아이템 자체를 클릭하면 해당 대화 내용을 보여주게 이벤트 리스너 추가
+            chatPreview.addEventListener('click', () => {
+                 currentChatId = chat.id; // 현재 대화 ID 변경
+                 renderChatMessages(currentChatId); // 해당 대화 내용 렌더링
+                 showMainChatArea(); // 주 대화 영역으로 돌아가기
+            });
+
+
+            // 목록에 추가
+            historyList.appendChild(listItem);
+        });
+    } else {
+        // 기록이 없을 때 메시지 표시
+        const noHistoryItem = document.createElement('li');
+        noHistoryItem.textContent = '대화 기록이 없습니다.';
+        historyList.appendChild(noHistoryItem);
+    }
+}
+
+// 주 대화 영역을 보여주는 함수
+function showMainChatArea() {
+    historyArea.classList.add('hidden');
+    mainChatArea.classList.remove('hidden');
+     userInput.focus(); // 입력창에 커서 두기
+}
+
+
+// '대화 기록 보기' 버튼 클릭 시 기록 목록 화면 보여주기
+viewHistoryButton.addEventListener('click', () => {
+    showHistoryList();
+});
+
+// '채팅으로 돌아가기' 버튼 클릭 시 주 대화 영역 보여주기
+backToChatButton.addEventListener('click', () => {
+    // 현재 활성 대화 ID가 설정되어 있지 않으면 (예: 모든 기록 삭제 후)
+    if (!currentChatId) {
+         startNewChat(); // 새 대화 시작
+    } else {
+         renderChatMessages(currentChatId); // 현재 대화 내용을 다시 렌더링
+    }
+    showMainChatArea();
+});
+
+// '선택 삭제' 버튼 클릭 시 선택된 대화 기록 삭제
+deleteSelectedButton.addEventListener('click', () => {
+    // 선택된 체크박스들 찾기
+    const selectedCheckboxes = historyList.querySelectorAll('.history-checkbox:checked');
+
+    if (selectedCheckboxes.length === 0) {
+        alert('삭제할 대화 기록을 선택해주세요.'); // 츤데레 말투? "흥, 뭘 삭제하겠다는 거야? 선택이나 하라고!"
+        return;
+    }
+
+    // 사용자에게 진짜 삭제할 건지 확인 (츤데레 말투 적용)
+    const confirmDelete = confirm(`정말로 선택된 대화 기록 ${selectedCheckboxes.length}개를 모두 삭제하시겠습니까? 엣, 진짜 지울 거야?`); // 확인 메시지도 츤데레로?!
 
     if (confirmDelete) {
-        // localStorage에서 기록 삭제
-        localStorage.removeItem(HISTORY_STORAGE_KEY);
+        // 선택된 대화 ID 목록 만들기
+        const idsToDelete = [];
+        selectedCheckboxes.forEach(checkbox => {
+            const listItem = checkbox.closest('li'); // 체크박스가 속한 li 요소 찾기
+            if (listItem && listItem.dataset.chatId) {
+                idsToDelete.push(listItem.dataset.chatId); // data-chat-id 값 가져오기
+            }
+        });
 
-        // 대화창 내용 모두 비우기
-        chatBox.innerHTML = '';
+        // allChatHistories 배열에서 선택된 ID의 대화들 제거
+        const initialCount = allChatHistories.length;
+        allChatHistories = allChatHistories.filter(chat => !idsToDelete.includes(chat.id));
+        const deletedCount = initialCount - allChatHistories.length;
 
-        // === 삭제 후 초기 메시지 츤데레 말투로 다시 표시! ===
-        const initialMessage = document.createElement('p');
-        initialMessage.classList.add('ai-message');
-        initialMessage.textContent = '흥, 깨끗하게 시작하는 것도 나쁘지 않겠지. 자, 말 걸어 봐.';
-        chatBox.appendChild(initialMessage);
 
-        // 삭제 완료 알림 (선택 사항)
-        // alert('대화 기록이 삭제되었습니다.');
+        saveAllHistories(); // 변경사항 저장
 
-        // 스크롤 맨 위로
-        chatBox.scrollTop = 0;
-         userInput.focus(); // 입력창에 커서 두기
+        // 현재 보고 있던 대화가 삭제되었으면 새 대화 시작
+        if (idsToDelete.includes(currentChatId)) {
+             currentChatId = null; // 현재 대화 ID 초기화
+             // startNewChat() 함수는 showMainChatArea로 돌아갈 때 호출되거나 기록이 없을 때 호출됨.
+        }
+
+        // 기록 목록 화면 새로고침
+        showHistoryList();
+
+        // 삭제 완료 알림 (츤데레 말투 적용)
+         alert(`${deletedCount}개의 대화 기록을 삭제했어. ...딱히 네 기록이 궁금했던 건 아니야.`); // 삭제 완료 메시지도 츤데레로!
+
     }
 });
+
 
 // 초기 메시지에 클래스 추가 (HTML에서 직접 클래스를 붙여도 돼요!)
 // 페이지 로드 후 초기 메시지가 이미 있다면 AI 메시지 클래스 추가
 document.addEventListener('DOMContentLoaded', () => {
-     const initialMessageElement = chatBox.querySelector('.ai-message');
-    // 첫 번째 p 태그가 이미 있고, user-message 클래스가 없으면 AI 메시지로 간주
-    // HTML에 이미 ai-message 클래스가 붙어있을 테니 별도 처리 필요 없을듯!
-    // loadChatHistory에서 초기 메시지 내용으로 구분해서 제거하도록 수정했음.
+     // loadAllHistories 에서 기록이 없을 때 startNewChat 호출하도록 수정했기 때문에
+     // 여기서는 별도의 초기 메시지 처리가 필요 없을 것으로 예상됨.
+     // 초기 메시지는 startNewChat 함수에서 addMessageToChat으로 추가됨.
 });
