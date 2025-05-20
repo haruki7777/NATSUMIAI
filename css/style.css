@@ -12,7 +12,7 @@ body {
 
     /* === 하루키! 여기에 원하는 배경 이미지를 넣어줘! === */
     /* 하루키가 원하는 이미지는 'images/BACKGROUND.jpeg' 이거 맞지? 👇 */
-     background-image: url('images/BACKGROUND.jpeg'); /* 이미지 파일 경로를 정확하게! */
+     background-image: url('../images/BACKGROUND.jpeg'); /* 이미지 파일 경로를 정확하게! */
      background-size: cover; /* 화면 전체를 꽉 채우도록 크기 조절 */
      background-position: center; /* 이미지를 가운데 정렬 */
      background-repeat: no-repeat; /* 이미지 반복 안 함 */
