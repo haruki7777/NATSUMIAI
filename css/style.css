@@ -48,6 +48,9 @@ body {
     z-index: 1000; /* 다른 요소들보다 항상 위에 오도록 큰 z-index 설정 */
     display: flex; /* 버튼이 여러 개면 가로로 나란히 */
     gap: 10px; /* 버튼 사이 간격 */
+    /* background-color: rgba(255,255,255,0.5); */ /* 메뉴 배경에 살짝 투명도 */
+    /* padding: 5px 10px; */
+    /* border-radius: 5px; */
 }
 
 /* 고정 메뉴 안에 있는 버튼 스타일 (send-button 스타일 재활용) */
@@ -77,7 +80,7 @@ body {
 
 /* 요소를 숨기는 클래스 (JavaScript에서 사용) */
 .hidden {
-    display: none; /* 요소를 숨김 */
+    display: none !important; /* !important로 다른 스타일에 우선하도록 함 */
 }
 /* ======================================= */
 
