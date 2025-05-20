@@ -1,5 +1,5 @@
 // === JavaScript 파일 로딩 시작을 알리는 alert ===
-alert('script.js 파일 로딩 시작!');
+alert('1. script.js 파일 로딩 시작!');
 
 // HTML 요소들을 저장할 변수들을 먼저 선언 (DOMContentLoaded 안에서 할당할 것임)
 let userInput;
@@ -24,11 +24,13 @@ let currentChatId = null;
 // 모든 대화 기록을 저장하는 배열
 let allChatHistories = [];
 
+alert('2. 변수 선언 및 API 주소 설정 완료!'); // === 변수 설정 완료 alert ===
+
 
 // 페이지 로드 시 모든 HTML 요소들이 준비되면 실행될 함수
 document.addEventListener('DOMContentLoaded', () => {
     // === DOMContentLoaded 실행 시작을 알리는 alert ===
-    alert('DOMContentLoaded 실행 시작!');
+    alert('3. DOMContentLoaded 실행 시작!');
 
     // === HTML 요소들을 찾아서 변수에 할당하는 코드 ===
     // 이 코드들이 HTML이 다 로드된 후에 실행되도록 DOMContentLoaded 안으로 옮겼어요!
@@ -43,9 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
     backToChatButton = document.getElementById('back-to-chat-button');
 
     // === 요소들을 찾았는지 확인하는 alert (있다면 뜰 것임) ===
-    if (sendButton) { alert("Send button found!"); console.log("Send button found!"); } else { alert("Send button NOT found!"); console.error("Send button NOT found!"); }
-    if (userInput) { alert("User input found!"); console.log("User input found!"); } else { alert("User input NOT found!"); console.error("User input NOT found!"); }
-    if (viewHistoryButton) { alert("View history button found!"); console.log("View history button found!"); } else { alert("View history button NOT found!"); console.error("View history button NOT found!"); }
+    if (sendButton) { alert("4. Send button found!"); console.log("Send button found!"); } else { alert("4. Send button NOT found!"); console.error("Send button NOT found!"); }
+    if (userInput) { alert("5. User input found!"); console.log("User input found!"); } else { alert("5. User input NOT found!"); console.error("User input NOT found!"); }
+    if (viewHistoryButton) { alert("6. View history button found!"); console.log("View history button found!"); } else { alert("6. View history button NOT found!"); console.error("View history button NOT found!"); }
 
 
     // === 버튼 클릭 이벤트 리스너들을 연결하는 코드 ===
@@ -56,9 +58,10 @@ document.addEventListener('DOMContentLoaded', () => {
             await processUserInput(); // 입력 처리 함수 호출
         });
         console.log("Send button event listener attached."); // 콘솔 로그 추가
+        alert('7. Send button event listener attached!'); // === 이벤트 리스너 연결 alert ===
     } else {
-         console.error("Error: '보내기' 버튼 요소를 찾을 수 없습니다! index.html의 id='send-button' 확인!"); // 버튼 못 찾았을 때 에러 로그
-         // alert("Error: '보내기' 버튼을 찾을 수 없어요! index.html의 id='send-button'을 확인해주세요!"); // 혹시 몰라 사용자에게도 알림
+         console.error("Error: '보내기' 버튼 요소를 찾을 수 없습니다! index.html의 id='send-button' 확인!"); // 버튼 못 찾았을 때 에러 로그 (Console 확인용)
+         // alert("Error: '보내기' 버튼을 찾을 수 없어요! index.html의 id='send-button'을 확인해주세요!"); // 혹시 몰라 사용자에게도 알림 (Console 확인이 어려우니)
     }
 
 
@@ -72,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
          userInput.focus(); // 페이지 로드 시 입력창에 커서 두기 (DOMContentLoaded 안으로 이동)
          console.log("User input keypress listener attached."); // 콘솔 로그 추가
+         alert('8. User input keypress listener attached!'); // === 이벤트 리스너 연결 alert ===
     } else {
          console.error("Error: 입력창 요소를 찾을 수 없습니다! index.html의 id='user-input' 확인!"); // 입력창 못 찾았을 때 에러 로그
          // alert("Error: 입력창을 찾을 수 없어요! index.html의 id='user-input'을 확인해주세요!"); // 혹시 몰라 사용자에게도 알림
@@ -84,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showHistoryList(); // 기록 목록 화면 보여주는 함수 호출
         });
         console.log("View history button event listener attached."); // 콘솔 로그 추가
+        alert('9. View history button event listener attached!'); // === 이벤트 리스너 연결 alert ===
     } else {
          console.error("Error: '대화 기록 보기' 버튼 요소를 찾을 수 없습니다! index.html의 id='view-history-button' 확인!"); // 버튼 못 찾았을 때 에러 로그
     }
@@ -94,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
             deleteSelectedHistories(); // 선택 삭제 함수 호출
         });
         console.log("Delete selected button event listener attached."); // 콘솔 로그 추가
+        alert('10. Delete selected button event listener attached!'); // === 이벤트 리스너 연결 alert ===
     } else {
         console.error("Error: '선택 삭제' 버튼 요소를 찾을 수 없습니다! index.html의 id='delete-selected-button' 확인!"); // 버튼 못 찾았을 때 에러 로그
     }
@@ -104,14 +110,16 @@ document.addEventListener('DOMContentLoaded', () => {
             showMainChatArea(); // 주 대화 영역으로 전환 함수 호출
         });
         console.log("Back to chat button event listener attached."); // 콘솔 로그 추가
+        alert('11. Back to chat button event listener attached!'); // === 이벤트 리스너 연결 alert ===
     } else {
         console.error("Error: '채팅으로 돌아가기' 버튼 요소를 찾을 수 없습니다! index.html의 id='back-to-chat-button' 확인!"); // 버튼 못 찾았을 때 에러 로그
     }
      console.log("All event listeners attempted to be attached."); // 콘솔 로그 추가
+     alert('12. 모든 이벤트 리스너 연결 시도 완료!'); // === 모든 리스너 연결 시도 완료 alert ===
     // =======================================================
 
     // === DOMContentLoaded에서 초기 설정 시작을 알리는 alert ===
-    alert('DOMContentLoaded 초기 설정 시작!');
+    alert('13. DOMContentLoaded 초기 설정 시작!');
 
 
     // 초기 로드 시 모든 대화 기록 불러오기 및 설정
@@ -124,22 +132,25 @@ document.addEventListener('DOMContentLoaded', () => {
              currentChatId = lastValidChat.id;
              renderChatMessages(currentChatId); // 마지막 대화 내용을 화면에 표시
              console.log(`Loaded last chat history with ID: ${currentChatId}`); // 콘솔 로그 추가
+             alert('14. 마지막 대화 기록 로드 및 렌더링!'); // === 기록 로드 alert ===
         } else {
              // 유효한 기록이 없으면 새 대화 시작
              allChatHistories = []; // 혹시 이상한 기록이 로드됐으면 비우기
              startNewChat();
              console.log("No valid chat history found. Starting a new chat."); // 콘솔 로그 추가
+             alert('14. 유효한 기록 없음. 새 대화 시작!'); // === 새 대화 시작 alert ===
         }
 
     } else {
          // 저장된 기록이 없으면 새 대화 시작
         startNewChat();
         console.log("No chat history found. Starting a new chat."); // 콘솔 로그 추가
+        alert('14. 기록 없음. 새 대화 시작!'); // === 새 대화 시작 alert ===
     }
     // userInput.focus(); // DOMContentLoaded 안에서 userInput을 찾은 후에 호출하도록 위로 이동
 
     // === DOMContentLoaded 실행 완료를 알리는 alert ===
-    alert('DOMContentLoaded 실행 완료! 이제 버튼 눌러봐!');
+    alert('15. DOMContentLoaded 실행 완료! 이제 버튼 눌러봐!');
 });
 
 
