@@ -14,6 +14,12 @@ let deleteSelectedButton = null; // 선택 삭제 버튼 (고정 메뉴)
 let backToChatButton = null; // 채팅으로 돌아가기 버튼 (고정 메뉴)
 let fixedMenu = null; // 고정 메뉴 영역 자체
 
+// === 점 세 개 메뉴 토글 기능을 위한 변수 ===
+// 이 기능은 나중에 추가할 것이므로 일단 관련 요소는 주석 처리 또는 코드에 반영 안 함.
+// 현재는 단순히 "대화 기록 보기", "선택 삭제", "채팅으로 돌아가기" 버튼의 가시성만 전환합니다.
+// let menuToggleButton = null;
+// let menuItemsContainer = null; // 실제 메뉴 항목들을 감싸는 div
+
 
 // 하루키 Render 서버의 API 주소! >>> 이 부분을 꼭 하루키 서버 주소로 바꿔주세요! <<<
 const API_ENDPOINT = 'https://natsumi-mi-shu.onrender.com/natsumi'; // <<-- 여기에 하루키 서버 주소 넣기!
@@ -40,28 +46,29 @@ document.addEventListener('DOMContentLoaded', () => {
     sendButton = document.getElementById('send-button');
     chatBox = document.getElementById('chat-box');
     // viewHistoryButton, deleteSelectedButton, backToChatButton는 이제 fixed-menu 안에 있음
-    viewHistoryButton = document.getElementById('view-history-button');
-    deleteSelectedButton = document.getElementById('delete-selected-button'); // 고정 메뉴 안으로 옮김
-    backToChatButton = document.getElementById('back-to-chat-button'); // 고정 메뉴 안으로 옮김
+    viewHistoryButton = document.getElementById('view-history-button'); // 고정 메뉴 안의 버튼
+    deleteSelectedButton = document.getElementById('delete-selected-button'); // 고정 메뉴 안의 버튼
+    backToChatButton = document.getElementById('back-to-chat-button'); // 고정 메뉴 안의 버튼
 
-    historyArea = document.getElementById('history-area');
-    mainChatArea = document.getElementById('main-chat-area');
-    historyList = document.getElementById('history-list');
+    historyArea = document.getElementById('history-area'); // 기록 목록 영역
+    mainChatArea = document.getElementById('main-chat-area'); // 주 대화 영역
+    historyList = document.getElementById('history-list'); // 기록 목록 ul 태그
     fixedMenu = document.getElementById('fixed-menu'); // 고정 메뉴 영역 자체 찾기!
 
 
     // === 요소들을 찾았는지 확인하는 alert (있다면 뜰 것임) ===
-    if (sendButton) { alert("4. Send button found!"); console.log("Send button found!"); } else { alert("4. Send button NOT found! Check index.html"); console.error("Send button NOT found!"); }
-    if (userInput) { alert("5. User input found!"); console.log("User input found!"); } else { alert("5. User input NOT found! Check index.html"); console.error("User input NOT found!"); }
-    if (chatBox) { alert("6. Chat box found!"); console.log("Chat box found!"); } else { alert("6. Chat box NOT found! Check index.html"); console.error("Chat box NOT found!"); } // chatBox도 확인!
-    if (viewHistoryButton) { alert("7. View history button found!"); console.log("View history button found!"); } else { alert("7. View history button NOT found! Check index.html"); console.error("View history button NOT found!"); }
-    if (deleteSelectedButton) { alert("8. Delete selected button found!"); console.log("Delete selected button found!"); } else { alert("8. Delete selected button NOT found! Check index.html"); console.error("Delete selected button NOT found!"); } // 고정 메뉴 안에서 찾았는지 확인
-    if (backToChatButton) { alert("9. Back to chat button found!"); console.log("Back to chat button found!"); } else { alert("9. Back to chat button NOT found! Check index.html"); console.error("Back to chat button NOT found!"); } // 고정 메뉴 안에서 찾았는지 확인
+    // 이 alert들은 요소가 제대로 찾아졌는지 확인하는 중요한 단서가 됩니다.
+    if (sendButton) { alert("4. Send button found!"); console.log("Send button found!"); } else { alert("4. Send button NOT found! Check index.html"); console.error("Send button NOT found! Check index.html"); }
+    if (userInput) { alert("5. User input found!"); console.log("User input found!"); } else { alert("5. User input NOT found! Check index.html"); console.error("User input NOT found! Check index.html"); }
+    if (chatBox) { alert("6. Chat box found!"); console.log("Chat box found!"); } else { alert("6. Chat box NOT found! Check index.html"); console.error("Chat box NOT found! Check index.html"); }
+    if (viewHistoryButton) { alert("7. View history button found!"); console.log("View history button found!"); } else { alert("7. View history button NOT found! Check index.html"); console.error("View history button NOT found! Check index.html"); }
+    if (deleteSelectedButton) { alert("8. Delete selected button found!"); console.log("Delete selected button found!"); } else { alert("8. Delete selected button NOT found! Check index.html"); console.error("Delete selected button NOT found! Check index.html"); } // 고정 메뉴 안에서 찾았는지 확인
+    if (backToChatButton) { alert("9. Back to chat button found!"); console.log("Back to chat button found!"); } else { alert("9. Back to chat button NOT found! Check index.html"); console.error("Back to chat button NOT found! Check index.html"); } // 고정 메뉴 안에서 찾았는지 확인
 
-    if (historyArea) { alert("10. History area found!"); console.log("History area found!"); } else { alert("10. History area NOT found! Check index.html"); console.error("History area NOT found!"); }
-     if (mainChatArea) { alert("11. Main chat area found!"); console.log("Main chat area found!"); } else { alert("11. Main chat area NOT found! Check index.html"); console.error("Main chat area NOT found!"); }
-     if (historyList) { alert("12. History list found!"); console.log("History list found!"); } else { alert("12. History list NOT found! Check index.html"); console.error("History list NOT found!"); } // historyList도 확인
-     if (fixedMenu) { alert("13. Fixed menu area found!"); console.log("Fixed menu area found!"); } else { alert("13. Fixed menu area NOT found! Check index.html"); console.error("Fixed menu area NOT found!"); } // fixedMenu 영역 자체 확인
+    if (historyArea) { alert("10. History area found!"); console.log("History area found!"); } else { alert("10. History area NOT found! Check index.html"); console.error("History area NOT found! Check index.html"); }
+     if (mainChatArea) { alert("11. Main chat area found!"); console.log("Main chat area found!"); } else { alert("11. Main chat area NOT found! Check index.html"); console.error("Main chat area NOT found! Check index.html"); }
+     if (historyList) { alert("12. History list found!"); console.log("History list found!"); } else { alert("12. History list NOT found! Check index.html"); console.error("History list NOT found! Check index.html"); }
+     if (fixedMenu) { alert("13. Fixed menu area found!"); console.log("Fixed menu area found!"); } else { alert("13. Fixed menu area NOT found! Check index.html"); console.error("Fixed menu area NOT found! Check index.html"); }
 
 
     // === 버튼 클릭 이벤트 리스너들을 연결하는 코드 ===
@@ -74,8 +81,8 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("Send button event listener attached."); // 콘솔 로그 추가
         alert('14. Send button event listener attached!'); // === 이벤트 리스너 연결 alert ===
     } else {
-         console.error("Error: '보내기' 버튼 요소를 찾을 수 없습니다! index.html의 id='send-button' 확인!"); // 버튼 못 찾았을 때 에러 로그 (Console 확인용)
-         // alert("Error: '보내기' 버튼을 찾을 수 없어요! index.html의 id='send-button'을 확인해주세요!"); // 혹시 몰라 사용자에게도 알림 (Console 확인이 어려우니)
+         console.error("Error: '보내기' 버튼 요소를 찾을 수 없습니다! index.html의 id='send-button' 확인!"); // 버튼 못 찾았을 때 에러 로그
+         // alert("Error: '보내기' 버튼을 찾을 수 없어요! index.html의 id='send-button'을 확인해주세요!"); // 사용자 알림은 일단 주석 처리
     }
 
 
@@ -87,16 +94,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 await processUserInput(); // 입력 처리 함수 호출
             }
         });
-         // userInput.focus(); // 페이지 로드 시 입력창에 커서 두기 (DOMContentLoaded 안으로 이동) - 아래 초기 설정 완료 후 호출
          console.log("User input keypress listener attached."); // 콘솔 로그 추가
          alert('15. User input keypress listener attached!'); // === 이벤트 리스너 연결 alert ===
     } else {
          console.error("Error: 입력창 요소를 찾을 수 없습니다! index.html의 id='user-input' 확인!"); // 입력창 못 찾았을 때 에러 로그
-         // alert("Error: 입력창을 찾을 수 없어요! index.html의 id='user-input'을 확인해주세요!"); // 혹시 몰라 사용자에게도 알림
+         // alert("Error: 입력창을 찾을 수 없어요! index.html의 id='user-input'을 확인해주세요!"); // 사용자 알림은 일단 주석 처리
     }
 
 
-    // viewHistoryButton 요소가 제대로 찾아졌는지 확인 후 이벤트 리스너 연결 (고정 메뉴로 이동)
+    // viewHistoryButton 요소가 제대로 찾아졌는지 확인 후 이벤트 리스너 연결 (고정 메뉴)
     if (viewHistoryButton) {
         viewHistoryButton.addEventListener('click', () => {
             showHistoryList(); // 기록 목록 화면 보여주는 함수 호출
@@ -107,19 +113,19 @@ document.addEventListener('DOMContentLoaded', () => {
          console.error("Error: '대화 기록 보기' 버튼 요소를 찾을 수 없습니다! index.html의 id='view-history-button' 확인!"); // 버튼 못 찾았을 때 에러 로그
     }
 
-    // deleteSelectedButton 요소가 제대로 찾아졌는지 확인 후 이벤트 리스너 연결
-    if (deleteSelectedButton) {
+    // deleteSelectedButton 요소가 제대로 찾아졌는지 확인 후 이벤트 리스너 연결 (고정 메뉴)
+    if (deleteSelectedButton && historyList) { // 기록 목록 요소도 필요하므로 확인
         deleteSelectedButton.addEventListener('click', () => {
             deleteSelectedHistories(); // 선택 삭제 함수 호출
         });
         console.log("Delete selected button event listener attached."); // 콘솔 로그 추가
         alert('17. Delete selected button event listener attached!'); // === 이벤트 리스너 연결 alert ===
     } else {
-        console.error("Error: '선택 삭제' 버튼 요소를 찾을 수 없습니다! index.html의 id='delete-selected-button' 확인!"); // 버튼 못 찾았을 때 에러 로그
+        console.error("Error: '선택 삭제' 버튼 요소 또는 historyList를 찾을 수 없습니다! index.html 확인!"); // 버튼 못 찾았을 때 에러 로그
     }
 
-    // backToChatButton 요소가 제대로 찾아졌는지 확인 후 이벤트 리스너 연결
-    if (backToChatButton) { // 채팅으로 돌아가기 버튼 찾았는지 확인
+    // backToChatButton 요소가 제대로 찾아졌는지 확인 후 이벤트 리스너 연결 (고정 메뉴)
+    if (backToChatButton && mainChatArea && historyArea && userInput) { // 관련 요소들 확인
         backToChatButton.addEventListener('click', () => {
             // Logic to return to chat is inside the function itself
             showMainChatArea(); // 주 대화 영역으로 전환 함수 호출
@@ -127,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("Back to chat button event listener attached."); // 콘솔 로그 추가
         alert('18. Back to chat button event listener attached!'); // === 이벤트 리스너 연결 alert ===
     } else {
-        console.error("Error: '채팅으로 돌아가기' 버튼 요소를 찾을 수 없습니다! index.html의 id='back-to-chat-button' 확인!"); // 버튼 못 찾았을 때 에러 로그
+        console.error("Error: '채팅으로 돌아가기' 버튼 요소 또는 관련 영역 요소를 찾을 수 없습니다! index.html 확인!"); // 버튼 못 찾았을 때 에러 로그
     }
      console.log("All event listeners attempted to be attached."); // 콘솔 로그 추가
      alert('19. 모든 이벤트 리스너 연결 시도 완료!'); // === 모든 리스너 연결 시도 완료 alert ===
@@ -164,15 +170,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // === 초기 버튼 가시성 설정 (메인 채팅 화면이니까 기록 관련 버튼은 숨김) ===
-     // 요소들이 모두 찾아진 후에 실행되어야 함
+     // 메뉴 관련 요소들이 모두 찾아진 후에 실행되어야 함
      if (viewHistoryButton && deleteSelectedButton && backToChatButton) {
-        viewHistoryButton.classList.remove('hidden'); // 기록 보기 버튼은 보이고
-        deleteSelectedButton.classList.add('hidden'); // 선택 삭제 버튼 숨김
-        backToChatButton.classList.add('hidden'); // 채팅으로 돌아가기 버튼 숨김
-         alert('22. 초기 버튼 가시성 설정 완료!'); // === 초기 가시성 설정 alert ===
+        viewHistoryButton.classList.remove('hidden'); // 기록 보기 버튼은 보이고 (채팅 화면용)
+        deleteSelectedButton.classList.add('hidden'); // 선택 삭제 버튼 숨김 (기록 화면용)
+        backToChatButton.classList.add('hidden'); // 채팅으로 돌아가기 버튼 숨김 (기록 화면용)
+         alert('22. 초기 메뉴 버튼 가시성 설정 완료!'); // === 초기 가시성 설정 alert ===
      } else {
           console.error("Error: Menu buttons not found for initial visibility setting!"); // 요소 못 찾았을 때 에러
-          alert('22. 초기 버튼 가시성 설정 실패! 요소 누락!'); // === 초기 가시성 설정 실패 alert ===
+          alert('22. 초기 메뉴 버튼 가시성 설정 실패! 요소 누락!'); // === 초기 가시성 설정 실패 alert ===
      }
 
 
@@ -499,7 +505,7 @@ function showHistoryList() {
     viewHistoryButton.classList.add('hidden'); // 기록 보기 버튼 숨김
     deleteSelectedButton.classList.remove('hidden'); // 선택 삭제 버튼 보임
     backToChatButton.classList.remove('hidden'); // 채팅으로 돌아가기 버튼 보임
-    // console.log("Menu buttons toggled for history view."); // 콘솔 로그 추가
+    console.log("Menu buttons toggled for history view."); // 콘솔 로그 추가
 
 
     // 기록 목록 ul 비우기
@@ -594,7 +600,7 @@ function showMainChatArea() {
     viewHistoryButton.classList.remove('hidden'); // 기록 보기 버튼 보임
     deleteSelectedButton.classList.add('hidden'); // 선택 삭제 버튼 숨김
     backToChatButton.classList.add('hidden'); // 채팅으로 돌아가기 버튼 숨김
-    // console.log("Menu buttons toggled for main chat view."); // 콘솔 로그 추가
+    console.log("Menu buttons toggled for main chat view."); // 콘솔 로그 추가
 }
 
 
