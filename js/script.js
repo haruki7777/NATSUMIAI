@@ -77,7 +77,8 @@ async function processUserInput() {
         if (!response.ok) {
             // 서버에서 에러 메시지가 있다면 가져오기
             const errorText = await response.text();
-            throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+            // === 서버 오류 메시지 츤데레 말투로 변경! ===
+            throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}. 엣, 서버가 말을 안 듣네. 답답하구만!`);
         }
 
         // 서버에서 온 응답 데이터를 JSON 형식으로 받기
@@ -91,8 +92,8 @@ async function processUserInput() {
             addMessageToChat('ai', aiResponse);
             saveChatHistory(); // 메시지 추가 후 기록 저장
         } else {
-            // 서버 응답에 answer 키가 없거나 비어있을 때
-             addMessageToChat('ai', '죄송해요, 답변 형식에 문제가 있어요.');
+            // === 서버 응답 형식 오류 메시지 츤데레 말투로 변경! ===
+             addMessageToChat('ai', '뭐야 이 이상한 답장은?! 제대로 된 걸 보내라고!');
              saveChatHistory(); // 에러 메시지도 기록에 저장
         }
 
@@ -105,7 +106,8 @@ async function processUserInput() {
         //    chatBox.removeChild(loadingIndicator);
         // }
 
-        addMessageToChat('ai', '죄송해요, 답변을 가져오는데 문제가 발생했어요.');
+        // === 에러 발생 시 최종 출력 메시지 츤데레 말투로 변경! ===
+        addMessageToChat('ai', '죄송해요, 답변을 가져오는데 문제가 발생했어요. (Console 확인)'); // 콘솔 확인하라는 메시지도 넣어줬어!
         saveChatHistory(); // 에러 메시지도 기록에 저장
     } finally {
         // 모든 처리가 끝나면 입력창과 버튼 다시 활성화
@@ -124,7 +126,8 @@ function loadChatHistory() {
             const messages = JSON.parse(history);
             // 기존 초기 메시지는 제거 (선택 사항: HTML에 처음부터 넣어둔 메시지)
             const initialMessage = chatBox.querySelector('.ai-message');
-             if (initialMessage && initialMessage.textContent.includes('안녕하세요!')) { // 초기 메시지 내용으로 구분
+             // 초기 메시지 내용으로 구분해서 제거
+             if (initialMessage && initialMessage.textContent.includes('뭐야 할말이라도 있는거야?')) {
                 initialMessage.remove();
             }
 
@@ -156,9 +159,30 @@ function saveChatHistory() {
         let sender = 'ai'; // 기본적으로 AI 메시지로 가정
         if (p.classList.contains('user-message')) {
             sender = 'user'; // 사용자 메시지면 sender를 'user'로
+        } else if (p.classList.contains('ai-message')) { // AI 메시지 확인
+             sender = 'ai';
+        } else {
+             // 사용자나 AI 메시지 클래스가 없는 p 태그는 저장 안 함 (예: 초기 메시지 삭제 전 등)
+             return;
         }
+
+
         // 메시지 내용을 가져오기 (텍스트만)
         const text = p.textContent; // innerText도 가능
+
+        // 츤데레 고정 메시지는 저장하지 않음 (선택 사항) - 그래야 새로 로드할 때 중복 안 됨
+        const fixedTsundereMessages = [
+            '뭐야 할말이라도 있는거야?',
+            '엣, 서버가 말을 안 듣네. 답답하구만!',
+            '뭐야 이 이상한 답장은?! 제대로 된 걸 보내라고!',
+            '죄송해요, 답변을 가져오는데 문제가 발생했어요. (Console 확인)',
+            '흥, 깨끗하게 시작하는 것도 나쁘지 않겠지. 자, 말 걸어 봐.',
+            '안녕하세요! 새로운 대화를 시작해볼까요?' // 혹시 이전 버전 메시지가 남아있을까봐
+        ];
+        if (fixedTsundereMessages.includes(text.trim())) { // 앞뒤 공백 제거하고 비교
+             return; // 고정 메시지면 저장 안 함
+        }
+
 
         messages.push({ sender: sender, text: text });
     });
@@ -199,10 +223,10 @@ clearHistoryButton.addEventListener('click', () => {
         // 대화창 내용 모두 비우기
         chatBox.innerHTML = '';
 
-        // 삭제 후 초기 메시지 다시 표시 (선택 사항)
+        // === 삭제 후 초기 메시지 츤데레 말투로 다시 표시! ===
         const initialMessage = document.createElement('p');
         initialMessage.classList.add('ai-message');
-        initialMessage.textContent = '안녕하세요! 새로운 대화를 시작해볼까요?';
+        initialMessage.textContent = '흥, 깨끗하게 시작하는 것도 나쁘지 않겠지. 자, 말 걸어 봐.';
         chatBox.appendChild(initialMessage);
 
         // 삭제 완료 알림 (선택 사항)
@@ -217,9 +241,8 @@ clearHistoryButton.addEventListener('click', () => {
 // 초기 메시지에 클래스 추가 (HTML에서 직접 클래스를 붙여도 돼요!)
 // 페이지 로드 후 초기 메시지가 이미 있다면 AI 메시지 클래스 추가
 document.addEventListener('DOMContentLoaded', () => {
-     const initialMessageElement = chatBox.querySelector('p');
+     const initialMessageElement = chatBox.querySelector('.ai-message');
     // 첫 번째 p 태그가 이미 있고, user-message 클래스가 없으면 AI 메시지로 간주
-    if (initialMessageElement && !initialMessageElement.classList.contains('user-message') && !initialMessageElement.classList.contains('ai-message')) {
-        initialMessageElement.classList.add('ai-message');
-    }
+    // HTML에 이미 ai-message 클래스가 붙어있을 테니 별도 처리 필요 없을듯!
+    // loadChatHistory에서 초기 메시지 내용으로 구분해서 제거하도록 수정했음.
 });
