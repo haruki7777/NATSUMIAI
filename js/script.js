@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sendButton.addEventListener('click', async () => {
             await processUserInput(); // 입력 처리 함수 호출
         });
-        // console.log("Send button found and event listener attached."); // 콘솔 로그 추가 (PC에서 Console 확인 시 유용)
+        console.log("Send button found and event listener attached."); // 콘솔 로그 추가 (PC에서 Console 확인 시 유용)
     } else {
          console.error("Error: '보내기' 버튼 요소를 찾을 수 없습니다! index.html의 id='send-button' 확인!"); // 버튼 못 찾았을 때 에러 로그 (Console 확인용)
          // alert("Error: '보내기' 버튼을 찾을 수 없어요! index.html의 id='send-button'을 확인해주세요!"); // 혹시 몰라 사용자에게도 알림 (Console 확인이 어려우니)
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
          userInput.focus(); // 페이지 로드 시 입력창에 커서 두기 (DOMContentLoaded 안으로 이동)
-         // console.log("User input found and keypress listener attached."); // 콘솔 로그 추가
+         console.log("User input found and keypress listener attached."); // 콘솔 로그 추가
     } else {
          console.error("Error: 입력창 요소를 찾을 수 없습니다! index.html의 id='user-input' 확인!"); // 입력창 못 찾았을 때 에러 로그
          // alert("Error: 입력창을 찾을 수 없어요! index.html의 id='user-input'을 확인해주세요!"); // 혹시 몰라 사용자에게도 알림
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
         viewHistoryButton.addEventListener('click', () => {
             showHistoryList(); // 기록 목록 화면 보여주는 함수 호출
         });
-        // console.log("View history button found and event listener attached."); // 콘솔 로그 추가
+        console.log("View history button found and event listener attached."); // 콘솔 로그 추가
     } else {
          console.error("Error: '대화 기록 보기' 버튼 요소를 찾을 수 없습니다! index.html의 id='view-history-button' 확인!"); // 버튼 못 찾았을 때 에러 로그
     }
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
         deleteSelectedButton.addEventListener('click', () => {
             deleteSelectedHistories(); // 선택 삭제 함수 호출
         });
-        // console.log("Delete selected button found and event listener attached."); // 콘솔 로그 추가
+        console.log("Delete selected button found and event listener attached."); // 콘솔 로그 추가
     } else {
         console.error("Error: '선택 삭제' 버튼 요소를 찾을 수 없습니다! index.html의 id='delete-selected-button' 확인!"); // 버튼 못 찾았을 때 에러 로그
     }
@@ -91,11 +91,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // Logic to return to chat is inside the function itself
             showMainChatArea(); // 주 대화 영역으로 전환 함수 호출
         });
-        // console.log("Back to chat button found and event listener attached."); // 콘솔 로그 추가
+        console.log("Back to chat button found and event listener attached."); // 콘솔 로그 추가
     } else {
         console.error("Error: '채팅으로 돌아가기' 버튼 요소를 찾을 수 없습니다! index.html의 id='back-to-chat-button' 확인!"); // 버튼 못 찾았을 때 에러 로그
     }
-     // console.log("All event listeners attempted to be attached."); // 콘솔 로그 추가
+     console.log("All event listeners attempted to be attached."); // 콘솔 로그 추가
     // =======================================================
 
 
@@ -108,18 +108,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (lastValidChat) {
              currentChatId = lastValidChat.id;
              renderChatMessages(currentChatId); // 마지막 대화 내용을 화면에 표시
-             // console.log(`Loaded last chat history with ID: ${currentChatId}`); // 콘솔 로그 추가
+             console.log(`Loaded last chat history with ID: ${currentChatId}`); // 콘솔 로그 추가
         } else {
              // 유효한 기록이 없으면 새 대화 시작
              allChatHistories = []; // 혹시 이상한 기록이 로드됐으면 비우기
              startNewChat();
-             // console.log("No valid chat history found. Starting a new chat."); // 콘솔 로그 추가
+             console.log("No valid chat history found. Starting a new chat."); // 콘솔 로그 추가
         }
 
     } else {
          // 저장된 기록이 없으면 새 대화 시작
         startNewChat();
-        // console.log("No chat history found. Starting a new chat."); // 콘솔 로그 추가
+        console.log("No chat history found. Starting a new chat."); // 콘솔 로그 추가
     }
     // userInput.focus(); // DOMContentLoaded 안에서 userInput을 찾은 후에 호출하도록 위로 이동
 });
@@ -142,7 +142,7 @@ function startNewChat() {
          initialMessage.textContent = '뭐야 할말이라도 있는거야?';
          chatBox.appendChild(initialMessage);
          chatBox.scrollTop = chatBox.scrollHeight; // 스크롤 맨 아래로
-         // console.log("New chat started with initial message."); // 콘솔 로그 추가
+         console.log("New chat started with initial message."); // 콘솔 로그 추가
      } else {
          console.error("Error: Chat box element not found when starting new chat!");
      }
@@ -253,7 +253,7 @@ async function processUserInput() {
         sendButton.disabled = false;
         userInput.focus(); // 입력창에 커서 두기
         saveAllHistories(); // 모든 변경사항 저장
-        // console.log("Process input finished. Elements enabled."); // 콘솔 로그 추가
+        console.log("Process input finished. Elements enabled."); // 콘솔 로그 추가
     }
 }
 
@@ -264,7 +264,7 @@ function addMessageToCurrentChatHistory(sender, text) {
     if (currentChat) {
         // 메시지 객체를 현재 대화의 messages 배열에 추가
         currentChat.messages.push({ sender: sender, text: text });
-        // console.log(`Message added to history ${currentChatId}: ${text}`); // 콘솔 로그 추가
+        console.log(`Message added to history ${currentChatId}: ${text}`); // 콘솔 로그 추가
     } else {
          // 만약 currentChatId가 유효하지 않다면 새 대화 시작 (오류 방지)
          console.warn("Current chat ID not found. Starting a new chat.");
@@ -273,7 +273,7 @@ function addMessageToCurrentChatHistory(sender, text) {
          const newChat = allChatHistories.find(chat => chat.id === currentChatId);
          if(newChat) {
               newChat.messages.push({ sender: sender, text: text });
-               // console.log(`Message added to newly started chat ${currentChatId}: ${text}`); // 콘솔 로그 추가
+               console.log(`Message added to newly started chat ${currentChatId}: ${text}`); // 콘솔 로그 추가
          } else {
               console.error("Error: Failed to start new chat and add message to history."); // 심각한 오류
          }
@@ -304,7 +304,7 @@ function addMessageToChat(sender, message) {
 
     // 스크롤을 항상 맨 아래로 내려서 최신 메시지가 보이게
     chatBox.scrollTop = chatBox.scrollHeight;
-    // console.log(`Message added to chat box: ${message}`); // 콘솔 로그 추가
+    console.log(`Message added to chat box: ${message}`); // 콘솔 로그 추가
 }
 
 
@@ -324,7 +324,7 @@ function loadAllHistories() {
             allChatHistories = allChatHistories.filter(chat =>
                  chat && typeof chat.id === 'string' && Array.isArray(chat.messages)
             );
-             // console.log(`Loaded ${allChatHistories.length} chat histories.`); // 콘솔 로그 추가
+             console.log(`Loaded ${allChatHistories.length} chat histories.`); // 콘솔 로그 추가
 
         } catch (e) {
             console.error("Failed to parse chat history list from localStorage:", e);
@@ -335,7 +335,7 @@ function loadAllHistories() {
         }
     } else {
         allChatHistories = []; // 저장된 기록이 없으면 빈 배열로 시작
-        // console.log("No history found in localStorage. Starting empty."); // 콘솔 로그 추가
+        console.log("No history found in localStorage. Starting empty."); // 콘솔 로그 추가
     }
 }
 
@@ -344,7 +344,7 @@ function saveAllHistories() {
     try {
         // allChatHistories 배열을 JSON 문자열로 변환하여 localStorage에 저장
         localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(allChatHistories));
-        // console.log("Chat histories saved to localStorage."); // 콘솔 로그 추가
+        console.log("Chat histories saved to localStorage."); // 콘솔 로그 추가
     } catch (e) {
          console.error("Failed to save chat history list to localStorage:", e);
          // localStorage 저장 공간 부족 등의 에러 처리 필요 시 추가
@@ -372,14 +372,14 @@ function renderChatMessages(chatId) {
             // addMessageToChat 함수를 사용하여 메시지 추가 (기록 저장은 addMessageToCurrentChatHistory에서 이미 함)
             addMessageToChat(msg.sender, msg.text);
         });
-        // console.log(`Rendered chat messages for ID: ${chatId}`); // 콘솔 로그 추가
+        console.log(`Rendered chat messages for ID: ${chatId}`); // 콘솔 로그 추가
     } else {
          // 해당 대화가 비어있거나 찾을 수 없으면 초기 메시지 표시
         const initialMessage = document.createElement('p');
         initialMessage.classList.add('ai-message');
         initialMessage.textContent = '뭐야 할말이라도 있는거야?';
         chatBox.appendChild(initialMessage);
-        // console.log(`Rendered initial message for chat ID: ${chatId} (chat not found or empty).`); // 콘솔 로그 추가
+        console.log(`Rendered initial message for chat ID: ${chatId} (chat not found or empty).`); // 콘솔 로그 추가
     }
      // 스크롤을 항상 맨 아래로 내려서 최신 메시지가 보이게
     chatBox.scrollTop = chatBox.scrollHeight;
@@ -397,7 +397,7 @@ function showHistoryList() {
     // 주 대화 영역 숨기고 기록 목록 영역 보여주기
     mainChatArea.classList.add('hidden');
     historyArea.classList.remove('hidden');
-    // console.log("Switched to history list view."); // 콘솔 로그 추가
+    console.log("Switched to history list view."); // 콘솔 로그 추가
 
 
     // 기록 목록 ul 비우기
@@ -462,13 +462,13 @@ function showHistoryList() {
             // 목록에 추가
             historyList.appendChild(listItem);
         });
-        // console.log(`Rendered ${allChatHistories.length} history items.`); // 콘솔 로그 추가
+        console.log(`Rendered ${allChatHistories.length} history items.`); // 콘솔 로그 추가
     } else {
         // 기록이 없을 때 메시지 표시
         const noHistoryItem = document.createElement('li');
         noHistoryItem.textContent = '대화 기록이 없습니다.';
         historyList.appendChild(noHistoryItem);
-        // console.log("No history items to render."); // 콘솔 로그 추가
+        console.log("No history items to render."); // 콘솔 로그 추가
     }
      // 목록 화면 보여준 후 스크롤 맨 위로
      historyList.scrollTop = 0;
@@ -486,7 +486,7 @@ function showMainChatArea() {
     historyArea.classList.add('hidden');
     mainChatArea.classList.remove('hidden');
      userInput.focus(); // 입력창에 커서 두기
-     // console.log("Switched to main chat area view."); // 콘솔 로그 추가
+     console.log("Switched to main chat area view."); // 콘솔 로그 추가
 }
 
 
@@ -525,13 +525,13 @@ function deleteSelectedHistories() {
         const deletedCount = initialCount - allChatHistories.length;
 
         saveAllHistories(); // 변경사항 저장
-        // console.log(`Deleted ${deletedCount} chat histories.`); // 콘솔 로그 추가
+        console.log(`Deleted ${deletedCount} chat histories.`); // 콘솔 로그 추가
 
         // 현재 보고 있던 대화가 삭제되었으면 currentChatId를 null로 설정
         if (currentChatId && idsToDelete.includes(currentChatId)) { // currentChatId가 null이 아닐 때만 검사
              currentChatId = null; // 현재 대화 ID 초기화
              // startNewChat() 함수는 showMainChatArea로 돌아갈 때 호출되거나 기록이 없을 때 호출됨.
-             // console.log("Current chat history was deleted. currentChatId set to null."); // 콘솔 로그 추가
+             console.log("Current chat history was deleted. currentChatId set to null."); // 콘솔 로그 추가
         }
 
         // 기록 목록 화면 새로고침
