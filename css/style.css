@@ -3,39 +3,38 @@ body {
     font-family: 'Noto Sans KR', sans-serif; /* 한국어 지원 글꼴 */
     display: flex;
     justify-content: center; /* 가로 가운데 정렬 */
-    align-items: center; /* 세로 가운데 정렬 */
+    align-items: flex-start; /* 상단에 정렬 (전체 컨테이너를 중앙에) */
     min-height: 100vh; /* 화면 전체 높이 사용 */
     margin: 0;
-    padding: 20px;
+    padding: 0; /* 바디 자체 패딩 제거 */
     box-sizing: border-box; /* 패딩 포함 크기 계산 */
     color: #333;
 
-    /* === 하루키! 여기에 원하는 배경을 넣어줘! === */
+    /* === 하루키! 여기에 원하는 배경 이미지를 넣어줘! === */
+    /* 하루키가 원하는 이미지는 'images/BACKGROUND.jpeg' 이거 맞지? 👇 */
+     background-image: url('images/BACKGROUND.jpeg'); /* 이미지 파일 경로를 정확하게! */
+     background-size: cover; /* 화면 전체를 꽉 채우도록 크기 조절 */
+     background-position: center; /* 이미지를 가운데 정렬 */
+     background-repeat: no-repeat; /* 이미지 반복 안 함 */
+     background-attachment: fixed; /* 스크롤 해도 배경 이미지는 고정 */
     /* 단색 배경을 원하면 아래 주석을 풀고 색깔 코드를 바꿔줘! */
-    /* background-color: #f0f0f0; /* 조금 밝은 회색 배경 (OpenAI 느낌) */
-    /* background-color: lightblue; */ /* 예시: 하늘색 */
-    /* background-color: #abcdef; */ /* 예시: 다른 색깔 */
-
-    /* 배경 이미지를 원하면 아래 주석을 풀고 'your-background-image.jpg'를 이미지 파일 이름으로 바꿔줘! */
-    /* 이미지 파일은 index.html과 같은 폴더에 있어야 해! */
-     background-image: url('images/BACKGROUND.jpeg'); */
-     background-size: cover; */ /* 화면 전체를 꽉 채우도록 크기 조절 */
-     background-position: center; */ /* 이미지를 가운데 정렬 */
-     background-repeat: no-repeat; */ /* 이미지 반복 안 함 */
-     background-attachment: fixed; */ /* 스크롤 해도 배경 이미지는 고정 */
+    /* background-color: #f0f0f0; */ /* 조금 밝은 회색 배경 */
     /* =========================================== */
 }
 
 #app-container {
     width: 100%;
     max-width: 800px; /* 최대 너비 좀 더 넓게 */
-    background-color: #fff; /* 앱 컨테이너 배경은 하얗게 */
+    background-color: #fff; /* 앱 컨테이너 배경은 하얗게 (배경 이미지가 비치지 않게) */
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08); /* 그림자 연하게 */
     padding: 30px; /* 패딩 늘림 */
+    margin-top: 50px; /* 상단 여백 추가해서 중앙에 오도록 */
+    margin-bottom: 50px; /* 하단 여백 추가 */
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow: hidden; /* 모서리 둥글게 한 부분 넘어가는 내용 숨김 */
 }
 
 h1 {
@@ -118,9 +117,11 @@ h1 {
 
 .ai-message {
     align-self: flex-start; /* AI 메시지는 왼쪽에 */
-    background-color: #1a73e8; /* AI 메시지 배경 파란색 (OpenAI 스타일) */
-    color: white; /* AI 메시지 글자색 하얗게 */
+    background-color: #f7f7f8; /* AI 메시지 배경 아주 연한 회색 (OpenAI 느낌) */
+    color: #333; /* AI 메시지 글자색 */
     border-radius: 10px 10px 10px 2px; /* 왼쪽 아래 모서리만 덜 둥글게 */
+    border: 1px solid #e0e0e0; /* AI 메시지에 얇은 테두리 추가 */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* 그림자 추가 */
 }
 
 /* 메시지 이름 (나, AI 비서) 숨기기 */
@@ -260,6 +261,8 @@ h1 {
 @media (max-width: 600px) {
     #app-container {
         padding: 15px;
+        margin-top: 20px;
+        margin-bottom: 20px;
     }
 
     h1 {
