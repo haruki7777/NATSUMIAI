@@ -1,46 +1,34 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>하루키 AI 비서</title>
-    <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>하루키의 멋진 AI 비서</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div id="app-container">
-        <header>
-            <h1>하루키의 멋진 AI 비서</h1>
-        </header>
+  <div class="container">
+    <header>
+      <h1>하루키의 멋진 AI 비서</h1>
+      <button id="newChatBtn" title="새 대화 시작">새 대화 +</button>
+    </header>
 
-        <main>
-            <section id="main-chat-area">
-                <div id="chat-box">
-                    <p class="ai-message">어서 말해봐, 뭐 궁금한 거라도 있냐?</p>
-                </div>
-                <div id="input-area">
-                    <input type="text" id="user-input" placeholder="말해봐, 하루키!" autocomplete="off" />
-                    <button id="send-button">보내기</button>
-                </div>
-            </section>
-
-            <section id="history-area" class="hidden">
-                <h2>대화 기록</h2>
-                <ul id="history-list"></ul>
-                <div id="history-controls">
-                    <button id="delete-selected-button">선택 삭제</button>
-                    <button id="back-to-chat-button">채팅으로 돌아가기</button>
-                </div>
-            </section>
-
-            <button id="view-history-button" class="small-btn">기록 보기</button>
-            <button id="new-chat-button" class="small-btn">새 대화 시작</button>
-        </main>
-
-        <footer>
-            <p>© 2025 하루키. AI 비서는 츤데레 감성으로 작동합니다.</p>
-        </footer>
+    <div class="menu-container">
+      <button id="menuBtn" aria-label="메뉴 열기">⋮</button>
+      <ul id="menuList" class="hidden">
+        <li><strong>대화 기록</strong></li>
+        <div id="historyList"></div>
+        <li><button id="clearHistoryBtn">기록 전체 삭제</button></li>
+        <li><button id="backToChatBtn">채팅으로 돌아가기</button></li>
+        <li><button id="toggleMenuBtn">메뉴 닫기</button></li>
+      </ul>
     </div>
 
-    <script src="script.js"></script>
+    <textarea id="userInput" placeholder="질문을 입력해봐~"></textarea>
+    <button id="sendBtn">보내기</button>
+    <div id="response"></div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
