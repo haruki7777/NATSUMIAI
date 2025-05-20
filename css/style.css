@@ -1,318 +1,116 @@
-/* Google Fonts - Noto Sans KR (HTML에서 링크했는지 확인!) */
-body {
-    font-family: 'Noto Sans KR', sans-serif; /* 한국어 지원 글꼴 */
-    display: flex;
-    justify-content: center; /* 가로 가운데 정렬 */
-    align-items: flex-start; /* 상단에 정렬 (전체 컨테이너를 중앙에) */
-    min-height: 100vh; /* 화면 전체 높이 사용 */
+/* 전체 레이아웃 설정 */
+html, body {
     margin: 0;
-    padding: 0; /* 바디 자체 패딩 제거 */
-    box-sizing: border-box; /* 패딩 포함 크기 계산 */
-    color: #333;
-
-    /* === 하루키! 여기에 원하는 배경 이미지를 넣어줘! === */
-    /* 하루키가 원하는 이미지는 'images/BACKGROUND.jpeg' 이거 맞지? 👇 */
-     background-image: url('images/BACKGROUND.jpeg'); /* 이미지 파일 경로를 정확하게! */
-     background-size: cover; /* 화면 전체를 꽉 채우도록 크기 조절 */
-     background-position: center; /* 이미지를 가운데 정렬 */
-     background-repeat: no-repeat; /* 이미지 반복 안 함 */
-     background-attachment: fixed; /* 스크롤 해도 배경 이미지는 고정 */
-    /* 단색 배경을 원하면 아래 주석을 풀고 색깔 코드를 바꿔줘! */
-    /* background-color: #f0f0f0; */ /* 조금 밝은 회색 배경 */
-    /* =========================================== */
-}
-
-#app-container {
-    width: 100%;
-    max-width: 800px; /* 최대 너비 좀 더 넓게 */
-    background-color: #fff; /* 앱 컨테이너 배경은 하얗게 (배경 이미지가 비치지 않게) */
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08); /* 그림자 연하게 */
-    padding: 30px; /* 패딩 늘림 */
-    margin-top: 50px; /* 상단 여백 추가해서 중앙에 오도록 */
-    margin-bottom: 50px; /* 하단 여백 추가 */
+    padding: 0;
+    height: 100%;
+    font-family: 'Arial', sans-serif;
+    background: url('https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1470&q=80') no-repeat center center fixed;
+    background-size: cover;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    overflow: hidden; /* 모서리 둥글게 한 부분 넘어가는 내용 숨김 */
+    overflow-x: hidden;
 }
 
-h1 {
-    color: #000; /* 제목 색깔 검정 */
-    margin-top: 0;
-    margin-bottom: 30px;
-    font-size: 2em; /* 제목 크기 키움 */
-    font-weight: 700; /* 제목 굵게 */
-    text-align: center;
-}
-
-/* 주 대화 영역과 기록 영역 전환 */
-#main-chat-area {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    /* 기본적으로 보이게 설정. .hidden 클래스가 붙으면 숨김 */
-}
-
-#history-area {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-     /* 기본적으로 숨김. .hidden 클래스가 없으면 보임 */
-}
-
-.hidden {
-    display: none; /* 요소를 숨기는 클래스 */
-}
-
-
+/* 채팅 컨테이너 박스 */
 #chat-container {
-    width: 100%;
+    width: 90%;
+    max-width: 600px;
+    height: 90vh;
+    background-color: rgba(255, 255, 255, 0.95); /* 약간 투명 */
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
+/* 채팅 박스 */
 #chat-box {
-    height: 450px; /* 대화창 높이 늘림 */
+    flex: 1;
+    padding: 16px;
     overflow-y: auto;
-    /* border: 1px solid #e0e0e0; */ /* 테두리 제거 */
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 15px;
     display: flex;
     flex-direction: column;
-    gap: 12px; /* 메시지 버블 간 간격 */
-    background-color: #fff; /* 대화창 배경도 하얗게 */
+    gap: 8px;
+    background-color: #eaf2f8;
 }
 
-/* 스크롤바 스타일 (선택 사항) */
-#chat-box::-webkit-scrollbar {
-    width: 8px;
-}
-#chat-box::-webkit-scrollbar-thumb {
-    background-color: #ccc;
-    border-radius: 4px;
-}
-#chat-box::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-
-#chat-box p {
-    margin: 0; /* 기본 마진 제거 */
-    padding: 12px 16px; /* 패딩 늘림 */
-    border-radius: 10px; /* 버블 모양 둥글기 줄임 */
-    max-width: 80%; /* 버블 최대 너비 */
+.message {
+    padding: 10px 14px;
+    border-radius: 10px;
+    max-width: 80%;
     word-wrap: break-word;
-    line-height: 1.6; /* 줄 간격 */
-    position: relative;
+    animation: fadeIn 0.3s ease;
 }
 
-.user-message {
-    align-self: flex-end; /* 사용자 메시지는 오른쪽에 */
-    background-color: #e9e9eb; /* 사용자 메시지 배경 연한 회색 */
-    color: #333; /* 사용자 메시지 글자색 */
-    border-radius: 10px 10px 2px 10px; /* 오른쪽 아래 모서리만 덜 둥글게 */
+.message.user {
+    background-color: #d1e7dd;
+    align-self: flex-end;
 }
 
-.ai-message {
-    align-self: flex-start; /* AI 메시지는 왼쪽에 */
-    background-color: #f7f7f8; /* AI 메시지 배경 아주 연한 회색 (OpenAI 느낌) */
-    color: #333; /* AI 메시지 글자색 */
-    border-radius: 10px 10px 10px 2px; /* 왼쪽 아래 모서리만 덜 둥글게 */
-    border: 1px solid #e0e0e0; /* AI 메시지에 얇은 테두리 추가 */
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* 그림자 추가 */
+.message.bot {
+    background-color: #f8d7da;
+    align-self: flex-start;
 }
 
-/* 메시지 이름 (나, AI 비서) 숨기기 */
-#chat-box p strong {
-    display: none;
-}
-
+/* 입력 영역 */
 #input-area {
-    display: flex; /* 입력창과 버튼을 가로로 나란히 */
-    width: 100%;
-    gap: 10px; /* 입력창과 버튼 사이 간격 */
-    margin-bottom: 15px;
+    display: flex;
+    padding: 12px;
+    border-top: 1px solid #ccc;
+    background-color: #ffffff;
 }
 
 #user-input {
-    flex-grow: 1; /* 입력창이 남은 공간 다 차지 */
-    padding: 12px 15px; /* 패딩 조정 */
+    flex: 1;
+    padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 24px; /* 더 둥근 입력창 */
-    font-size: 1rem;
-    outline: none;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-#user-input:focus {
-    border-color: #1a73e8; /* 클릭 시 테두리 색상 변경 */
-    box-shadow: 0 0 0 0.2rem rgba(26, 115, 232, 0.25); /* 포커스 시 그림자 효과 */
-}
-
-#bottom-buttons {
-    width: 100%;
-    display: flex;
-    justify-content: center; /* 버튼들을 가운데 정렬 */
-    gap: 10px; /* 버튼들 사이 간격 */
-    margin-top: 10px;
-}
-
-
-#send-button, #bottom-buttons button, #history-buttons button {
-    padding: 12px 25px; /* 패딩 조정 */
-    background-color: #1a73e8; /* 버튼 색상 */
-    color: white;
-    border: none;
-    border-radius: 24px; /* 더 둥근 버튼 */
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-    flex-shrink: 0; /* 줄바꿈 안 되게 */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* 버튼 그림자 */
-}
-
-#send-button:hover, #bottom-buttons button:hover, #history-buttons button:hover {
-    background-color: #0f4e8c; /* 호버 시 색상 변경 */
-}
-
-/* 기록 삭제 버튼은 좀 다른 색깔로 */
-#history-buttons #delete-selected-button {
-     background-color: #dc3545; /* 삭제 버튼은 빨간색 */
-}
-#history-buttons #delete-selected-button:hover {
-     background-color: #c82333;
-}
-
-#history-area h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #000;
-    font-size: 1.8em;
-}
-
-#history-list {
-    list-style: none; /* 목록 점 없애기 */
-    padding: 0;
-    margin: 0 0 20px 0;
-    border: 1px solid #e0e0e0;
     border-radius: 8px;
-    max-height: 400px; /* 목록 최대 높이 */
-    overflow-y: auto; /* 목록 넘치면 스크롤 */
-    background-color: #fff;
+    font-size: 16px;
+    margin-right: 8px;
 }
 
-#history-list li {
-    padding: 12px 15px;
-    border-bottom: 1px solid #eee;
-    cursor: pointer; /* 마우스 올리면 손가락 모양 */
-    display: flex; /* 체크박스랑 내용 정렬 */
-    align-items: center; /* 세로 가운데 정렬 */
-    justify-content: space-between; /* 체크박스 왼/오른쪽 끝에 */
-    transition: background-color 0.2s ease;
+#send-button {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    background-color: #4f46e5;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
 }
 
-#history-list li:last-child {
-    border-bottom: none; /* 마지막 목록 아이템 아래 테두리 없애기 */
+#send-button:hover {
+    background-color: #4338ca;
 }
 
-#history-list li:hover {
-    background-color: #f8f8f8; /* 마우스 올리면 배경색 */
+/* 애니메이션 효과 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-#history-list li input[type="checkbox"] {
-    margin-right: 10px;
-     /* 체크박스 스타일 커스터마이징은 복잡해서 기본으로 둠 */
-}
-
-#history-list li span {
-    flex-grow: 1; /* 내용이 공간을 차지하게 */
-    white-space: nowrap; /* 줄바꿈 방지 */
-    overflow: hidden; /* 넘치는 내용 숨김 */
-    text-overflow: ellipsis; /* 넘치는 내용 ... 으로 표시 */
-}
-
-
-#history-buttons {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-
-
-/* 로딩 인디케이터 스타일 (script.js에서 주석 풀면 사용) */
-/*
-.loading-indicator {
-    font-style: italic;
-    color: #888;
-    align-self: flex-start;
-    margin-left: 15px; // AI 메시지와 동일하게 왼쪽 정렬
-    background-color: #e0e0e0; // AI 메시지 배경색과 동일하게
-    padding: 10px 15px;
-    border-radius: 10px;
-    max-width: 80%;
-}
-*/
-
-
-/* 모바일 반응형 */
+/* 반응형 */
 @media (max-width: 600px) {
-    #app-container {
-        padding: 15px;
-        margin-top: 20px;
-        margin-bottom: 20px;
+    body {
+        font-size: 16px;
+        padding: 0;
     }
 
-    h1 {
-        font-size: 1.5em;
-        margin-bottom: 20px;
+    #chat-container {
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
     }
-
-    #chat-box {
-        height: 350px; /* 모바일에서 높이 조정 */
-        padding: 10px;
-        gap: 8px;
-    }
-
-    #chat-box p {
-        padding: 8px 12px;
-        max-width: 90%; /* 모바일에서 너비 조정 */
-        border-radius: 8px; /* 모바일에서 버블 둥글기 조금 줄임 */
-    }
-     .user-message { border-radius: 8px 8px 2px 8px; }
-     .ai-message { border-radius: 8px 8px 8px 2px; }
-
 
     #input-area {
-        flex-direction: column; /* 모바일에서 입력창과 버튼 세로로 쌓기 */
+        flex-direction: column;
         gap: 8px;
     }
 
     #user-input, #send-button {
-        width: 100%; /* 모바일에서 너비 꽉 채우기 */
-        margin-right: 0;
-        /* text-align: center; */
+        width: 100%;
+        margin: 0;
     }
-
-     #send-button {
-         padding: 12px; /* 모바일 버튼 패딩 */
-     }
-
-     #bottom-buttons, #history-buttons {
-         flex-direction: column; /* 모바일에서 버튼 세로 정렬 */
-         gap: 8px;
-     }
-     #bottom-buttons button, #history-buttons button {
-         width: 100%; /* 모바일에서 버튼 너비 꽉 채우기 */
-         text-align: center;
-     }
-
-     #history-area h2 {
-         font-size: 1.5em;
-     }
-     #history-list li {
-         padding: 10px 12px;
-     }
 }
