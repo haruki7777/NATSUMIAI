@@ -25,7 +25,8 @@ body {
 #app-container {
     width: 100%;
     max-width: 800px; /* 최대 너비 좀 더 넓게 */
-    background-color: #fff; /* 앱 컨테이너 배경은 하얗게 (배경 이미지가 비치지 않게) */
+    /* background-color: #fff; */ /* 앱 컨테이너 배경색 제거 또는 반투명 설정 */
+    background-color: rgba(255, 255, 255, 0.8); /* 하얀색 배경에 80% 투명도 */
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08); /* 그림자 연하게 */
     padding: 30px; /* 패딩 늘림 */
@@ -35,7 +36,37 @@ body {
     flex-direction: column;
     align-items: center;
     overflow: hidden; /* 모서리 둥글게 한 부분 넘어가는 내용 숨김 */
+    position: relative; /* 자식 요소(메시지 로딩 인디케이터 등) 위치 잡을 때 유용 */
+    z-index: 1; /* 배경 이미지 위에 올라오도록 z-index 설정 */
 }
+
+/* === 화면 상단 오른쪽 고정 메뉴 스타일! === */
+#fixed-menu {
+    position: fixed; /* 화면에 고정! */
+    top: 15px; /* 위에서부터 15px */
+    right: 15px; /* 오른쪽에서부터 15px */
+    z-index: 1000; /* 다른 요소들보다 항상 위에 오도록 큰 z-index 설정 */
+    display: flex; /* 버튼이 여러 개면 가로로 나란히 */
+    gap: 10px; /* 버튼 사이 간격 */
+}
+
+/* 고정 메뉴 안에 있는 버튼 스타일 (send-button 스타일 재활용) */
+#fixed-menu button {
+     padding: 10px 20px; /* 패딩 조정 */
+     background-color: rgba(26, 115, 232, 0.9); /* 파란색 버튼에 살짝 투명도 추가 */
+     color: white;
+     border: none;
+     border-radius: 20px; /* 둥근 버튼 */
+     cursor: pointer;
+     font-size: 0.9rem; /* 글자 크기 살짝 줄임 */
+     transition: background-color 0.3s ease;
+     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+#fixed-menu button:hover {
+    background-color: #0f4e8c; /* 호버 시 색상 변경 */
+}
+/* ======================================= */
+
 
 h1 {
     color: #000; /* 제목 색깔 검정 */
@@ -70,6 +101,11 @@ h1 {
     width: 100%;
     display: flex;
     flex-direction: column;
+     /* background-color: #fff; */ /* 채팅 컨테이너 배경색 제거 또는 반투명 설정 */
+     background-color: transparent; /* 완전 투명! */
+     border: none; /* 테두리 제거 */
+     padding: 0; /* 패딩 제거 */
+     margin-bottom: 15px;
 }
 
 #chat-box {
@@ -82,7 +118,9 @@ h1 {
     display: flex;
     flex-direction: column;
     gap: 12px; /* 메시지 버블 간 간격 */
-    background-color: #fff; /* 대화창 배경도 하얗게 */
+    /* background-color: #fff; */ /* 대화창 배경도 하얗게 */
+     background-color: transparent; /* 완전 투명! */
+     border: none; /* 테두리 제거 */
 }
 
 /* 스크롤바 스타일 (선택 사항) */
@@ -94,7 +132,7 @@ h1 {
     border-radius: 4px;
 }
 #chat-box::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: rgba(0,0,0,0.05); /* 스크롤바 트랙도 살짝 투명 */
 }
 
 
@@ -110,17 +148,17 @@ h1 {
 
 .user-message {
     align-self: flex-end; /* 사용자 메시지는 오른쪽에 */
-    background-color: #e9e9eb; /* 사용자 메시지 배경 연한 회색 */
+    background-color: rgba(233, 233, 235, 0.9); /* 사용자 메시지 배경 연한 회색 + 투명도 */
     color: #333; /* 사용자 메시지 글자색 */
     border-radius: 10px 10px 2px 10px; /* 오른쪽 아래 모서리만 덜 둥글게 */
 }
 
 .ai-message {
     align-self: flex-start; /* AI 메시지는 왼쪽에 */
-    background-color: #f7f7f8; /* AI 메시지 배경 아주 연한 회색 (OpenAI 느낌) */
+    background-color: rgba(247, 247, 248, 0.9); /* AI 메시지 배경 아주 연한 회색 + 투명도 */
     color: #333; /* AI 메시지 글자색 */
     border-radius: 10px 10px 10px 2px; /* 왼쪽 아래 모서리만 덜 둥글게 */
-    border: 1px solid #e0e0e0; /* AI 메시지에 얇은 테두리 추가 */
+    border: 1px solid rgba(224, 224, 224, 0.9); /* AI 메시지에 얇은 테두리 추가 + 투명도 */
     box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* 그림자 추가 */
 }
 
@@ -133,7 +171,11 @@ h1 {
     display: flex; /* 입력창과 버튼을 가로로 나란히 */
     width: 100%;
     gap: 10px; /* 입력창과 버튼 사이 간격 */
-    margin-bottom: 15px;
+    margin-bottom: 0; /* 마진 제거 */
+    padding-top: 15px; /* 위쪽 패딩 추가 */
+    border-top: 1px solid #e0e0e0; /* 위쪽에 구분선 추가 */
+    background-color: #fff; /* 입력 영역 배경은 하얗게 */
+    border-radius: 0 0 8px 8px; /* 아래쪽 모서리만 둥글게 */
 }
 
 #user-input {
@@ -144,6 +186,7 @@ h1 {
     font-size: 1rem;
     outline: none;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background-color: #f8f8f8; /* 입력창 배경색 */
 }
 
 #user-input:focus {
@@ -157,10 +200,12 @@ h1 {
     justify-content: center; /* 버튼들을 가운데 정렬 */
     gap: 10px; /* 버튼들 사이 간격 */
     margin-top: 10px;
+    /* '대화 기록 보기' 버튼을 고정 메뉴로 옮기면서 여기는 비워둠 */
 }
 
 
-#send-button, #bottom-buttons button, #history-buttons button {
+/* send-button 스타일 (input-area 안에 있음) */
+#input-area #send-button {
     padding: 12px 25px; /* 패딩 조정 */
     background-color: #1a73e8; /* 버튼 색상 */
     color: white;
@@ -173,18 +218,12 @@ h1 {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* 버튼 그림자 */
 }
 
-#send-button:hover, #bottom-buttons button:hover, #history-buttons button:hover {
+#input-area #send-button:hover {
     background-color: #0f4e8c; /* 호버 시 색상 변경 */
 }
 
-/* 기록 삭제 버튼은 좀 다른 색깔로 */
-#history-buttons #delete-selected-button {
-     background-color: #dc3545; /* 삭제 버튼은 빨간색 */
-}
-#history-buttons #delete-selected-button:hover {
-     background-color: #c82333;
-}
 
+/* 기록 목록 화면 스타일 */
 #history-area h2 {
     text-align: center;
     margin-bottom: 20px;
@@ -200,7 +239,7 @@ h1 {
     border-radius: 8px;
     max-height: 400px; /* 목록 최대 높이 */
     overflow-y: auto; /* 목록 넘치면 스크롤 */
-    background-color: #fff;
+    background-color: #fff; /* 기록 목록 배경은 하얗게 */
 }
 
 #history-list li {
@@ -209,7 +248,7 @@ h1 {
     cursor: pointer; /* 마우스 올리면 손가락 모양 */
     display: flex; /* 체크박스랑 내용 정렬 */
     align-items: center; /* 세로 가운데 정렬 */
-    justify-content: space-between; /* 체크박스 왼/오른쪽 끝에 */
+    /* justify-content: space-between; */ /* 체크박스 왼쪽, 내용 오른쪽으로 */
     transition: background-color 0.2s ease;
 }
 
@@ -224,6 +263,7 @@ h1 {
 #history-list li input[type="checkbox"] {
     margin-right: 10px;
      /* 체크박스 스타일 커스터마이징은 복잡해서 기본으로 둠 */
+    flex-shrink: 0; /* 체크박스가 줄바꿈 안 되게 */
 }
 
 #history-list li span {
@@ -241,6 +281,33 @@ h1 {
     gap: 10px;
 }
 
+/* history-buttons 안에 있는 버튼 스타일 (send-button 스타일 재활용) */
+#history-buttons button {
+    padding: 12px 25px; /* 패딩 조정 */
+    background-color: #1a73e8; /* 버튼 색상 */
+    color: white;
+    border: none;
+    border-radius: 24px; /* 더 둥근 버튼 */
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    flex-shrink: 0; /* 줄바꿈 안 되게 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* 버튼 그림자 */
+}
+#history-buttons button:hover {
+     background-color: #0f4e8c; /* 호버 시 색상 변경 */
+}
+
+
+/* 기록 삭제 버튼은 좀 다른 색깔로 */
+#history-buttons #delete-selected-button {
+     background-color: #dc3545; /* 삭제 버튼은 빨간색 */
+     box-shadow: none; /* 그림자 없앰 */
+}
+#history-buttons #delete-selected-button:hover {
+     background-color: #c82333;
+}
+
 
 /* 로딩 인디케이터 스타일 (script.js에서 주석 풀면 사용) */
 /*
@@ -249,7 +316,7 @@ h1 {
     color: #888;
     align-self: flex-start;
     margin-left: 15px; // AI 메시지와 동일하게 왼쪽 정렬
-    background-color: #e0e0e0; // AI 메시지 배경색과 동일하게
+    background-color: rgba(224, 224, 224, 0.9); // AI 메시지 배경색과 비슷하게 + 투명도
     padding: 10px 15px;
     border-radius: 10px;
     max-width: 80%;
@@ -269,6 +336,18 @@ h1 {
         font-size: 1.5em;
         margin-bottom: 20px;
     }
+
+    #fixed-menu {
+         top: 10px;
+         right: 10px;
+         gap: 5px;
+    }
+     #fixed-menu button {
+         padding: 8px 15px;
+         font-size: 0.8rem;
+         border-radius: 15px;
+     }
+
 
     #chat-box {
         height: 350px; /* 모바일에서 높이 조정 */
@@ -290,13 +369,13 @@ h1 {
         gap: 8px;
     }
 
-    #user-input, #send-button {
+    #user-input, #input-area #send-button {
         width: 100%; /* 모바일에서 너비 꽉 채우기 */
         margin-right: 0;
         /* text-align: center; */
     }
 
-     #send-button {
+     #input-area #send-button {
          padding: 12px; /* 모바일 버튼 패딩 */
      }
 
