@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     userInput = document.getElementById('user-input');
     sendButton = document.getElementById('send-button');
     chatBox = document.getElementById('chat-box');
+
     // viewHistoryButton, deleteSelectedButton, backToChatButton는 이제 fixed-menu 안에 있음
     viewHistoryButton = document.getElementById('view-history-button'); // 고정 메뉴 안의 버튼
     deleteSelectedButton = document.getElementById('delete-selected-button'); // 고정 메뉴 안의 버튼
@@ -62,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // === 요소들을 찾았는지 확인하는 alert (있다면 뜰 것임) ===
     // 이 alert들은 요소가 제대로 찾아졌는지 확인하는 중요한 단서가 됩니다.
-    if (sendButton) { alert("4. Send button found!"); console.log("Send button found!"); } else { alert("4. Send button NOT found! Check index.html"); console.error("Send button NOT found! Check index.html"); }
+    if (sendButton) { alert("4. Send button found!"); console.log("4. Send button found!"); } else { alert("4. Send button NOT found! Check index.html"); console.error("4. Send button NOT found! Check index.html"); }
     if (userInput) { alert("5. User input found!"); console.log("5. User input found!"); } else { alert("5. User input NOT found! Check index.html"); console.error("5. User input NOT found! Check index.html"); }
     if (chatBox) { alert("6. Chat box found!"); console.log("6. Chat box found!"); } else { alert("6. Chat box NOT found! Check index.html"); console.error("6. Chat box NOT found! Check index.html"); }
     if (viewHistoryButton) { alert("7. View history button found!"); console.log("7. View history button found!"); } else { alert("7. View history button NOT found! Check index.html"); console.error("7. View history button NOT found! Check index.html"); }
@@ -75,8 +76,9 @@ document.addEventListener('DOMContentLoaded', () => {
      if (fixedMenu) { alert("13. Fixed menu area found!"); console.log("13. Fixed menu area found!"); } else { alert("13. Fixed menu area NOT found! Check index.html"); console.error("13. Fixed menu area NOT found! Check index.html"); }
 
      // === 추가된 요소 찾기 확인 ===
-     if (menuToggleButton) { alert("14. Menu toggle button found!"); console.log("14. Menu toggle button found!"); } else { alert("14. Menu toggle button NOT found! Check index.html"); console.error("14. Menu toggle button NOT found! Check index.html"); }
-     if (newChatButton) { alert("15. New chat button found!"); console.log("15. New chat button found!"); } else { alert("15. New chat button NOT found! Check index.html"); console.error("15. New chat button NOT found! Check index.html"); }
+     // 하루키! 이 두 개가 안 찾아지면 점 세 개 메뉴랑 새 채팅 버튼 기능이 안 돼!
+     if (menuToggleButton) { alert("14. Menu toggle button found!"); console.log("14. Menu toggle button found!"); } else { alert("14. Menu toggle button NOT found! Check index.html - id='menu-toggle-button'"); console.error("14. Menu toggle button NOT found! Check index.html - id='menu-toggle-button'"); }
+     if (newChatButton) { alert("15. New chat button found!"); console.log("15. New chat button found!"); } else { alert("15. New chat button NOT found! Check index.html - id='new-chat-button'"); console.error("15. New chat button NOT found! Check index.html - id='new-chat-button'"); }
      // ==========================
 
 
@@ -91,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('16. Send button event listener attached!'); // === 이벤트 리스너 연결 alert ===
     } else {
          console.error("Error: '보내기' 버튼 요소를 찾을 수 없습니다! index.html의 id='send-button' 확인!"); // 버튼 못 찾았을 때 에러 로그
-         // alert("Error: '보내기' 버튼을 찾을 수 없어요! index.html의 id='send-button'을 확인해주세요!"); // 사용자 알림은 일단 주석 처리
     }
 
 
@@ -107,7 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
          alert('17. User input keypress listener attached!'); // === 이벤트 리스너 연결 alert ===
     } else {
          console.error("Error: 입력창 요소를 찾을 수 없습니다! index.html의 id='user-input' 확인!"); // 입력창 못 찾았을 때 에러 로그
-         // alert("Error: 입력창을 찾을 수 없어요! index.html의 id='user-input'을 확인해주세요!"); // 사용자 알림은 일단 주석 처리
     }
 
 
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         viewHistoryButton.addEventListener('click', () => {
             showHistoryList(); // 기록 목록 화면 보여주는 함수 호출
         });
-        console.log("View history button event listener attached."); // 콘솔 로그 추가
+        console.log("18. View history button event listener attached."); // 콘솔 로그 추가
         alert('18. View history button event listener attached!'); // === 이벤트 리스너 연결 alert ===
     } else {
          console.error("Error: '대화 기록 보기' 버튼 요소를 찾을 수 없습니다! index.html의 id='view-history-button' 확인!"); // 버튼 못 찾았을 때 에러 로그
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
         deleteSelectedButton.addEventListener('click', () => {
             deleteSelectedHistories(); // 선택 삭제 함수 호출
         });
-        console.log("Delete selected button event listener attached."); // 콘솔 로그 추가
+        console.log("19. Delete selected button event listener attached."); // 콘솔 로그 추가
         alert('19. Delete selected button event listener attached!'); // === 이벤트 리스너 연결 alert ===
     } else {
         console.error("Error: '선택 삭제' 버튼 요소 또는 historyList를 찾을 수 없습니다! index.html 확인!"); // 버튼 못 찾았을 때 에러 로그
@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
         backToChatButton.addEventListener('click', () => {
             showMainChatArea(); // 주 대화 영역으로 전환 함수 호출
         });
-        console.log("Back to chat button event listener attached."); // 콘솔 로그 추가
+        console.log("20. Back to chat button event listener attached."); // 콘솔 로그 추가
         alert('20. Back to chat button event listener attached!'); // === 이벤트 리스너 연결 alert ===
     } else {
         console.error("Error: '채팅으로 돌아가기' 버튼 요소 또는 관련 영역 요소를 찾을 수 없습니다! index.html 확인!"); // 버튼 못 찾았을 때 에러 로그
@@ -149,11 +149,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (menuToggleButton && fixedMenu) { // 메뉴 토글 버튼과 fixedMenu 모두 확인
         menuToggleButton.addEventListener('click', () => {
             fixedMenu.classList.toggle('hidden'); // 클릭할 때마다 hidden 클래스 추가/제거!
-            console.log("Menu toggled."); // 콘솔 로그 추가
+            console.log("21. Menu toggled."); // 콘솔 로그 추가
             alert('21. 메뉴 토글 버튼 클릭!'); // === 메뉴 토글 alert ===
         });
-        console.log("Menu toggle button event listener attached."); // 콘솔 로그 추가
-        alert('22. 메뉴 토글 버튼 이벤트 리스너 연결!'); // === 메뉴 토글 리스너 alert ===
+        console.log("22. Menu toggle button event listener attached."); // 콘솔 로그 추가
+        alert('22. Menu toggle button event listener attached!'); // === 메뉴 토글 리스너 alert ===
     } else {
          console.error("Error: Menu toggle button or fixed menu element not found for toggle function!"); // 버튼 못 찾았을 때 에러 로그
     }
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
         newChatButton.addEventListener('click', () => {
             startNewChat(); // 새 대화 시작 함수 호출!
             showMainChatArea(); // 주 대화 영역으로 전환!
-            console.log("New chat button clicked. Starting new chat and showing main area."); // 콘솔 로그 추가
+            console.log("23. New chat button clicked. Starting new chat and showing main area."); // 콘솔 로그 추가
             alert('23. 새 채팅 버튼 클릭!'); // === 새 채팅 버튼 alert ===
              // 메뉴가 열려있었다면 닫아주는게 자연스러움
              if (fixedMenu && !fixedMenu.classList.contains('hidden')) {
@@ -171,15 +171,15 @@ document.addEventListener('DOMContentLoaded', () => {
                    console.log("Closed menu after starting new chat.");
              }
         });
-        console.log("New chat button event listener attached."); // 콘솔 로그 추가
-        alert('24. 새 채팅 버튼 이벤트 리스너 연결!'); // === 새 채팅 버튼 리스너 alert ===
+        console.log("24. New chat button event listener attached."); // 콘솔 로그 추가
+        alert('24. New chat button event listener attached!'); // === 새 채팅 버튼 리스너 alert ===
     } else {
         console.error("Error: New chat button or area elements not found for new chat function!"); // 버튼 못 찾았을 때 에러 로그
     }
      // ==============================
 
 
-     console.log("All event listeners attempted to be attached."); // 콘솔 로그 추가
+     console.log("25. All event listeners attempted to be attached."); // 콘솔 로그 추가
      alert('25. 모든 이벤트 리스너 연결 시도 완료!'); // === 모든 리스너 연결 시도 완료 alert ===
     // =======================================================
 
@@ -196,20 +196,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (lastValidChat) {
              currentChatId = lastValidChat.id;
              renderChatMessages(currentChatId); // 마지막 대화 내용을 화면에 표시
-             console.log(`Loaded last chat history with ID: ${currentChatId}`); // 콘솔 로그 추가
+             console.log(`27. Loaded last chat history with ID: ${currentChatId}`); // 콘솔 로그 추가
              alert('27. 마지막 대화 기록 로드 및 렌더링!'); // === 기록 로드 alert ===
         } else {
              // 유효한 기록이 없으면 새 대화 시작
              allChatHistories = []; // 혹시 이상한 기록이 로드됐으면 비우기
              startNewChat(); // 이 안에서 renderChatMessages 호출됨
-             console.log("No valid chat history found. Starting a new chat."); // 콘솔 로그 추가
+             console.log("27. No valid chat history found. Starting a new chat."); // 콘솔 로그 추가
              // startNewChat 안에서 alert 뜰 것임.
         }
 
     } else {
          // 저장된 기록이 없으면 새 대화 시작
         startNewChat(); // 이 안에서 renderChatMessages 호출됨
-        console.log("No chat history found. Starting a new chat."); // 콘솔 로그 추가
+        console.log("27. No chat history found. Starting a new chat."); // 콘솔 로그 추가
         // startNewChat 안에서 alert 뜰 것임.
     }
 
@@ -313,8 +313,9 @@ async function processUserInput() {
 
     // 입력창 비우기
     userInput.value = '';
-    userInput.disabled = true; // 답변 올 때까지 입력 비활성화
-    sendButton.disabled = true; // 답변 올 때까지 버튼 비활성화
+    // 💡 API 응답 올 때까지 입력창과 버튼 비활성화! (이게 '버튼 안눌리는것' 이야기하는 거면 정상이야!)
+    userInput.disabled = true;
+    sendButton.disabled = true;
 
     alert('processUserInput: 입력창 비우고 비활성화 완료!'); // === 입력창 처리 alert ===
 
@@ -349,7 +350,7 @@ async function processUserInput() {
         }
 
 
-        // 응답이 성공했는지 확인
+        // 응답이 성공했는지 확인 (HTTP 상태 코드 200-299 범위)
         if (!response.ok) {
             // 서버에서 에러 메시지가 있다면 가져오기
             const errorText = await response.text();
@@ -357,16 +358,31 @@ async function processUserInput() {
             // 에러 메시지 자체는 콘솔에 더 자세히 찍고, 사용자에게는 츤데레 메시지만 보여줌.
             console.error(`HTTP error! status: ${response.status}, message: ${errorText}`);
             alert(`processUserInput: HTTP 오류! 상태: ${response.status}`); // === HTTP 오류 상태 alert ===
-            throw new Error('엣, 서버가 말을 안 듣네. 답답하구만!'); // 츤데레 메시지만 throw
+            // 💡 여기서는 서버에서 보낸 에러 응답을 사용자에게 보여주는 게 좋을 수도 있어!
+            // 예: 만약 서버에서 {"reply": "사용량 초과 에러 메시지"} 이런 형태로 보냈다면...
+            try {
+                 const errorJson = JSON.parse(errorText);
+                 if (errorJson && errorJson.reply) {
+                      throw new Error(errorJson.reply); // 서버에서 보낸 reply 메시지로 에러 발생!
+                 } else {
+                     throw new Error('엣, 서버가 말을 안 듣네. 답답하구만!'); // 기본 츤데레 에러
+                 }
+            } catch (e) {
+                 // JSON 파싱 에러나 reply 필드 없을 경우
+                 throw new Error('엣, 서버가 말을 안 듣네. 답답하구만!'); // 기본 츤데레 에러
+            }
         }
 
         // 서버에서 온 응답 데이터를 JSON 형식으로 받기
         const data = await response.json();
          console.log("API response data:", data); // 콘솔 로그 추가
          alert('processUserInput: API 응답 데이터 받음!'); // === API 데이터 받음 alert ===
-        // 하루키 서버에서 'answer'라는 키로 답변을 줄 거라고 가정!
-        // 하루키 서버 응답 형식이 다르면 아래 'data.answer' 부분을 바꿔줘야 해요!
-        const aiResponse = data.answer;
+
+        // === 💡 여기!!! data.answer 를 data.reply 로 수정했어! ===
+        // 하루키 서버에서 'reply'라는 키로 답변을 줄 거라고 가정! (app.py 코드 확인!)
+        const aiResponse = data.reply;
+        // ====================================================
+
 
         if (aiResponse && aiResponse.trim() !== '') { // 답변 내용이 있고 비어있지 않을 때만 표시
              // AI 비서의 답변을 대화창에 표시하고 기록 저장
@@ -379,8 +395,8 @@ async function processUserInput() {
              const errorAiMessage = '뭐야 이 이상한 답장은?! 제대로 된 걸 보내라고! (혹은 빈 응답?)'; // 화면에 표시할 에러 메시지
              addMessageToChat('ai', errorAiMessage); // 화면에 표시
              addMessageToCurrentChatHistory('ai', errorAiMessage); // 기록에 추가
-             console.warn("API response data did not contain a valid 'answer' field or it was empty."); // 콘솔 로그 추가
-             alert('processUserInput: API 응답에 답변(answer) 필드가 없거나 비어있어요!'); // === 답변 필드 오류 alert ===
+             console.warn("API response data did not contain a valid 'reply' field or it was empty."); // 콘솔 로그 추가 (answer -> reply로 수정!)
+             alert('processUserInput: API 응답에 답변(reply) 필드가 없거나 비어있어요!'); // === 답변 필드 오류 alert === (answer -> reply로 수정!)
 
         }
 
@@ -416,7 +432,6 @@ function addMessageToCurrentChatHistory(sender, text) {
     // currentChatId가 유효한지 확인
     if (!currentChatId) {
         console.error("Error: currentChatId is not set when trying to add message to history!");
-        // 이 경우 새 대화를 시작하고 메시지를 추가하는 것도 고려할 수 있지만, 일단 에러 로그만 남김.
         return;
     }
 
@@ -428,9 +443,7 @@ function addMessageToCurrentChatHistory(sender, text) {
         currentChat.messages.push({ sender: sender, text: text });
         console.log(`Message added to history ${currentChatId}: ${text}`); // 콘솔 로그 추가
     } else {
-         // 만약 currentChatId는 있는데 해당 대화 객체가 allChatHistories에 없으면 심각한 오류
          console.error(`Error: Current chat object not found in allChatHistories for ID: ${currentChatId}`);
-          // 이런 경우는 발생하면 안 되지만, 혹시나 해서 로그를 남김.
     }
 }
 
@@ -544,6 +557,7 @@ function renderChatMessages(chatId) {
 // 대화 기록 목록 화면을 보여주는 함수
 function showHistoryList() {
     // 기록 관련 요소들이 있는지 확인 (DOMContentLoaded 전에 호출될 경우 대비)
+    // 하루키! 이 요소들이 index.html에 제대로 있는지, ID가 맞는지 확인해줘!
     if (!mainChatArea || !historyArea || !historyList || !viewHistoryButton || !deleteSelectedButton || !backToChatButton || !newChatButton || !fixedMenu || !menuToggleButton) { // 메뉴 버튼들도 확인
          console.error("Error: History list or menu elements not found!");
          alert("Error: 기록 목록을 표시할 수 없어요! 요소 누락!"); // 필요시 알림
@@ -563,7 +577,7 @@ function showHistoryList() {
     backToChatButton.classList.remove('hidden'); // 채팅으로 돌아가기 버튼 보임
 
     // 메뉴가 열려있었다면 닫아주는게 자연스러움
-     if (!fixedMenu.classList.contains('hidden')) {
+     if (fixedMenu && !fixedMenu.classList.contains('hidden')) { // fixedMenu가 있는지 확인
           fixedMenu.classList.add('hidden');
            console.log("Closed menu when switching to history view.");
      }
@@ -648,6 +662,7 @@ function showHistoryList() {
 // 주 대화 영역을 보여주는 함수
 function showMainChatArea() {
      // 영역 관련 요소들이 있는지 확인 (DOMContentLoaded 전에 호출될 경우 대비)
+    // 하루키! 이 요소들이 index.html에 제대로 있는지, ID가 맞는지 확인해줘!
     if (!mainChatArea || !historyArea || !userInput || !viewHistoryButton || !deleteSelectedButton || !backToChatButton || !newChatButton || !fixedMenu || !menuToggleButton) { // 메뉴 버튼들도 확인
          console.error("Error: Main chat area or menu elements not found!");
           alert("Error: 채팅 화면으로 돌아갈 수 없어요! 요소 누락!"); // 필요시 알림
@@ -667,7 +682,7 @@ function showMainChatArea() {
     backToChatButton.classList.add('hidden'); // 채팅으로 돌아가기 버튼 숨김
 
      // 메뉴가 열려있었다면 닫아주는게 자연스러움
-     if (!fixedMenu.classList.contains('hidden')) {
+     if (fixedMenu && !fixedMenu.classList.contains('hidden')) { // fixedMenu가 있는지 확인
           fixedMenu.classList.add('hidden');
            console.log("Closed menu when switching to main chat view.");
      }
@@ -713,29 +728,16 @@ function deleteSelectedHistories() {
         saveAllHistories(); // 변경사항 저장
         console.log(`Deleted ${deletedCount} chat histories.`); // 콘솔 로그 추가
 
-        // 현재 보고 있던 대화가 삭제되었으면 currentChatId를 null로 설정하고 새 대화 시작
+        // 현재 보고 있던 대화가 삭제되었으면 currentChatId를 null로 설정
+        // loadAllHistories나 DOMContentLoaded에서 currentChatId가 null이면 startNewChat 호출 로직 있음.
         if (currentChatId && idsToDelete.includes(currentChatId)) { // currentChatId가 null이 아닐 때만 검사
              console.log("Current chat history was deleted.");
-             // 삭제 후에는 새 대화 시작 함수 호출 (화면 전환 및 초기 메시지 처리 포함)
-             // 주의: showHistoryList() 호출 전에 currentChatId를 null로 설정해야 자연스러움.
-             // startNewChat 함수 자체는 showMainChatArea를 호출하지 않으므로, showHistoryList() 후에 수동 전환 필요.
              currentChatId = null; // 현재 대화 ID 초기화
-
-             // 삭제 후 목록 화면을 다시 보여줌
-             showHistoryList(); // 이 안에서 목록을 다시 그림.
-
-             // 삭제 후 현재 대화가 없으므로 새 대화 시작
-             // startNewChat(); // 이 함수 호출 시 화면이 채팅으로 바뀌는 부작용 있음. 목록 삭제 후에는 그냥 목록 화면에 남아있는게 자연스러움.
-             // 대신, 목록에서 다른 대화를 선택하거나 '채팅으로 돌아가기'를 눌렀을 때, currentChatId가 null이면 startNewChat()이 호출되도록 로직 보강이 필요.
-             // => loadAllHistories() 또는 DOMContentLoaded의 초기 로직에서 currentChatId가 null이면 startNewChat()을 호출하도록 이미 되어있음.
-             // 따라서 삭제 후 currentChatId만 null로 만들면 됨.
              console.log("currentChatId set to null as current history was deleted."); // 콘솔 로그 추가
-
-        } else {
-             // 현재 대화가 삭제되지 않았으면 그냥 목록 화면 새로고침
-             showHistoryList(); // 삭제 후 목록 화면 다시 보여줌
         }
 
+        // 삭제 후 목록 화면 새로고침
+        showHistoryList(); // 삭제 후 목록 화면 다시 보여줌
 
         // 삭제 완료 알림 (츤데레 말투 적용)
          alert(`${deletedCount}개의 대화 기록을 삭제했어. ...딱히 네 기록이 궁금했던 건 아니야.`); // 삭제 완료 메시지도 츤데레로!
@@ -751,5 +753,12 @@ function deleteSelectedHistories() {
 .ai-message.loading-indicator {
     font-style: italic;
     color: #888; // 회색 등 로딩 중 느낌 주는 색상
+}
+*/
+
+// 숨김 처리를 위한 CSS 클래스 추가 (style.css에 추가해주세요)
+/*
+.hidden {
+    display: none !important; // !important 사용 시 다른 스타일보다 우선 적용됨
 }
 */
