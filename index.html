@@ -1,70 +1,57 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>하루키 AI 비서</title>
-    <!-- CSS 파일 연결 (경로 수정: css 폴더 안으로!) -->
-    <link rel="stylesheet" href="css/style.css">
-    <!-- Google Fonts - Noto Sans KR (한국어 예쁜 글꼴) -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>하루키 AI 비서</title>
+
+  <!-- CSS 파일 연결 -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Google Fonts - Noto Sans KR -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet" />
 </head>
 <body>
-    <div id="app-container"> <!-- 전체 앱을 감싸는 컨테이너 -->
-        <h1>하루키의 멋진 AI 비서</h1>
+  <div id="app-container">
+    <h1>하루키의 멋진 AI 비서</h1>
 
-        <!-- 주 대화 영역 -->
-        <div id="main-chat-area">
-            <div id="chat-container">
-                <div id="chat-box">
-                    <!-- 대화 내용이 여기에 나타날 거야! (이전 기록도 로딩될 거야!) -->
-                    <!-- === 초기 메시지 츤데레 말투! === -->
-                    <p class="ai-message">뭐야 할말이라도 있는거야?</p>
-                </div>
-                <div id="input-area"> <!-- 입력창과 버튼을 묶는 영역 -->
-                    <input type="text" id="user-input" placeholder="여기에 질문을 입력하세요!">
-                    <button id="send-button">보내기</button>
-                </div>
-            </div>
-
-            <!-- 기타 버튼 (대화 기록 보기 버튼 등) -->
-            <div id="bottom-buttons">
-                <!-- '대화 기록 보기' 버튼은 이제 고정 메뉴로 이동 -->
-                 <!-- <button id="view-history-button">대화 기록 보기</button> -->
-            </div>
+    <!-- 메인 대화 영역 -->
+    <div id="main-chat-area">
+      <div id="chat-container">
+        <div id="chat-box">
+          <p class="ai-message">뭐야, 할 말이라도 있는 거야?</p>
         </div>
-
-        <!-- 대화 기록 목록 및 삭제 영역 (처음에는 숨겨져 있음) -->
-        <div id="history-area" class="hidden"> <!-- hidden 클래스로 숨겨둠 -->
-             <h2>대화 기록</h2>
-             <ul id="history-list">
-                 <!-- 대화 기록 목록이 JavaScript로 여기에 추가될 거야 -->
-             </ul>
-             <div id="history-buttons">
-                 <!-- 버튼들은 이제 고정 메뉴로 이동 -->
-                 <!-- <button id="delete-selected-button">선택 삭제</button> -->
-                 <!-- <button id="back-to-chat-button">채팅으로 돌아가기</button> -->
-             </div>
+        <div id="input-area">
+          <input type="text" id="user-input" placeholder="여기에 질문을 입력하세요!" />
+          <button id="send-button" type="button">보내기</button> <!-- 🔧 중요: type="button" -->
         </div>
-
+      </div>
     </div>
 
-    <!-- === 화면 상단 오른쪽 고정 메뉴 영역 추가! === -->
-    <!-- 💡 추가! 점 세 개 메뉴 아이콘 역할을 할 버튼! -->
-    <button id="menu-toggle-button" class="menu-icon">...</button> <!-- 아니면 여기에 아이콘 폰트나 이미지! -->
-    <!-- 💡 fixed-menu 영역에 hidden 클래스 추가! -->
-    <div id="fixed-menu" class="hidden"> 
-         <!-- 💡 추가! 새 채팅 시작 버튼! -->
-         <button id="new-chat-button" class="menu-button chat-view-button">새 채팅 시작</button>
-         <!-- '대화 기록 보기' 버튼은 채팅 화면일 때 보임 -->
-         <button id="view-history-button" class="menu-button chat-view-button">대화 기록 보기</button>
-         <!-- '선택 삭제', '채팅으로 돌아가기' 버튼은 기록 화면일 때 보임 (처음엔 숨김) -->
-         <button id="delete-selected-button" class="menu-button history-view-button hidden">선택 삭제</button>
-         <button id="back-to-chat-button" class="menu-button history-view-button hidden">채팅으로 돌아가기</button>
+    <!-- 하단 버튼 영역 -->
+    <div id="bottom-buttons"></div>
+
+    <!-- 대화 기록 영역 (처음에 숨김) -->
+    <div id="history-area" class="hidden">
+      <h2>대화 기록</h2>
+      <ul id="history-list"></ul>
+      <div id="history-buttons">
+        <!-- 숨김 상태로 시작되는 버튼들 -->
+        <button id="delete-selected-button" class="menu-button history-view-button hidden" type="button">선택 삭제</button>
+        <button id="back-to-chat-button" class="menu-button history-view-button hidden" type="button">채팅으로 돌아가기</button>
+      </div>
     </div>
+  </div>
 
+  <!-- 오른쪽 상단 고정 메뉴 -->
+  <button id="menu-toggle-button" class="menu-icon" type="button">...</button>
 
-    <!-- JavaScript 파일 연결 (경로 수정: js 폴더 안으로!) -->
-    <script src="js/script.js"></script>
+  <div id="fixed-menu" class="hidden">
+    <button id="new-chat-button" class="menu-button chat-view-button" type="button">새 채팅 시작</button>
+    <button id="view-history-button" class="menu-button chat-view-button" type="button">대화 기록 보기</button>
+  </div>
+
+  <!-- JS 파일 연결 (항상 body 맨 끝에!) -->
+  <script src="js/script.js"></script>
 </body>
 </html>
