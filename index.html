@@ -1,34 +1,54 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>하루키의 멋진 AI 비서</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>하루키 AI 비서</title>
+    <!-- CSS 파일 연결 (이 파일을 이쁘게 꾸밀 거야!) -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts - Noto Sans KR (한국어 예쁜 글꼴) -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>하루키의 멋진 AI 비서</h1>
-      <button id="newChatBtn" title="새 대화 시작">새 대화 +</button>
-    </header>
+    <div id="app-container"> <!-- 전체 앱을 감싸는 컨테이너 -->
+        <h1>하루키의 멋진 AI 비서</h1>
 
-    <div class="menu-container">
-      <button id="menuBtn" aria-label="메뉴 열기">⋮</button>
-      <ul id="menuList" class="hidden">
-        <li><strong>대화 기록</strong></li>
-        <div id="historyList"></div>
-        <li><button id="clearHistoryBtn">기록 전체 삭제</button></li>
-        <li><button id="backToChatBtn">채팅으로 돌아가기</button></li>
-        <li><button id="toggleMenuBtn">메뉴 닫기</button></li>
-      </ul>
+        <!-- 주 대화 영역 -->
+        <div id="main-chat-area">
+            <div id="chat-container">
+                <div id="chat-box">
+                    <!-- 대화 내용이 여기에 나타날 거야! (이전 기록도 로딩될 거야!) -->
+                    <!-- === 초기 메시지 츤데레 말투! === -->
+                    <p class="ai-message">뭐야 할말이라도 있는거야?</p>
+                </div>
+                <div id="input-area"> <!-- 입력창과 버튼을 묶는 영역 -->
+                    <input type="text" id="user-input" placeholder="여기에 질문을 입력하세요!">
+                    <button id="send-button">보내기</button>
+                </div>
+            </div>
+
+            <!-- 기타 버튼 -->
+            <div id="bottom-buttons">
+                <button id="view-history-button">대화 기록 보기</button> <!-- 기록 보기 버튼 추가! -->
+                 <!-- <button id="clear-history-button">전체 기록 삭제</button> -- 전체 삭제는 이제 기록 보기 화면에서 선택 삭제로 대체 -->
+            </div>
+        </div>
+
+        <!-- 대화 기록 목록 및 삭제 영역 (처음에는 숨겨져 있음) -->
+        <div id="history-area" class="hidden"> <!-- hidden 클래스로 숨겨둠 -->
+             <h2>대화 기록</h2>
+             <ul id="history-list">
+                 <!-- 대화 기록 목록이 JavaScript로 여기에 추가될 거야 -->
+             </ul>
+             <div id="history-buttons">
+                 <button id="delete-selected-button">선택 삭제</button> <!-- 선택 삭제 버튼 -->
+                 <button id="back-to-chat-button">채팅으로 돌아가기</button> <!-- 채팅으로 돌아가는 버튼 -->
+             </div>
+        </div>
+
     </div>
 
-    <textarea id="userInput" placeholder="질문을 입력해봐~"></textarea>
-    <button id="sendBtn">보내기</button>
-    <div id="response"></div>
-  </div>
-
-  <script src="script.js"></script>
+    <!-- JavaScript 파일 연결 (뇌 연결, 버튼 작동, 기록 저장/삭제 마법!) -->
+    <script src="script.js"></script>
 </body>
 </html>
