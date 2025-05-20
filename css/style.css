@@ -1,102 +1,175 @@
 body {
-    font-family: 'Arial', sans-serif; /* 글꼴 설정 */
-    display: flex; /* 요소들을 정렬하기 쉽게! */
-    flex-direction: column; /* 세로로 쌓이게! */
-    align-items: center; /* 가운데 정렬! */
-    margin: 20px; /* 바깥쪽 여백 */
-    background-color: #e9ecef; /* 배경색 살짝 회색으로 */
-    color: #333; /* 기본 글자색 */
+    font-family: 'Noto Sans KR', sans-serif; /* 한국어 지원 글꼴로 변경 (더 이쁠 거야!) */
+    display: flex;
+    justify-content: center; /* 가로 가운데 정렬 */
+    align-items: center; /* 세로 가운데 정렬 */
+    min-height: 100vh; /* 화면 전체 높이 사용 */
+    margin: 0;
+    background-color: #f7f7f7; /* 배경색 더 밝게 */
+    color: #333;
+    padding: 20px;
+    box-sizing: border-box; /* 패딩 포함 크기 계산 */
+}
+
+#app-container {
+    width: 100%;
+    max-width: 700px; /* 최대 너비 좀 더 넓게 */
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 h1 {
-    color: #0056b3; /* 제목 색깔 */
-    margin-bottom: 20px;
+    color: #1a73e8; /* 구글 느낌 파란색 */
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 1.8em;
 }
 
 #chat-container {
-    width: 100%; /* 컨테이너 너비 꽉 채우기 (모바일 고려) */
-    max-width: 600px; /* 최대 너비 제한 */
-    border: 1px solid #ccc; /* 테두리 */
-    padding: 15px; /* 안쪽 여백 */
-    border-radius: 8px; /* 모서리 둥글게 */
-    background-color: #fff; /* 배경색 하얗게 */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* 그림자 효과 */
-    display: flex; /* 내부 요소 정렬 */
-    flex-direction: column; /* 세로 정렬 */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 #chat-box {
-    height: 350px; /* 대화창 높이 */
-    overflow-y: auto; /* 내용 넘치면 스크롤바 생기게! */
-    border-bottom: 1px solid #eee; /* 아래쪽 구분선 */
-    margin-bottom: 15px; /* 아래 여백 */
-    padding-bottom: 10px; /* 안쪽 아래 여백 */
+    height: 400px; /* 대화창 높이 늘림 */
+    overflow-y: auto;
+    border: 1px solid #e0e0e0; /* 테두리 색상 변경 */
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
     display: flex;
-    flex-direction: column; /* 메시지들이 세로로 쌓이게 */
+    flex-direction: column;
+    gap: 10px; /* 메시지 버블 간 간격 */
 }
 
+/* 스크롤바 스타일 (선택 사항) */
+#chat-box::-webkit-scrollbar {
+    width: 8px;
+}
+#chat-box::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}
+#chat-box::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+
 #chat-box p {
-    margin: 5px 0; /* 대화 메시지 간 간격 */
-    padding: 8px 12px;
-    border-radius: 5px;
-    max-width: 80%; /* 메시지 최대 너비 */
-    word-wrap: break-word; /* 긴 단어 자동 줄바꿈 */
+    margin: 0; /* 기본 마진 제거 */
+    padding: 10px 15px;
+    border-radius: 18px; /* 버블 모양으로 둥글게 */
+    max-width: 85%; /* 버블 최대 너비 */
+    word-wrap: break-word;
+    line-height: 1.5; /* 줄 간격 */
+    position: relative; /* 꼬리 만들 때 필요 */
 }
 
 .user-message {
     align-self: flex-end; /* 사용자 메시지는 오른쪽에 */
-    background-color: #d4edda; /* 사용자 메시지 배경색 (초록 계열) */
-    color: #155724; /* 사용자 메시지 글자색 */
+    background-color: #1a73e8; /* 사용자 메시지 배경 파란색 */
+    color: white; /* 사용자 메시지 글자 하얗게 */
+    border-bottom-right-radius: 5px; /* 오른쪽 아래 모서리만 덜 둥글게 (꼬리처럼) */
 }
 
 .ai-message {
     align-self: flex-start; /* AI 메시지는 왼쪽에 */
-    background-color: #f8d7da; /* AI 메시지 배경색 (빨강 계열 - 임시) */
-    color: #721c24; /* AI 메시지 글자색 */
+    background-color: #e0e0e0; /* AI 메시지 배경 연한 회색 */
+    color: #333; /* AI 메시지 글자색 */
+    border-bottom-left-radius: 5px; /* 왼쪽 아래 모서리만 덜 둥글게 */
 }
 
-strong {
-    font-weight: bold; /* 이름(나, AI 비서)은 굵게 */
+/* 메시지 이름 (나, AI 비서) 숨기기 - 버블 형태에 더 어울려 */
+#chat-box p strong {
+    display: none;
 }
 
+#input-area {
+    display: flex; /* 입력창과 버튼을 가로로 나란히 */
+    width: 100%;
+    gap: 10px; /* 입력창과 버튼 사이 간격 */
+    margin-bottom: 15px;
+}
 
 #user-input {
-    flex-grow: 1; /* 입력창이 남은 공간을 채우게 */
-    padding: 10px;
-    margin-right: 5px;
+    flex-grow: 1; /* 입력창이 남은 공간 다 차지 */
+    padding: 12px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 20px; /* 둥근 입력창 */
     font-size: 1rem;
+    outline: none; /* 클릭 시 파란 테두리 없애기 */
+    transition: border-color 0.3s ease;
 }
 
-#send-button {
-    padding: 10px 15px;
-    background-color: #007bff; /* 버튼 색깔 파랗게 */
-    color: white; /* 글자색 하얗게 */
+#user-input:focus {
+    border-color: #1a73e8; /* 클릭 시 테두리 색상 변경 */
+}
+
+#send-button, #clear-history-button {
+    padding: 12px 20px;
+    background-color: #1a73e8; /* 버튼 색상 */
+    color: white;
     border: none;
-    border-radius: 4px;
-    cursor: pointer; /* 마우스 올리면 손가락 모양 */
+    border-radius: 20px; /* 둥근 버튼 */
+    cursor: pointer;
     font-size: 1rem;
-    transition: background-color 0.3s ease; /* 색깔 부드럽게 바뀌게 */
+    transition: background-color 0.3s ease;
+    flex-shrink: 0; /* 줄바꿈 안 되게 */
 }
 
-#send-button:hover {
-    background-color: #0056b3; /* 마우스 올리면 색깔 살짝 바뀌게 */
+#send-button:hover, #clear-history-button:hover {
+    background-color: #0f4e8c; /* 호버 시 색상 변경 */
 }
 
-/* 모바일 화면 크기 고려 */
-@media (max-width: 768px) {
-    #chat-container {
-        width: 95%; /* 모바일에서는 너비 더 넓게 */
+#clear-history-button {
+    background-color: #dc3545; /* 삭제 버튼은 빨간색 */
+    margin-top: 10px;
+}
+
+#clear-history-button:hover {
+    background-color: #c82333;
+}
+
+/* 모바일 반응형 */
+@media (max-width: 600px) {
+    #app-container {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 1.5em;
+        margin-bottom: 20px;
+    }
+
+    #chat-box {
+        height: 300px; /* 모바일에서 높이 조정 */
         padding: 10px;
+        gap: 8px;
     }
 
-    #user-input {
-         width: calc(100% - 70px); /* 모바일에서 입력창 너비 조정 */
-         margin-right: 8px;
+    #chat-box p {
+        padding: 8px 12px;
+        max-width: 90%; /* 모바일에서 너비 조정 */
     }
 
-    #send-button {
-        padding: 10px; /* 모바일에서 버튼 패딩 조정 */
+    #input-area {
+        flex-direction: column; /* 모바일에서 입력창과 버튼 세로로 쌓기 */
+        gap: 8px;
     }
+
+    #user-input, #send-button {
+        width: 100%; /* 모바일에서 너비 꽉 채우기 */
+        margin-right: 0;
+        text-align: center; /* 입력창 텍스트 가운데 정렬 */
+    }
+
+     #send-button {
+         padding: 12px; /* 모바일 버튼 패딩 */
+     }
 }
