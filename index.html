@@ -50,7 +50,12 @@
     </div>
 
     <!-- === 화면 상단 오른쪽 고정 메뉴 영역 추가! === -->
-    <div id="fixed-menu">
+    <!-- 💡 추가! 점 세 개 메뉴 아이콘 역할을 할 버튼! -->
+    <button id="menu-toggle-button" class="menu-icon">...</button> <!-- 아니면 여기에 아이콘 폰트나 이미지! -->
+    <!-- 💡 fixed-menu 영역에 hidden 클래스 추가! -->
+    <div id="fixed-menu" class="hidden"> 
+         <!-- 💡 추가! 새 채팅 시작 버튼! -->
+         <button id="new-chat-button" class="menu-button chat-view-button">새 채팅 시작</button>
          <!-- '대화 기록 보기' 버튼은 채팅 화면일 때 보임 -->
          <button id="view-history-button" class="menu-button chat-view-button">대화 기록 보기</button>
          <!-- '선택 삭제', '채팅으로 돌아가기' 버튼은 기록 화면일 때 보임 (처음엔 숨김) -->
