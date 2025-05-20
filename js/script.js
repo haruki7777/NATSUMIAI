@@ -6,12 +6,13 @@ alert('1. script.js 파일 로딩 시작!');
 let userInput = null;
 let sendButton = null;
 let chatBox = null; // 주 대화 내용 보여줄 공간
-let viewHistoryButton = null; // 기록 보기 버튼
+let viewHistoryButton = null; // 기록 보기 버튼 (고정 메뉴)
 let historyArea = null; // 기록 목록 영역
 let mainChatArea = null; // 주 대화 영역
 let historyList = null; // 기록 목록 ul 태그
-let deleteSelectedButton = null; // 선택 삭제 버튼
-let backToChatButton = null; // 채팅으로 돌아가기 버튼
+let deleteSelectedButton = null; // 선택 삭제 버튼 (고정 메뉴)
+let backToChatButton = null; // 채팅으로 돌아가기 버튼 (고정 메뉴)
+let fixedMenu = null; // 고정 메뉴 영역 자체
 
 
 // 하루키 Render 서버의 API 주소! >>> 이 부분을 꼭 하루키 서버 주소로 바꿔주세요! <<<
@@ -38,20 +39,29 @@ document.addEventListener('DOMContentLoaded', () => {
     userInput = document.getElementById('user-input');
     sendButton = document.getElementById('send-button');
     chatBox = document.getElementById('chat-box');
-    viewHistoryButton = document.getElementById('view-history-button'); // 고정 메뉴 안으로 옮김
+    // viewHistoryButton, deleteSelectedButton, backToChatButton는 이제 fixed-menu 안에 있음
+    viewHistoryButton = document.getElementById('view-history-button');
+    deleteSelectedButton = document.getElementById('delete-selected-button'); // 고정 메뉴 안으로 옮김
+    backToChatButton = document.getElementById('back-to-chat-button'); // 고정 메뉴 안으로 옮김
+
     historyArea = document.getElementById('history-area');
     mainChatArea = document.getElementById('main-chat-area');
     historyList = document.getElementById('history-list');
-    deleteSelectedButton = document.getElementById('delete-selected-button');
-    backToChatButton = document.getElementById('back-to-chat-button');
+    fixedMenu = document.getElementById('fixed-menu'); // 고정 메뉴 영역 자체 찾기!
+
 
     // === 요소들을 찾았는지 확인하는 alert (있다면 뜰 것임) ===
     if (sendButton) { alert("4. Send button found!"); console.log("Send button found!"); } else { alert("4. Send button NOT found! Check index.html"); console.error("Send button NOT found!"); }
     if (userInput) { alert("5. User input found!"); console.log("User input found!"); } else { alert("5. User input NOT found! Check index.html"); console.error("User input NOT found!"); }
     if (chatBox) { alert("6. Chat box found!"); console.log("Chat box found!"); } else { alert("6. Chat box NOT found! Check index.html"); console.error("Chat box NOT found!"); } // chatBox도 확인!
     if (viewHistoryButton) { alert("7. View history button found!"); console.log("View history button found!"); } else { alert("7. View history button NOT found! Check index.html"); console.error("View history button NOT found!"); }
-    if (historyArea) { alert("8. History area found!"); console.log("History area found!"); } else { alert("8. History area NOT found! Check index.html"); console.error("History area NOT found!"); }
-     if (mainChatArea) { alert("9. Main chat area found!"); console.log("Main chat area found!"); } else { alert("9. Main chat area NOT found! Check index.html"); console.error("Main chat area NOT found!"); }
+    if (deleteSelectedButton) { alert("8. Delete selected button found!"); console.log("Delete selected button found!"); } else { alert("8. Delete selected button NOT found! Check index.html"); console.error("Delete selected button NOT found!"); } // 고정 메뉴 안에서 찾았는지 확인
+    if (backToChatButton) { alert("9. Back to chat button found!"); console.log("Back to chat button found!"); } else { alert("9. Back to chat button NOT found! Check index.html"); console.error("Back to chat button NOT found!"); } // 고정 메뉴 안에서 찾았는지 확인
+
+    if (historyArea) { alert("10. History area found!"); console.log("History area found!"); } else { alert("10. History area NOT found! Check index.html"); console.error("History area NOT found!"); }
+     if (mainChatArea) { alert("11. Main chat area found!"); console.log("Main chat area found!"); } else { alert("11. Main chat area NOT found! Check index.html"); console.error("Main chat area NOT found!"); }
+     if (historyList) { alert("12. History list found!"); console.log("History list found!"); } else { alert("12. History list NOT found! Check index.html"); console.error("History list NOT found!"); } // historyList도 확인
+     if (fixedMenu) { alert("13. Fixed menu area found!"); console.log("Fixed menu area found!"); } else { alert("13. Fixed menu area NOT found! Check index.html"); console.error("Fixed menu area NOT found!"); } // fixedMenu 영역 자체 확인
 
 
     // === 버튼 클릭 이벤트 리스너들을 연결하는 코드 ===
@@ -62,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
             await processUserInput(); // 입력 처리 함수 호출
         });
         console.log("Send button event listener attached."); // 콘솔 로그 추가
-        alert('10. Send button event listener attached!'); // === 이벤트 리스너 연결 alert ===
+        alert('14. Send button event listener attached!'); // === 이벤트 리스너 연결 alert ===
     } else {
          console.error("Error: '보내기' 버튼 요소를 찾을 수 없습니다! index.html의 id='send-button' 확인!"); // 버튼 못 찾았을 때 에러 로그 (Console 확인용)
          // alert("Error: '보내기' 버튼을 찾을 수 없어요! index.html의 id='send-button'을 확인해주세요!"); // 혹시 몰라 사용자에게도 알림 (Console 확인이 어려우니)
@@ -79,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
          // userInput.focus(); // 페이지 로드 시 입력창에 커서 두기 (DOMContentLoaded 안으로 이동) - 아래 초기 설정 완료 후 호출
          console.log("User input keypress listener attached."); // 콘솔 로그 추가
-         alert('11. User input keypress listener attached!'); // === 이벤트 리스너 연결 alert ===
+         alert('15. User input keypress listener attached!'); // === 이벤트 리스너 연결 alert ===
     } else {
          console.error("Error: 입력창 요소를 찾을 수 없습니다! index.html의 id='user-input' 확인!"); // 입력창 못 찾았을 때 에러 로그
          // alert("Error: 입력창을 찾을 수 없어요! index.html의 id='user-input'을 확인해주세요!"); // 혹시 몰라 사용자에게도 알림
@@ -92,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showHistoryList(); // 기록 목록 화면 보여주는 함수 호출
         });
         console.log("View history button event listener attached."); // 콘솔 로그 추가
-        alert('12. View history button event listener attached!'); // === 이벤트 리스너 연결 alert ===
+        alert('16. View history button event listener attached!'); // === 이벤트 리스너 연결 alert ===
     } else {
          console.error("Error: '대화 기록 보기' 버튼 요소를 찾을 수 없습니다! index.html의 id='view-history-button' 확인!"); // 버튼 못 찾았을 때 에러 로그
     }
@@ -103,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
             deleteSelectedHistories(); // 선택 삭제 함수 호출
         });
         console.log("Delete selected button event listener attached."); // 콘솔 로그 추가
-        alert('13. Delete selected button event listener attached!'); // === 이벤트 리스너 연결 alert ===
+        alert('17. Delete selected button event listener attached!'); // === 이벤트 리스너 연결 alert ===
     } else {
         console.error("Error: '선택 삭제' 버튼 요소를 찾을 수 없습니다! index.html의 id='delete-selected-button' 확인!"); // 버튼 못 찾았을 때 에러 로그
     }
@@ -115,16 +125,16 @@ document.addEventListener('DOMContentLoaded', () => {
             showMainChatArea(); // 주 대화 영역으로 전환 함수 호출
         });
         console.log("Back to chat button event listener attached."); // 콘솔 로그 추가
-        alert('14. Back to chat button event listener attached!'); // === 이벤트 리스너 연결 alert ===
+        alert('18. Back to chat button event listener attached!'); // === 이벤트 리스너 연결 alert ===
     } else {
         console.error("Error: '채팅으로 돌아가기' 버튼 요소를 찾을 수 없습니다! index.html의 id='back-to-chat-button' 확인!"); // 버튼 못 찾았을 때 에러 로그
     }
      console.log("All event listeners attempted to be attached."); // 콘솔 로그 추가
-     alert('15. 모든 이벤트 리스너 연결 시도 완료!'); // === 모든 리스너 연결 시도 완료 alert ===
+     alert('19. 모든 이벤트 리스너 연결 시도 완료!'); // === 모든 리스너 연결 시도 완료 alert ===
     // =======================================================
 
     // === DOMContentLoaded에서 초기 설정 시작을 알리는 alert ===
-    alert('16. DOMContentLoaded 초기 설정 시작!');
+    alert('20. DOMContentLoaded 초기 설정 시작!');
 
 
     // 초기 로드 시 모든 대화 기록 불러오기 및 설정
@@ -137,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
              currentChatId = lastValidChat.id;
              renderChatMessages(currentChatId); // 마지막 대화 내용을 화면에 표시
              console.log(`Loaded last chat history with ID: ${currentChatId}`); // 콘솔 로그 추가
-             alert('17. 마지막 대화 기록 로드 및 렌더링!'); // === 기록 로드 alert ===
+             alert('21. 마지막 대화 기록 로드 및 렌더링!'); // === 기록 로드 alert ===
         } else {
              // 유효한 기록이 없으면 새 대화 시작
              allChatHistories = []; // 혹시 이상한 기록이 로드됐으면 비우기
@@ -152,15 +162,29 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("No chat history found. Starting a new chat."); // 콘솔 로그 추가
         // startNewChat 안에서 alert 뜰 것임.
     }
+
+    // === 초기 버튼 가시성 설정 (메인 채팅 화면이니까 기록 관련 버튼은 숨김) ===
+     // 요소들이 모두 찾아진 후에 실행되어야 함
+     if (viewHistoryButton && deleteSelectedButton && backToChatButton) {
+        viewHistoryButton.classList.remove('hidden'); // 기록 보기 버튼은 보이고
+        deleteSelectedButton.classList.add('hidden'); // 선택 삭제 버튼 숨김
+        backToChatButton.classList.add('hidden'); // 채팅으로 돌아가기 버튼 숨김
+         alert('22. 초기 버튼 가시성 설정 완료!'); // === 초기 가시성 설정 alert ===
+     } else {
+          console.error("Error: Menu buttons not found for initial visibility setting!"); // 요소 못 찾았을 때 에러
+          alert('22. 초기 버튼 가시성 설정 실패! 요소 누락!'); // === 초기 가시성 설정 실패 alert ===
+     }
+
+
     // 입력창에 커서 두기 (요소 찾은 후)
     if (userInput) {
          userInput.focus();
-         alert('18. 입력창에 커서 두기!'); // === 커서 포커스 alert ===
+         alert('23. 입력창에 커서 두기!'); // === 커서 포커스 alert ===
     }
 
 
     // === DOMContentLoaded 실행 완료를 알리는 alert ===
-    alert('19. DOMContentLoaded 실행 완료! 이제 버튼 눌러봐!');
+    alert('24. DOMContentLoaded 실행 완료! 이제 버튼 눌러봐!');
 });
 
 
@@ -460,8 +484,8 @@ function renderChatMessages(chatId) {
 // 대화 기록 목록 화면을 보여주는 함수
 function showHistoryList() {
     // 기록 관련 요소들이 있는지 확인 (DOMContentLoaded 전에 호출될 경우 대비)
-    if (!mainChatArea || !historyArea || !historyList) {
-         console.error("Error: History list elements not found!");
+    if (!mainChatArea || !historyArea || !historyList || !viewHistoryButton || !deleteSelectedButton || !backToChatButton) { // 메뉴 버튼들도 확인
+         console.error("Error: History list or menu elements not found!");
          // alert("Error: 기록 목록을 표시할 수 없어요! 요소 누락!"); // 필요시 알림
          return;
     }
@@ -470,6 +494,12 @@ function showHistoryList() {
     mainChatArea.classList.add('hidden');
     historyArea.classList.remove('hidden');
     console.log("Switched to history list view."); // 콘솔 로그 추가
+
+    // === 메뉴 버튼 가시성 전환 (기록 화면일 때) ===
+    viewHistoryButton.classList.add('hidden'); // 기록 보기 버튼 숨김
+    deleteSelectedButton.classList.remove('hidden'); // 선택 삭제 버튼 보임
+    backToChatButton.classList.remove('hidden'); // 채팅으로 돌아가기 버튼 보임
+    // console.log("Menu buttons toggled for history view."); // 콘솔 로그 추가
 
 
     // 기록 목록 ul 비우기
@@ -549,8 +579,8 @@ function showHistoryList() {
 // 주 대화 영역을 보여주는 함수
 function showMainChatArea() {
      // 영역 관련 요소들이 있는지 확인 (DOMContentLoaded 전에 호출될 경우 대비)
-    if (!mainChatArea || !historyArea || !userInput) {
-         console.error("Error: Main chat area elements not found!");
+    if (!mainChatArea || !historyArea || !userInput || !viewHistoryButton || !deleteSelectedButton || !backToChatButton) { // 메뉴 버튼들도 확인
+         console.error("Error: Main chat area or menu elements not found!");
           // alert("Error: 채팅 화면으로 돌아갈 수 없어요! 요소 누락!"); // 필요시 알림
          return;
     }
@@ -559,6 +589,12 @@ function showMainChatArea() {
     mainChatArea.classList.remove('hidden');
      userInput.focus(); // 입력창에 커서 두기
      console.log("Switched to main chat area view."); // 콘솔 로그 추가
+
+    // === 메뉴 버튼 가시성 전환 (채팅 화면일 때) ===
+    viewHistoryButton.classList.remove('hidden'); // 기록 보기 버튼 보임
+    deleteSelectedButton.classList.add('hidden'); // 선택 삭제 버튼 숨김
+    backToChatButton.classList.add('hidden'); // 채팅으로 돌아가기 버튼 숨김
+    // console.log("Menu buttons toggled for main chat view."); // 콘솔 로그 추가
 }
 
 
@@ -607,7 +643,7 @@ function deleteSelectedHistories() {
         }
 
         // 기록 목록 화면 새로고침
-        showHistoryList();
+        showHistoryList(); // 삭제 후 목록 화면 다시 보여줌
 
         // 삭제 완료 알림 (츤데레 말투 적용)
          alert(`${deletedCount}개의 대화 기록을 삭제했어. ...딱히 네 기록이 궁금했던 건 아니야.`); // 삭제 완료 메시지도 츤데레로!
