@@ -55,7 +55,7 @@ body {
     position: fixed; /* 화면에 고정! */
     top: 15px; /* 위에서부터 15px */
     right: 15px; /* 오른쪽에서부터 15px */
-    z-index: 9999; /* ⭐️ 여기! z-index를 더 높여서 다른 요소보다 훨씬 위에 오도록! */
+    z-index: 99999; /* ⭐️ 여기! z-index를 훨씬 더 높여봤어! */
     display: flex; /* 메뉴 버튼 보이게! */
     gap: 10px; /* 버튼 사이 간격 */
     /* background-color: rgba(255,255,255,0.5); */ /* 메뉴 배경에 살짝 투명도 */
@@ -69,7 +69,7 @@ body {
      background-color: rgba(26, 115, 232, 0.5); /* 파란색 버튼에 50% 투명도 유지 */
      color: white;
      border: none;
-     border-radius: 0; /* ⭐️ 여기! 모서리를 0으로 만들어서 네모 모양으로! */
+     border-radius: 0; /* 네모 모양으로! */
      cursor: pointer;
      font-size: 0.9rem;
      transition: background-color 0.3s ease;
@@ -83,7 +83,7 @@ body {
 #fixed-menu .history-view-button {
      background-color: rgba(108, 117, 125, 0.5); /* 회색 계열 버튼에 50% 투명도! */
      color: white;
-     border-radius: 0; /* ⭐️ 여기! 네모 모양으로! */
+     border-radius: 0; /* 네모 모양으로! */
 }
 #fixed-menu .history-view-button:hover {
      background-color: #545b62;
@@ -236,7 +236,7 @@ h1 {
 #input-area #send-button {
     padding: 12px 25px;
     background-color: rgba(26, 115, 232, 0.5); /* 버튼 색상 파란색 유지 */
-    color: white;
+    color: white; /* 버튼 글자색 하얀색 유지 */
     border: none;
     border-radius: 24px;
     cursor: pointer;
@@ -345,7 +345,7 @@ h1 {
      #fixed-menu .menu-button {
          padding: 8px 15px;
          font-size: 0.8rem;
-         border-radius: 0; /* ⭐️ 모바일에서도 네모 모양으로! */
+         border-radius: 0; /* 모바일에서도 네모 모양으로! */
          width: 100%;
          text-align: center;
      }
