@@ -31,7 +31,7 @@ body {
     margin: 0; /* 마진 제거 */
     padding: 20px; /* 전체 화면이 되었으니 패딩 조절 (원하는 값으로) */
     /* background-color: #fff; */ /* 앱 컨테이너 배경색 제거 또는 반투명 설정 */
-    background-color: rgba(255, 255, 255, 0.4); /* ⭐️ 여기! 하얀색 배경에 40% 투명도! 더 투명하게! */
+    background-color: rgba(255, 255, 255, 0.3); /* ⭐️ 여기! 하얀색 배경에 30% 투명도! 더 투명하게! */
     border-radius: 0; /* 전체 화면이니까 모서리 둥글기 제거 */
     box-shadow: none; /* 전체 화면이니까 그림자 제거 */
     display: flex;
@@ -58,7 +58,7 @@ body {
 /* 고정 메뉴 안에 있는 버튼 스타일 (send-button 스타일 재활용) */
 #fixed-menu .menu-button { /* menu-button 클래스로 선택 */
      padding: 10px 20px; /* 패딩 조정 */
-     background-color: rgba(26, 115, 232, 0.5); /* ⭐️ 여기! 파란색 버튼에 50% 투명도 추가! */
+     background-color: rgba(26, 115, 232, 0.4); /* ⭐️ 여기! 파란색 버튼에 40% 투명도 추가! */
      color: white;
      border: none;
      border-radius: 20px; /* 둥근 버튼 */
@@ -73,7 +73,7 @@ body {
 
 /* 기록 화면에서 보이는 버튼 스타일 */
 #fixed-menu .history-view-button {
-     background-color: rgba(108, 117, 125, 0.5); /* ⭐️ 여기! 회색 계열 버튼에 50% 투명도! */
+     background-color: rgba(108, 117, 125, 0.4); /* ⭐️ 여기! 회색 계열 버튼에 40% 투명도! */
 }
 #fixed-menu .history-view-button:hover {
      background-color: #545b62;
@@ -175,17 +175,17 @@ h1 {
 
 .user-message {
     align-self: flex-end; /* 사용자 메시지는 오른쪽에 */
-    background-color: rgba(233, 233, 235, 0.4); /* ⭐️ 여기! 사용자 메시지 배경 연한 회색 + 40% 투명도! */
+    background-color: rgba(233, 233, 235, 0.3); /* ⭐️ 여기! 사용자 메시지 배경 연한 회색 + 30% 투명도! */
     color: #333; /* 사용자 메시지 글자색 */
     border-radius: 10px 10px 2px 10px; /* 오른쪽 아래 모서리만 덜 둥글게 */
 }
 
 .ai-message {
     align-self: flex-start; /* AI 메시지는 왼쪽에 */
-    background-color: rgba(247, 247, 248, 0.4); /* ⭐️ 여기! AI 메시지 배경 아주 연한 회색 + 40% 투명도! */
+    background-color: rgba(247, 247, 248, 0.3); /* ⭐️ 여기! AI 메시지 배경 아주 연한 회색 + 30% 투명도! */
     color: #333; /* AI 메시지 글자색 */
     border-radius: 10px 10px 10px 2px; /* 왼쪽 아래 모서리만 덜 둥글게 */
-    border: 1px solid rgba(224, 224, 224, 0.5); /* ⭐️ 여기! AI 메시지 얇은 테두리 + 50% 투명도! */
+    border: 1px solid rgba(224, 224, 224, 0.4); /* ⭐️ 여기! AI 메시지 얇은 테두리 + 40% 투명도! */
     box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* 그림자 추가 */
 }
 
@@ -200,20 +200,20 @@ h1 {
     gap: 10px; /* 입력창과 버튼 사이 간격 */
     margin-bottom: 0; /* 마진 제거 */
     padding-top: 15px; /* 위쪽 패딩 추가 */
-    border-top: 1px solid rgba(224, 224, 224, 0.5); /* ⭐️ 여기! 위쪽에 구분선 추가 + 50% 투명도! */
-    background-color: rgba(255, 255, 255, 0.4); /* ⭐️ 여기! 입력 영역 배경 하얗게 + 40% 투명도! */
+    border-top: 1px solid rgba(224, 224, 224, 0.4); /* ⭐️ 여기! 위쪽에 구분선 추가 + 40% 투명도! */
+    background-color: rgba(255, 255, 255, 0.3); /* ⭐️ 여기! 입력 영역 배경 하얗게 + 30% 투명도! */
     border-radius: 0; /* 전체 화면이니까 아래쪽 모서리 둥글기 제거 */
 }
 
 #user-input {
     flex-grow: 1; /* 입력창이 남은 공간 다 차지 */
     padding: 12px 15px; /* 패딩 조정 */
-    border: 1px solid rgba(204, 204, 204, 0.5); /* ⭐️ 여기! 테두리 + 50% 투명도! */
+    border: 1px solid rgba(204, 204, 204, 0.4); /* ⭐️ 여기! 테두리 + 40% 투명도! */
     border-radius: 24px; /* 더 둥근 입력창 */
     font-size: 1rem;
     outline: none;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    background-color: rgba(248, 248, 248, 0.4); /* ⭐️ 여기! 입력창 배경색 + 40% 투명도! */
+    background-color: rgba(248, 248, 248, 0.3); /* ⭐️ 여기! 입력창 배경색 + 30% 투명도! */
 }
 
 #user-input:focus {
@@ -234,7 +234,7 @@ h1 {
 /* send-button 스타일 (input-area 안에 있음) */
 #input-area #send-button {
     padding: 12px 25px; /* 패딩 조정 */
-    background-color: rgba(26, 115, 232, 0.6); /* ⭐️ 여기! 버튼 색상 + 60% 투명도! */
+    background-color: rgba(26, 115, 232, 0.5); /* ⭐️ 여기! 버튼 색상 + 50% 투명도! */
     color: white;
     border: none;
     border-radius: 24px; /* 더 둥근 버튼 */
@@ -262,16 +262,16 @@ h1 {
     list-style: none; /* 목록 점 없애기 */
     padding: 0;
     margin: 0 0 20px 0;
-    border: 1px solid rgba(224, 224, 224, 0.5); /* ⭐️ 여기! 테두리 + 50% 투명도! */
+    border: 1px solid rgba(224, 224, 224, 0.4); /* ⭐️ 여기! 테두리 + 40% 투명도! */
     border-radius: 8px;
     max-height: calc(100vh - 200px); /* ⭐️ 화면 높이에 맞춰 최대 높이 계산 (조절 가능) */
     overflow-y: auto; /* 목록 넘치면 스크롤 */
-    background-color: rgba(255, 255, 255, 0.4); /* ⭐️ 여기! 기록 목록 배경 하얗게 + 40% 투명도! */
+    background-color: rgba(255, 255, 255, 0.3); /* ⭐️ 여기! 기록 목록 배경 하얗게 + 30% 투명도! */
 }
 
 #history-list li {
     padding: 12px 15px;
-    border-bottom: 1px solid rgba(238, 238, 238, 0.5); /* ⭐️ 여기! 아래 테두리 + 50% 투명도! */
+    border-bottom: 1px solid rgba(238, 238, 238, 0.4); /* ⭐️ 여기! 아래 테두리 + 40% 투명도! */
     cursor: pointer; /* 마우스 올리면 손가락 모양 */
     display: flex; /* 체크박스랑 내용 정렬 */
     align-items: center; /* 세로 가운데 정렬 */
@@ -284,7 +284,7 @@ h1 {
 }
 
 #history-list li:hover {
-    background-color: rgba(248, 248, 248, 0.5); /* ⭐️ 여기! 마우스 올리면 배경색 + 50% 투명도! */
+    background-color: rgba(248, 248, 248, 0.4); /* ⭐️ 여기! 마우스 올리면 배경색 + 40% 투명도! */
 }
 
 #history-list li input[type="checkbox"] {
@@ -324,7 +324,7 @@ h1 {
     color: #888;
     align-self: flex-start;
     margin-left: 15px; /* AI 메시지와 동일하게 왼쪽 정렬 */
-    background-color: rgba(224, 224, 224, 0.4); /* ⭐️ 여기! AI 메시지 배경색과 비슷하게 + 40% 투명도! */
+    background-color: rgba(224, 224, 224, 0.3); /* ⭐️ 여기! AI 메시지 배경색과 비슷하게 + 30% 투명도! */
     padding: 10px 15px;
     border-radius: 10px;
     max-width: 80%;
@@ -397,7 +397,7 @@ h1 {
          gap: 8px;
      }
      /*
-     #bottom-buttons button, #history-buttons button {
+     #bottom-buttons button {
          width: 100%; // 모바일에서 버튼 너비 꽉 채우기
          text-align: center;
      }
