@@ -163,7 +163,7 @@ function updateCurrentSession() {
     } else {
         // 이미 있는 세션이면 메시지 목록만 업데이트
         currentSession.messages = currentMessages;
-        // ⭐️ 요약 내용도 최신 첫 사용자 메시지로 업데이트 (원하면 주석 해제)
+        // 요약 내용도 최신 첫 사용자 메시지로 업데이트 (원하면 주석 해제)
         const firstUserMsg = currentMessages.find(msg => msg.sender === 'user');
         if (firstUserMsg) {
              currentSession.summary = firstUserMsg.text.trim().substring(0, 50) + (firstUserMsg.text.trim().length > 50 ? '...' : '');
