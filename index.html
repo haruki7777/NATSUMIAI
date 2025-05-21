@@ -12,7 +12,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet" />
 
   <!-- Font Awesome (필요 시 사용) -->
-  <!-- 점 세개 아이콘을 Font Awesome으로 하고 싶으면 이 주석을 해제하고 CSS 파일 링크를 추가해야 해! -->
   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> -->
 </head>
 <body>
@@ -23,7 +22,8 @@
     <div id="main-chat-area">
       <div id="chat-container">
         <div id="chat-box">
-          <!-- 초기 AI 메시지는 JavaScript에서 로드 시 추가됩니다. -->
+          <!-- 초기 AI 메시지 추가 -->
+          <p class="message ai-message">츤츤거리면서 '뭐 할말있어?'</p>
         </div>
         <div id="input-area">
           <input type="text" id="user-input" placeholder="여기에 질문을 입력하세요!" autocomplete="off" />
@@ -48,18 +48,11 @@
     </div>
   </div>
 
-  <!-- 고정 메뉴 (오른쪽 위로 옮길 거예요! CSS에서 스타일을 잡아줄 거야) -->
+  <!-- 고정 메뉴 (오른쪽 위로 옮길 거예요!) -->
   <div id="fixed-menu">
-    <!-- 메뉴 아이콘 버튼 (점 3개 모양으로 보일 거예요) -->
-    <!-- Font Awesome 아이콘을 사용하거나, 간단하게 텍스트 '⋮'를 사용해도 좋아요! -->
-    <!-- 여기서는 일단 텍스트로 할게요. Font Awesome 쓰면 더 예쁠 수도 있어요! -->
     <button id="menu-toggle-button" type="button">
       ⋮
-      <!-- Font Awesome 사용 예시 (head에 CSS 링크 추가 필수!) -->
-      <!-- <i class="fas fa-bars"></i> -->
     </button>
-    <!-- '새 채팅'과 '기록 보기' 메뉴 항목들을 담을 컨테이너 -->
-    <!-- 처음에는 안 보이게 hidden 클래스를 미리 넣어둘게요. JS에서 토글할 거예요. -->
     <div id="menu-items-container" class="hidden">
       <button id="new-chat-button" class="menu-button" type="button">새 채팅</button>
       <button id="view-history-button" class="menu-button" type="button">기록 보기</button>
