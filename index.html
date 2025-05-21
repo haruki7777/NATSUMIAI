@@ -11,19 +11,22 @@
   <!-- Google Fonts - Noto Sans KR -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet" />
 
-  <!-- Font Awesome (필요 시 사용) -->
+  <!-- Font Awesome (필요 시 사용 - 점 세개 아이콘 사용하려면 필요!) -->
+  <!-- 만약 점 세개 아이콘을 유니코드 문자 '⋮' 대신 Font Awesome 아이콘으로 하고 싶다면 아래 주석을 해제해줘! -->
   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> -->
 </head>
 <body>
   <div id="app-container">
+    <!-- ⭐️ 제목 부분은 그대로 -->
     <h1>하루키의 멋진 AI 비서</h1>
 
     <!-- 메인 대화 영역 -->
     <div id="main-chat-area">
       <div id="chat-container">
         <div id="chat-box">
-          <!-- 초기 AI 메시지 추가 -->
-          <p class="message ai-message">뭐 할말있어?</p>
+          <!-- ⭐️ 초기 AI 메시지: HTML에 직접 추가! JS에서는 더 이상 추가하지 않아요. -->
+          <!-- 'message' 클래스와 'ai-message' 클래스는 CSS에서 스타일을 정의할 거예요. -->
+          <p class="message ai-message">츤츤거리면서 '뭐 할말있어?'</p>
         </div>
         <div id="input-area">
           <input type="text" id="user-input" placeholder="여기에 질문을 입력하세요!" autocomplete="off" />
@@ -32,28 +35,33 @@
       </div>
     </div>
 
-    <!-- 하단 버튼 영역 (사용 안함) -->
+    <!-- 하단 버튼 영역 (사용 안함) - 이건 그대로 둬도 괜찮아 -->
     <div id="bottom-buttons" class="hidden"></div>
 
     <!-- 대화 기록 영역 -->
     <div id="history-area" class="hidden">
       <h2>대화 기록</h2>
       <ul id="history-list">
-        <!-- 대화 기록은 JavaScript에서 추가 -->
+        <!-- 대화 기록 항목은 JavaScript에서 동적으로 추가돼요. -->
       </ul>
       <div id="history-buttons">
+        <!-- 'hidden' 클래스는 기본적으로 안 보이게 하고, JS에서 기록 보기 시 보이게 할 거예요. -->
         <button id="delete-selected-button" class="menu-button history-view-button hidden" type="button">선택 삭제</button>
         <button id="back-to-chat-button" class="menu-button history-view-button hidden" type="button">채팅으로 돌아가기</button>
       </div>
     </div>
   </div>
 
-  <!-- 고정 메뉴 (오른쪽 위로 옮길 거예요!) -->
+  <!-- ⭐️ 고정 메뉴 영역 - 오른쪽 위로 옮기고 점세개 안에 버튼들을 넣을 거예요. -->
   <div id="fixed-menu">
+    <!-- ⭐️ 메뉴를 열고 닫는 점 세 개 아이콘 버튼 -->
+    <!-- Font Awesome 사용 시 <i class="fas fa-bars"></i> 로 교체 가능 -->
     <button id="menu-toggle-button" type="button">
       ⋮
     </button>
+    <!-- ⭐️ 실제 메뉴 항목들을 담을 컨테이너 - 기본적으로 숨겨져 있어요. -->
     <div id="menu-items-container" class="hidden">
+      <!-- 'menu-button' 클래스는 CSS에서 공통 스타일을 정의할 거예요. -->
       <button id="new-chat-button" class="menu-button" type="button">새 채팅</button>
       <button id="view-history-button" class="menu-button" type="button">기록 보기</button>
     </div>
