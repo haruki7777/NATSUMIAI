@@ -1,53 +1,49 @@
 /* Google Fonts - Noto Sans KR (HTML에서 링크했는지 확인!) */
-body {
+html, body { /* ⭐️ html, body에 기본 스타일 적용 */
     font-family: 'Noto Sans KR', sans-serif; /* 한국어 지원 글꼴 */
-    display: flex;
-    justify-content: center; /* 가로 가운데 정렬 */
-    align-items: center; /* 세로 가운데 정렬 */
-    min-height: 100vh; /* 화면 전체 높이 사용 */
     margin: 0;
-    padding: 0; /* 바디 자체 패딩 제거 */
-    box-sizing: border-box; /* 패딩 포함 크기 계산 */
+    padding: 0;
+    width: 100%; /* ⭐️ 너비 100% */
+    height: 100%; /* ⭐️ 높이 100% */
+    overflow: hidden; /* ⭐️ 전체 화면에서 스크롤 안 생기게 (app-container에 스크롤 적용) */
+    box-sizing: border-box;
     color: #fff; /* 기본 글자 색깔 하얀색으로! */
 
     /* === 하루키! 여기에 원하는 배경 이미지를 넣어줘! === */
-    /* 하루키 GitHub 파일 구조에 맞게 경로 수정! css 폴더에서 images 폴더 안으로! 👇 */
      background-image: url('../images/BACKGROUND.jpeg'); /* 이미지 파일 경로를 정확하게! */
      background-size: cover; /* 화면 전체를 꽉 채우도록 크기 조절 */
      background-position: center; /* 이미지를 가운데 정렬 */
      background-repeat: no-repeat; /* 이미지 반복 안 함 */
      background-attachment: fixed; /* 스크롤 해도 배경 이미지는 고정 */
     /* 단색 배경을 원하면 아래 주석을 풀고 색깔 코드를 바꿔줘! */
-    /* background-color: #f0f0f0; */ /* 조금 밝은 회색 배경 */
+    /* background-color: #f0f0f0; */
     /* =========================================== */
 
-    /* 중요: 혹시 body나 부모 요소에 position:relative, transform, filter, perspective, will-change 같은 속성이 있다면 */
-    /* position: fixed 요소의 위치가 예상과 다를 수 있습니다. 해당 속성들을 확인해보세요! */
-    /* transform: none !important; */ /* 예시: 강제로 transform 없애기 */
-    /* filter: none !important; */ /* 예시: 강제로 filter 없애기 */
+    /* ⭐️ 중요: 혹시 모를 position: fixed 문제 방지를 위해 transform, filter 제거 */
+    transform: none !important;
+    filter: none !important;
 }
 
 #app-container {
     width: 100vw; /* 뷰포트 너비 전체 */
     height: 100vh; /* 뷰포트 높이 전체 */
-    max-width: none; /* 최대 너비 제한 해제 */
-    max-height: none; /* 최대 높이 제한 해제 */
-    margin: 0; /* 마진 제거 */
-    padding: 20px; /* 전체 화면이 되었으니 패딩 조절 (원하는 값으로) */
-    background-color: rgba(0, 0, 0, 0.4); /* 배경색을 검은색에 40% 투명도로 바꿔서 하얀 글씨가 잘 보이게! */
-    border-radius: 0; /* 전체 화면이니까 모서리 둥글기 제거 */
-    box-shadow: none; /* 전체 화면이니까 그림자 제거 */
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.4); /* 배경색을 검은색에 40% 투명도로 */
+    border-radius: 0;
+    box-shadow: none;
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: auto; /* 내용이 넘치면 스크롤 생기도록 */
+    overflow-y: auto; /* ⭐️ app-container 내부에서만 스크롤 생기게 */
     position: relative;
     z-index: 1; /* 배경 이미지 위에 올라오도록 z-index 설정 */
 
-    /* 중요: 혹시 #app-container에 transform, filter, perspective, will-change 같은 속성이 있다면 */
-    /* position: fixed 요소의 위치가 예상과 다를 수 있습니다. 해당 속성들을 확인해보세요! */
-    /* transform: none !important; */
-    /* filter: none !important; */
+    /* ⭐️ 중요: 혹시 모를 position: fixed 문제 방지를 위해 transform, filter 제거 */
+    transform: none !important;
+    filter: none !important;
 }
 
 /* === 화면 상단 오른쪽 고정 메뉴 스타일! === */
@@ -58,15 +54,19 @@ body {
     z-index: 99999; /* ⭐️ 여기! z-index를 훨씬 더 높여봤어! */
     display: flex; /* 메뉴 버튼 보이게! */
     gap: 10px; /* 버튼 사이 간격 */
-    /* background-color: rgba(255,255,255,0.5); */ /* 메뉴 배경에 살짝 투명도 */
+    /* background-color: rgba(255,255,255,0.5); */
     /* padding: 5px 10px; */
     /* border-radius: 5px; */
+
+    /* ⭐️ 혹시 모를 문제 방지 */
+    transform: none !important;
+    filter: none !important;
 }
 
-/* 고정 메뉴 안에 있는 버튼 스타일 (send-button 스타일 재활용) */
-#fixed-menu .menu-button { /* menu-button 클래스로 선택 */
-     padding: 10px 20px; /* 패딩 조정 */
-     background-color: rgba(26, 115, 232, 0.5); /* 파란색 버튼에 50% 투명도 유지 */
+/* 고정 메뉴 안에 있는 버튼 스타일 */
+#fixed-menu .menu-button {
+     padding: 10px 20px;
+     background-color: rgba(26, 115, 232, 0.5);
      color: white;
      border: none;
      border-radius: 0; /* 네모 모양으로! */
@@ -74,16 +74,23 @@ body {
      font-size: 0.9rem;
      transition: background-color 0.3s ease;
      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+     /* ⭐️ 혹시 모를 문제 방지 */
+     position: relative; /* z-index가 잘 작동하도록 relative 추가 */
+     z-index: 2; /* 메뉴 자체 z-index보다 약간 낮게 */
 }
 #fixed-menu .menu-button:hover {
-    background-color: #0f4e8c; /* 호버 시 색상 변경 */
+    background-color: #0f4e8c;
 }
 
 /* 기록 화면에서 보이는 버튼 스타일 */
 #fixed-menu .history-view-button {
-     background-color: rgba(108, 117, 125, 0.5); /* 회색 계열 버튼에 50% 투명도! */
+     background-color: rgba(108, 117, 125, 0.5);
      color: white;
      border-radius: 0; /* 네모 모양으로! */
+     /* ⭐️ 혹시 모를 문제 방지 */
+     position: relative;
+     z-index: 2;
 }
 #fixed-menu .history-view-button:hover {
      background-color: #545b62;
@@ -98,13 +105,13 @@ body {
 
 
 h1 {
-    color: #fff; /* 제목 색깔 하얀색으로! */
+    color: #fff;
     margin-top: 0;
     margin-bottom: 30px;
-    font-size: 2em; /* 제목 크기 키움 */
-    font-weight: 700; /* 제목 굵게 */
+    font-size: 2em;
+    font-weight: 700;
     text-align: center;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.5); /* 그림자 살짝 넣어서 배경에 묻히지 않게 */
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
 }
 
 /* 주 대화 영역과 기록 영역 전환 */
@@ -151,11 +158,11 @@ h1 {
     width: 8px;
 }
 #chat-box::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.5); /* 스크롤바 색깔도 하얀색 계열에 투명도! */
+    background-color: rgba(255, 255, 255, 0.5);
     border-radius: 4px;
 }
 #chat-box::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1); /* 스크롤바 트랙도 하얀색 계열에 투명도! */
+    background: rgba(255, 255, 255, 0.1);
 }
 
 
@@ -166,24 +173,25 @@ h1 {
     max-width: 80%;
     word-wrap: break-word;
     line-height: 1.6;
-    position: relative;
-    color: #333; /* 버블 안의 글씨는 다시 어두운 색으로! */
+    position: relative; /* ⭐️ 메시지 버블에도 z-index 적용을 위해 relative 추가 */
+    z-index: 1; /* ⭐️ 메뉴나 입력창보다 아래에 있도록 z-index 설정 */
+    color: #333;
 }
 
 .user-message {
     align-self: flex-end;
-    background-color: rgba(255, 255, 255, 0.8); /* 사용자 메시지 배경 하얀색에 80% 투명도! */
-    color: #333; /* 사용자 메시지 글자색 다시 어둡게 */
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #333;
     border-radius: 10px 10px 2px 10px;
 }
 
 .ai-message {
     align-self: flex-start;
-    background-color: rgba(255, 255, 255, 0.8); /* AI 메시지 배경 하얀색에 80% 투명도! */
-    color: #333; /* AI 메시지 글자색 다시 어둡게 */
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #333;
     border-radius: 10px 10px 10px 2px;
-    border: 1px solid rgba(224, 224, 224, 0.8); /* 테두리도 하얀색 계열에 80% 투명도 */
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* 그림자 추가 */
+    border: 1px solid rgba(224, 224, 224, 0.8);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 /* 메시지 이름 (나, AI 비서) 숨기기 */
@@ -197,31 +205,33 @@ h1 {
     gap: 10px;
     margin-bottom: 0;
     padding-top: 15px;
-    border-top: 1px solid rgba(255, 255, 255, 0.5); /* 위쪽에 구분선 하얀색 계열에 50% 투명도! */
-    background-color: rgba(0, 0, 0, 0.4); /* 입력 영역 배경 검은색에 40% 투명도! */
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    background-color: rgba(0, 0, 0, 0.4);
     border-radius: 0;
+    position: relative; /* ⭐️ 입력 영역에도 z-index 적용을 위해 relative 추가 */
+    z-index: 10; /* ⭐️ 메뉴보다 약간 낮지만 채팅 버블보다는 위에 있도록 높게 설정 */
 }
 
 #user-input {
     flex-grow: 1;
     padding: 12px 15px;
-    border: 1px solid rgba(255, 255, 255, 0.5); /* 테두리 하얀색 계열에 50% 투명도! */
+    border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: 24px;
     font-size: 1rem;
     outline: none;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    background-color: rgba(255, 255, 255, 0.2); /* 입력창 배경색 하얀색에 20% 투명도! */
-    color: #fff; /* 입력창 글자색 하얀색으로! */
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
 }
 
-#user-input::placeholder { /* 플레이스홀더 글자색 */
-    color: rgba(255, 255, 255, 0.7); /* 하얀색에 70% 투명도 */
+#user-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
 }
 
 
 #user-input:focus {
-    border-color: #fff; /* 포커스 시 테두리 색상 하얀색으로 */
-    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25); /* 포커스 시 그림자 효과 하얀색 계열 */
+    border-color: #fff;
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
 }
 
 #bottom-buttons {
@@ -232,11 +242,11 @@ h1 {
 }
 
 
-/* send-button 스타일 (input-area 안에 있음) */
+/* send-button 스타일 */
 #input-area #send-button {
     padding: 12px 25px;
-    background-color: rgba(26, 115, 232, 0.5); /* 버튼 색상 파란색 유지 */
-    color: white; /* 버튼 글자색 하얀색 유지 */
+    background-color: rgba(26, 115, 232, 0.5);
+    color: white;
     border: none;
     border-radius: 24px;
     cursor: pointer;
@@ -244,6 +254,8 @@ h1 {
     transition: background-color 0.3s ease;
     flex-shrink: 0;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: relative; /* ⭐️ 버튼 자체에도 z-index 적용을 위해 relative 추가 */
+    z-index: 1; /* ⭐️ 입력창보다 위에 있도록 z-index 설정 (굳이 필요 없을수도 있지만 혹시 몰라) */
 }
 
 #input-area #send-button:hover {
@@ -252,33 +264,45 @@ h1 {
 
 
 /* 기록 목록 화면 스타일 */
+#history-area {
+     /* ⭐️ 기록 화면 영역 자체에도 z-index 적용 */
+     position: relative;
+     z-index: 5; /* 입력 영역보다는 아래, 메뉴보다는 아래 */
+}
+
 #history-area h2 {
     text-align: center;
     margin-bottom: 20px;
-    color: #fff; /* 기록 제목 색깔 하얀색으로! */
+    color: #fff;
     font-size: 1.8em;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.5); /* 그림자 살짝 넣어서 배경에 묻히지 않게 */
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
 }
 
 #history-list {
     list-style: none;
     padding: 0;
     margin: 0 0 20px 0;
-    border: 1px solid rgba(255, 255, 255, 0.4); /* 테두리 하얀색 계열에 40% 투명도! */
+    border: 1px solid rgba(255, 255, 255, 0.4);
     border-radius: 8px;
     max-height: calc(100vh - 200px);
     overflow-y: auto;
-    background-color: rgba(0, 0, 0, 0.4); /* 기록 목록 배경 검은색에 40% 투명도! */
+    background-color: rgba(0, 0, 0, 0.4);
+     /* ⭐️ 기록 목록 자체에도 z-index 적용 */
+     position: relative;
+     z-index: 1;
 }
 
 #history-list li {
     padding: 12px 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* 아래 테두리 하얀색 계열에 20% 투명도! */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     cursor: pointer;
     display: flex;
     align-items: center;
     transition: background-color 0.2s ease;
-    color: #fff; /* 목록 아이템 글자색 하얀색으로! */
+    color: #fff;
+     /* ⭐️ 목록 아이템에도 z-index 적용 */
+     position: relative;
+     z-index: 1;
 }
 
 #history-list li:last-child {
@@ -286,12 +310,15 @@ h1 {
 }
 
 #history-list li:hover {
-    background-color: rgba(255, 255, 255, 0.1); /* 호버 시 배경 하얀색 계열에 10% 투명도! */
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 #history-list li input[type="checkbox"] {
     margin-right: 10px;
     flex-shrink: 0;
+     /* ⭐️ 체크박스에도 z-index 적용 */
+     position: relative;
+     z-index: 2; /* 텍스트보다 위에 있도록 */
 }
 
 #history-list li span {
@@ -299,6 +326,9 @@ h1 {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+     /* ⭐️ 텍스트에도 z-index 적용 */
+     position: relative;
+     z-index: 1;
 }
 
 
@@ -307,28 +337,40 @@ h1 {
     display: flex;
     justify-content: center;
     gap: 10px;
+     /* ⭐️ 기록 버튼 영역에도 z-index 적용 */
+     position: relative;
+     z-index: 5;
 }
 
 
 /* 로딩 인디케이터 스타일 */
 .loading-indicator {
     font-style: italic;
-    color: rgba(255, 255, 255, 0.8); /* 로딩 글자색 하얀색 계열에 80% 투명도! */
+    color: rgba(255, 255, 255, 0.8);
     align-self: flex-start;
     margin-left: 15px;
-    background-color: rgba(0, 0, 0, 0.3); /* 로딩 배경 검은색에 30% 투명도! */
+    background-color: rgba(0, 0, 0, 0.3);
     padding: 10px 15px;
     border-radius: 10px;
     max-width: 80%;
+     /* ⭐️ 로딩 인디케이터에도 z-index 적용 */
+     position: relative;
+     z-index: 1;
 }
 
 
 /* 모바일 반응형 */
 @media (max-width: 600px) {
+     html, body {
+         /* 모바일에서 혹시 모를 스크롤 문제 방지 */
+         overflow: hidden;
+     }
+
     #app-container {
         padding: 10px;
         margin-top: 0;
         margin-bottom: 0;
+         overflow-y: auto; /* ⭐️ 모바일에서도 app-container 내부 스크롤 */
     }
 
     h1 {
@@ -341,6 +383,7 @@ h1 {
          right: 5px;
          gap: 5px;
          flex-direction: column;
+         z-index: 99999; /* ⭐️ 모바일에서도 z-index 높게 */
     }
      #fixed-menu .menu-button {
          padding: 8px 15px;
@@ -370,6 +413,7 @@ h1 {
         flex-direction: column;
         gap: 8px;
         padding-top: 10px;
+         z-index: 10; /* ⭐️ 모바일 입력 영역 z-index */
     }
 
     #user-input, #input-area #send-button {
