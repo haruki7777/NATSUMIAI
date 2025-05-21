@@ -4,10 +4,12 @@ html, body {
   margin: 0;
   padding: 0;
   overflow: hidden; /* 화면 전체 스크롤 없앰 */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Noto Sans KR', sans-serif; /* Google Fonts 적용 */
   background: url('../images/BACKGROUND.jpeg') no-repeat center center fixed;
   background-size: cover;
-  color: #222;
+  /* ⭐️ 글자색을 하얀색으로 변경! 👇 */
+  color: white;
+  /* background-color: rgba(0,0,0,0.1); 추가하면 배경 이미지가 더 선명해 보일 수 있어요 */
 }
 
 /* 2. 최상위 앱 컨테이너 */
@@ -18,8 +20,10 @@ html, body {
   flex-direction: column;
   overflow: hidden; /* 내부 스크롤만 허용 */
   user-select: none;
-  background-color: rgba(255, 255, 255, 0.8); /* 배경이미지 위에 반투명 흰 배경 */
-  box-shadow: inset 0 0 100px rgba(0,0,0,0.1);
+  /* ⭐️ app-container 배경 투명도 조절 (원래 0.8 -> 0.2로 많이 올림) 👇 */
+  /* 배경 이미지가 더 잘 보이게! */
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 0 100px rgba(0,0,0,0.1); /* 이건 그대로 둬도 좋아요 */
 }
 
 /* 3. 채팅 박스: 여기서만 스크롤 */
@@ -27,55 +31,120 @@ html, body {
   flex-grow: 1;
   padding: 15px;
   margin: 15px;
-  background: #fff;
+  /* ⭐️ chat-box 배경 투명도 조절 (원래 solid #fff -> rgba로 변경하고 투명도 올림) 👇 */
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   overflow-y: auto;
   overflow-x: hidden;
   z-index: 2;
+  /* ⭐️ 채팅 글자색은 기본값(white)을 따르도록 별도 설정 안함 */
 }
 
-/* 4. 고정 메뉴 */
+/* 4. 고정 메뉴 (HTML 구조 변경 후의 스타일) */
+/* fixed-menu 컨테이너 자체는 이제 메뉴 아이콘과 메뉴 항목 컨테이너를 포함해요 */
 #fixed-menu {
-  position: fixed;
-  top: 15px;
-  right: 15px;
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-  padding: 10px 15px;
-  z-index: 99999;
+  position: fixed; /* 화면에 고정 */
+  top: 15px; /* 위에서부터 15px 떨어진 위치 */
+  right: 15px; /* 오른쪽에서부터 15px 떨어진 위치 */
+  z-index: 99999; /* 다른 요소들 위에 표시 */
   user-select: none;
-  display: flex;
-  gap: 10px;
-  align-items: center;
+  /* flex, gap, align-items 는 메뉴 항목 컨테이너에 필요할 수 있어요. 여기는 아이콘+항목 전체 컨테이너니까 뺄게요. */
+  /* display: flex; */
+  /* gap: 10px; */
+  /* align-items: center; */
 }
 
-/* 5. 메뉴 버튼 */
-#fixed-menu .menu-button {
+/* ⭐️ 메뉴 아이콘 버튼 (점 3개 버튼) 스타일 추가 👇 */
+#menu-toggle-button {
+  background-color: rgba(255, 255, 255, 0.4); /* 배경 투명도 살짝 */
+  border: 1px solid rgba(255, 255, 255, 0.5); /* 테두리도 투명도 살짝 */
+  border-radius: 5px; /* 모서리 둥글게 */
+  padding: 5px 10px; /* 안쪽 여백 */
+  cursor: pointer; /* 마우스 커서 모양 */
+  font-size: 20px; /* 아이콘 크기 */
+  line-height: 1; /* 줄 높이 조정 */
+  color: white; /* 아이콘 색상 하얗게 */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* 그림자 */
+  transition: background-color 0.3s ease; /* 부드러운 호버 효과 */
+}
+
+#menu-toggle-button:hover {
+   background-color: rgba(255, 255, 255, 0.6); /* 호버 시 조금 덜 투명하게 */
+}
+
+
+/* ⭐️ 메뉴 항목들을 담는 컨테이너 스타일 추가 👇 */
+#menu-items-container {
+  position: absolute; /* 점 세 개 버튼 기준으로 위치 설정 */
+  top: 40px; /* 점 세 개 버튼 아래에 위치 (버튼 높이 고려해서 조절하세요) */
+  right: 0; /* 점 세 개 버튼의 오른쪽에 맞춰 정렬 */
+  /* ⭐️ 메뉴 배경 투명도 조절 (원래 0.95 -> 0.4로 변경) 👇 */
+  background-color: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.5); /* 테두리도 투명도 살짝 */
+  border-radius: 5px; /* 모서리 둥글게 */
+  padding: 5px; /* 안쪽 여백 */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+  z-index: 1001; /* 다른 요소들 위에 표시 (메뉴 아이콘보다 높게) */
+  min-width: 120px; /* 최소 너비 설정 (버튼 텍스트에 따라 조절) */
+  display: flex; /* 내부 버튼들을 flexbox로 배치 */
+  flex-direction: column; /* 세로 방향으로 쌓이게 */
+  gap: 5px; /* 버튼들 사이 간격 */
+  /* .hidden 클래스에서 display: none; 을 관리할 거예요 */
+}
+
+
+/* ⭐️ 메뉴 항목 컨테이너를 숨기는 클래스 (JS에서 토글) 👇 */
+.hidden {
+  display: none;
+}
+
+
+/* 5. 메뉴 버튼 (메뉴 항목 컨테이너 안의 버튼 스타일) */
+/* 선택자를 좀 더 명확하게 수정 👇 */
+#menu-items-container .menu-button {
   cursor: pointer;
   padding: 8px 14px;
   border-radius: 5px;
-  border: 1px solid #bbb;
-  background-color: #eee;
+  /* ⭐️ 메뉴 항목 버튼 테두리 투명도 조절 👇 */
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  /* ⭐️ 메뉴 항목 버튼 배경 투명도 조절 👇 */
+  background-color: rgba(255, 255, 255, 0.3); /* 배경 투명도 */
   transition: background-color 0.3s ease;
   font-weight: 600;
   user-select: none;
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  /* ⭐️ 글자색은 전체 설정(white)을 따르도록 별도 설정 안함 (혹시 필요하면 color: white; 추가) */
+   color: white; /* 명시적으로 하얀색 설정 */
+  text-align: left; /* 텍스트 왼쪽 정렬 (메뉴 버튼에 맞게) */
 }
 
-#fixed-menu .menu-button:hover {
-  background-color: #ddd;
+#menu-items-container .menu-button:hover {
+  /* ⭐️ 메뉴 항목 버튼 호버 시 배경 투명도 조절 👇 */
+  background-color: rgba(255, 255, 255, 0.5); /* 호버 시 조금 덜 투명하게 */
 }
 
-/* 6. 입력창 영역 (필요하면) */
+
+/* 6. 입력창 영역 */
 #input-area {
   padding: 12px 20px;
   border-top: 1px solid #ccc;
-  background-color: rgba(250, 250, 250, 0.95);
+  /* ⭐️ 입력창 배경 투명도 조절 (원래 0.95 -> 0.4로 변경) 👇 */
+  background-color: rgba(250, 250, 250, 0.4);
   box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+  /* ⭐️ 입력창 안의 글자색은 기본값(white)을 따르도록 별도 설정 안함 */
 }
+
+/* ⭐️ 입력창 텍스트 색상 (Placeholder 포함) 명시적으로 하얗게 👇 */
+#input-area input[type="text"] {
+  color: white; /* 입력되는 글자색 */
+  /* placeholder 글자색 변경은 가상 요소 선택자 ::placeholder를 사용해야 해요 */
+}
+
+#input-area input[type="text"]::placeholder {
+   color: rgba(255, 255, 255, 0.7); /* placeholder 글자색 (살짝 투명하게) */
+}
+
 
 /* 7. 스크롤바 스타일 커스텀 (#chat-box) */
 #chat-box::-webkit-scrollbar {
@@ -83,34 +152,99 @@ html, body {
 }
 
 #chat-box::-webkit-scrollbar-track {
-  background: #f0f0f0;
+  /* ⭐️ 스크롤바 트랙 배경 투명도 조절 👇 */
+  background: rgba(240, 240, 240, 0.3);
   border-radius: 10px;
 }
 
 #chat-box::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.15);
+  /* ⭐️ 스크롤바 썸 배경 투명도 조절 👇 */
+  background-color: rgba(255, 255, 255, 0.4);
   border-radius: 10px;
-  border: 2px solid #f0f0f0;
+  /* ⭐️ 스크롤바 썸 테두리 투명도 조절 👇 */
+  border: 2px solid rgba(240, 240, 240, 0.3);
 }
+
 
 /* 8. 반응형 간단 처리 (필요시) */
 @media (max-width: 600px) {
-  #fixed-menu {
+  /* 반응형 메뉴 위치는 그대로 둬도 괜찮을 것 같아요. */
+  /* #fixed-menu {
     top: auto;
     bottom: 15px;
     right: 50%;
     transform: translateX(50%);
     padding: 8px 12px;
     gap: 8px;
+  } */
+  /* 메뉴 아이콘 버튼과 메뉴 항목 컨테이너에 대한 반응형 스타일이 필요하면 여기에 추가하세요 */
+  /* 예: 모바일에서 메뉴가 전체 너비를 차지하게 하거나, 다른 위치에 배치 등 */
+
+  #fixed-menu {
+      top: 10px; /* 모바일에서도 오른쪽 위에 두는 걸로 통일 */
+      right: 10px;
+      /* transform: none; 중앙 정렬했던 transform 제거 */
   }
-  
+   /* 메뉴 항목 컨테이너의 반응형 위치 조정 */
+   #menu-items-container {
+       top: 40px; /* 아이콘 아래 */
+       right: 0; /* 아이콘 오른쪽 정렬 */
+       min-width: 100px; /* 모바일에서 좀 더 작게 */
+   }
+
   #fixed-menu .menu-button {
     padding: 6px 10px;
     font-size: 14px;
   }
-  
+
   #chat-box {
     margin: 10px;
     padding: 10px;
   }
+}
+
+/* ⭐️ HTML에서 .hidden 클래스를 사용하는 다른 요소들에 대한 스타일 (이미 있던 것) 👇 */
+/* 대화 기록 영역 숨김 */
+#history-area.hidden {
+  display: none;
+}
+
+/* 하단 버튼 영역 (사용 안함) 숨김 */
+#bottom-buttons.hidden {
+  display: none;
+}
+
+/* 대화 기록 화면의 버튼들 숨김 */
+.history-view-button.hidden {
+    display: none;
+}
+
+/* ⭐️ 기본 메시지, 사용자 메시지, AI 메시지 스타일 (이전 코드에 있었을 거예요) 👇 */
+/* 필요하면 추가하거나 수정하세요 */
+.message {
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    max-width: 80%; /* 메시지 최대 너비 */
+}
+
+.user-message {
+    background-color: rgba(0, 123, 255, 0.5); /* 사용자 메시지 배경 투명도 조절 */
+    color: white; /* 사용자 메시지 글자색은 하얗게 유지 */
+    align-self: flex-end; /* 오른쪽 정렬 */
+    margin-left: auto; /* 오른쪽 정렬 */
+}
+
+.ai-message {
+    background-color: rgba(220, 220, 220, 0.5); /* AI 메시지 배경 투명도 조절 */
+    color: white; /* AI 메시지 글자색 하얗게 (기본값 따름) */
+    align-self: flex-start; /* 왼쪽 정렬 */
+    margin-right: auto; /* 왼쪽 정렬 */
+}
+
+/* 로딩 인디케이터 스타일 (JS에서 .loading-indicator 클래스 추가) */
+.ai-message.loading-indicator {
+    background-color: rgba(180, 180, 180, 0.5); /* 로딩 인디케이터 배경 투명도 조절 */
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.8); /* 로딩 텍스트 색상 */
 }
