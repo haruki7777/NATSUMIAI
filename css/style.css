@@ -175,7 +175,7 @@ h1 {
     gap: 12px;
     background-color: transparent;
     border: none;
-     /* ⭐️ 터치 이벤트가 하위 요소로 잘 전달되도록 */
+     /* ⭐️ 터치 이벤트가 하위 요소로 잘 작동하도록 */
      pointer-events: auto; /* 채팅 버블 클릭/스크롤 가능하게 */
 }
 
