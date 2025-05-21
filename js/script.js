@@ -15,6 +15,7 @@ function loadSessionsFromLocalStorage() {
         } catch (e) {
             console.error('Failed to parse chat sessions from localStorage', e);
             chatSessions = []; // 데이터가 깨졌으면 초기화
+            alert('대화 기록을 불러오는데 실패했습니다. 기록이 초기화될 수 있습니다.');
         }
     } else {
         chatSessions = []; // 저장된 데이터가 없으면 빈 배열로 시작
@@ -220,9 +221,9 @@ function startNewChat(saveCurrent = true) { // saveCurrent 파라미터로 저�
          const isEmptyChat = currentMessages.length === 0 || (currentMessages.length === 1 && currentMessages[0]?.text.includes(initialAIMessageText));
 
          if (currentSessionId !== null && isEmptyChat) {
-             chatSessions = chatSessions.filter(session => session.id !== currentSessionId);
-             saveSessionsToLocalStorage();
-             console.log('Empty current session removed before new chat (saveCurrent=false).');
+              chatSessions = chatSessions.filter(session => session.id !== currentSessionId);
+              saveSessionsToLocalStorage();
+              console.log('Empty current session removed before new chat (saveCurrent=false).');
          }
     }
 
@@ -232,11 +233,11 @@ function startNewChat(saveCurrent = true) { // saveCurrent 파라미터로 저�
     console.log('Current session ID reset.');
 
     // 화면 전환 및 버튼 표시 (CSS와 JS 초기 설정으로 대부분 처리되지만 여기서 한번 더 확인)
-    historyArea.classList.add('hidden');
-    mainChatArea.classList.remove('hidden');
+    // 해당 요소가 실제로 존재하는지 확인 후 클래스 추가/제거
+    if (historyArea) historyArea.classList.add('hidden');
+    if (mainChatArea) mainChatArea.classList.remove('hidden');
     // 기록 관련 버튼들은 숨김
     // ⭐️ HTML에 hidden 클래스가 기본으로 있으므로 여기서 다시 숨길 필요는 없을 수도 있지만, 혹시 몰라 add
-    // 해당 버튼 요소가 실제로 존재하는지 확인 후 클래스 추가
     if (deleteSelectedButton) deleteSelectedButton.classList.add('hidden');
     if (backToChatButton) backToChatButton.classList.add('hidden');
     console.log('UI switched to chat view.');
@@ -264,8 +265,9 @@ function viewHistory() {
     // localStorage에서 모든 세션을 다시 불러옴 (최신 상태 반영)
     loadSessionsFromLocalStorage(); // 이 함수 호출 시 chatSessions 배열이 업데이트되고 정렬됨
 
-    mainChatArea.classList.add('hidden'); // 채팅 화면 숨김
-    historyArea.classList.remove('hidden'); // 기록 화면 표시
+    // 해당 요소가 실제로 존재하는지 확인 후 클래스 추가/제거
+    if (mainChatArea) mainChatArea.classList.add('hidden'); // 채팅 화면 숨김
+    if (historyArea) historyArea.classList.remove('hidden'); // 기록 화면 표시
 
     // 해당 버튼 요소가 실제로 존재하는지 확인 후 클래스 제거
     if (deleteSelectedButton) deleteSelectedButton.classList.remove('hidden'); // 기록 관련 버튼 표시
@@ -274,7 +276,9 @@ function viewHistory() {
 
 
     // 기록 목록 채우기
-    historyList.innerHTML = ''; // 목록 비우기
+    if (historyList) historyList.innerHTML = ''; // 목록 비우기
+    else { console.error('historyList 요소를 찾을 수 없습니다.'); return; } // historyList 없으면 중단
+
 
     // chatSessions 배열은 loadSessionsFromLocalStorage에서 이미 최신순으로 정렬됨
 
@@ -355,8 +359,8 @@ function loadSession(sessionId) {
         loadChatMessagesIntoView(sessionToLoad.messages);
 
         // 화면을 채팅 화면으로 전환
-        historyArea.classList.add('hidden');
-        mainChatArea.classList.remove('hidden');
+        if (historyArea) historyArea.classList.add('hidden');
+        if (mainChatArea) mainChatArea.classList.remove('hidden');
         // 기록 화면 버튼들은 숨김
         // 해당 버튼 요소가 실제로 존재하는지 확인 후 클래스 추가
         if (deleteSelectedButton) deleteSelectedButton.classList.add('hidden');
@@ -369,6 +373,15 @@ function loadSession(sessionId) {
         // 세션 로드 실패 시 현재 세션 ID 초기화 및 localStorage 삭제
         currentSessionId = null;
         localStorage.removeItem('currentSessionId');
+        // 로드 실패 시 채팅 화면으로 돌아가기 (빈 화면 또는 초기 메시지)
+        if (historyArea) historyArea.classList.add('hidden');
+        if (mainChatArea) mainChatArea.classList.remove('hidden');
+         if (deleteSelectedButton) deleteSelectedButton.classList.add('hidden');
+        if (backToChatButton) backToChatButton.classList.add('hidden');
+         // 초기 메시지 다시 표시 (loadSessionsFromLocalStorage에서 처리될 수도 있지만 여기서 한번 더)
+         if(chatBox && chatBox.children.length === 0) {
+             addMessageToChat('ai', '뭐야, 할 말이라도 있는 거야?');
+         }
     }
 }
 
@@ -376,6 +389,8 @@ function loadSession(sessionId) {
 // ⭐️ 선택된 대화 기록을 삭제하는 함수
 function handleDeleteSelected() {
     console.log('선택 삭제 버튼 클릭 감지!');
+    if (!historyList) { console.error('historyList 요소를 찾을 수 없습니다.'); return; } // historyList 없으면 중단
+
     const selectedCheckboxes = historyList.querySelectorAll('input[type="checkbox"]:checked');
     // 체크된 체크박스들의 data-session-id 값을 숫자로 변환하여 배열로 만듦
     const selectedIds = Array.from(selectedCheckboxes).map(cb => parseFloat(cb.dataset.sessionId));
@@ -387,6 +402,13 @@ function handleDeleteSelected() {
     }
 
     console.log('삭제할 세션 ID:', selectedIds);
+
+    // 사용자에게 정말 삭제할지 확인
+     if (!confirm(`정말로 선택된 ${selectedIds.length}개의 기록을 삭제하시겠습니까?`)) {
+         console.log('삭제 취소됨.');
+         return; // 취소 시 함수 종료
+     }
+
 
     // chatSessions 배열에서 선택된 ID들에 해당하는 세션들을 제외하고 새로운 배열 만듦
     const initialSessionCount = chatSessions.length;
@@ -400,32 +422,15 @@ function handleDeleteSelected() {
     if (currentSessionId !== null && selectedIds.includes(currentSessionId)) {
         console.log('현재 세션이 삭제되었습니다. 새 채팅을 시작합니다.');
         // 새 채팅 시작 함수 호출 (현재 대화 저장 안 함, 이미 삭제될 거니까)
-        // startNewChat(false); // startNewChat 안에서 초기 메시지 추가 및 UI 전환
+        startNewChat(false); // startNewChat 안에서 초기 메시지 추가 및 UI 전환, currentSessionId 초기화, localStorage 삭제까지 처리
 
-        // ⭐️ startNewChat 대신 직접 초기화 및 UI 전환
-        currentSessionId = null; // 현재 세션 ID 초기화
-        localStorage.removeItem('currentSessionId'); // localStorage에서도 삭제
-        chatBox.innerHTML = ''; // 채팅창 비우기
-        // addMessageToChat('ai', '삭제된 대화 기록입니다. 새 채팅을 시작합니다!'); // 삭제 안내 메시지 추가 가능
-        console.log('Current session reset after deletion.');
-
-        // 변경된 세션 목록 저장
+        // 변경된 세션 목록 저장 (startNewChat에서 이미 저장하지만 혹시 몰라)
         saveSessionsToLocalStorage(); // 변경사항 localStorage에 저장
 
-        // 화면을 채팅 화면으로 전환
-        historyArea.classList.add('hidden');
-        mainChatArea.classList.remove('hidden');
-        // 기록 화면 버튼들은 숨김
-        if (deleteSelectedButton) deleteSelectedButton.classList.add('hidden');
-        if (backToChatButton) backToChatButton.classList.add('hidden');
-        console.log('UI switched back to chat view after current session deletion.');
 
-        // 새 채팅 시작 메시지 추가
-        addMessageToChat('ai', '새 채팅 시작! 뭐 물어볼래?');
-        console.log('Initial AI message added in new chat.');
+        // 삭제 완료 알림은 startNewChat 실행 후에 표시
+         alert(`${deletedCount}개의 기록을 삭제했습니다!`);
 
-
-        alert(`${deletedCount}개의 기록을 삭제했습니다!`); // 삭제 완료 알림
 
     } else {
          // 현재 세션이 삭제되지 않았다면 변경된 세션 목록을 저장하고 기록 화면을 새로고침
