@@ -1,11 +1,11 @@
 /* Google Fonts - Noto Sans KR (HTML에서 링크했는지 확인!) */
-html, body { /* ⭐️ html, body에 기본 스타일 적용 */
+html, body { /* html, body에 기본 스타일 적용 */
     font-family: 'Noto Sans KR', sans-serif; /* 한국어 지원 글꼴 */
     margin: 0;
     padding: 0;
-    width: 100%; /* ⭐️ 너비 100% */
-    height: 100%; /* ⭐️ 높이 100% */
-    overflow: hidden; /* ⭐️ 전체 화면에서 스크롤 안 생기게 (app-container에 스크롤 적용) */
+    width: 100%; /* 너비 100% */
+    height: 100%; /* 높이 100% */
+    overflow: hidden; /* 전체 화면에서 스크롤 안 생기게 (app-container에 스크롤 적용) */
     box-sizing: border-box;
     color: #fff; /* 기본 글자 색깔 하얀색으로! */
 
@@ -19,7 +19,7 @@ html, body { /* ⭐️ html, body에 기본 스타일 적용 */
     /* background-color: #f0f0f0; */
     /* =========================================== */
 
-    /* ⭐️ 중요: 혹시 모를 position: fixed 문제 방지를 위해 transform, filter 제거 */
+    /* 중요: 혹시 모를 position: fixed 문제 방지를 위해 transform, filter 제거 */
     transform: none !important;
     filter: none !important;
 }
@@ -37,11 +37,12 @@ html, body { /* ⭐️ html, body에 기본 스타일 적용 */
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow-y: auto; /* ⭐️ app-container 내부에서만 스크롤 생기게 */
+    overflow-y: auto; /* app-container 내부에서만 스크롤 생기게 */
     position: relative;
     z-index: 1; /* 배경 이미지 위에 올라오도록 z-index 설정 */
 
-    /* ⭐️ 중요: 혹시 모를 position: fixed 문제 방지를 위해 transform, filter 제거 */
+    /* 중요: 혹시 #app-container에 transform, filter, perspective, will-change 같은 속성이 있다면 */
+    /* position: fixed 요소의 위치가 예상과 다를 수 있습니다. 해당 속성들을 확인해보세요! */
     transform: none !important;
     filter: none !important;
 }
@@ -51,14 +52,14 @@ html, body { /* ⭐️ html, body에 기본 스타일 적용 */
     position: fixed; /* 화면에 고정! */
     top: 15px; /* 위에서부터 15px */
     right: 15px; /* 오른쪽에서부터 15px */
-    z-index: 99999; /* ⭐️ 여기! z-index를 훨씬 더 높여봤어! */
+    z-index: 99999; /* 여기! z-index를 훨씬 더 높여봤어! */
     display: flex; /* 메뉴 버튼 보이게! */
     gap: 10px; /* 버튼 사이 간격 */
     /* background-color: rgba(255,255,255,0.5); */
     /* padding: 5px 10px; */
     /* border-radius: 5px; */
 
-    /* ⭐️ 혹시 모를 문제 방지 */
+    /* 혹시 모를 문제 방지 */
     transform: none !important;
     filter: none !important;
 }
@@ -75,7 +76,7 @@ html, body { /* ⭐️ html, body에 기본 스타일 적용 */
      transition: background-color 0.3s ease;
      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 
-     /* ⭐️ 혹시 모를 문제 방지 */
+     /* 혹시 모를 문제 방지 */
      position: relative; /* z-index가 잘 작동하도록 relative 추가 */
      z-index: 2; /* 메뉴 자체 z-index보다 약간 낮게 */
 }
@@ -88,7 +89,7 @@ html, body { /* ⭐️ html, body에 기본 스타일 적용 */
      background-color: rgba(108, 117, 125, 0.5);
      color: white;
      border-radius: 0; /* 네모 모양으로! */
-     /* ⭐️ 혹시 모를 문제 방지 */
+     /* 혹시 모를 문제 방지 */
      position: relative;
      z-index: 2;
 }
@@ -173,8 +174,8 @@ h1 {
     max-width: 80%;
     word-wrap: break-word;
     line-height: 1.6;
-    position: relative; /* ⭐️ 메시지 버블에도 z-index 적용을 위해 relative 추가 */
-    z-index: 1; /* ⭐️ 메뉴나 입력창보다 아래에 있도록 z-index 설정 */
+    position: relative; /* 메시지 버블에도 z-index 적용을 위해 relative 추가 */
+    z-index: 1; /* 메뉴나 입력창보다 아래에 있도록 z-index 설정 */
     color: #333;
 }
 
@@ -208,8 +209,8 @@ h1 {
     border-top: 1px solid rgba(255, 255, 255, 0.5);
     background-color: rgba(0, 0, 0, 0.4);
     border-radius: 0;
-    position: relative; /* ⭐️ 입력 영역에도 z-index 적용을 위해 relative 추가 */
-    z-index: 10; /* ⭐️ 메뉴보다 약간 낮지만 채팅 버블보다는 위에 있도록 높게 설정 */
+    position: relative; /* 입력 영역에도 z-index 적용을 위해 relative 추가 */
+    z-index: 10; /* 메뉴보다는 약간 낮지만 채팅 버블보다는 위에 있도록 높게 설정 */
 }
 
 #user-input {
@@ -239,6 +240,8 @@ h1 {
     display: flex;
     justify-content: center;
     gap: 10px;
+    /* 이 영역 이제 사용 안 함 */
+     display: none;
 }
 
 
@@ -254,8 +257,8 @@ h1 {
     transition: background-color 0.3s ease;
     flex-shrink: 0;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    position: relative; /* ⭐️ 버튼 자체에도 z-index 적용을 위해 relative 추가 */
-    z-index: 1; /* ⭐️ 입력창보다 위에 있도록 z-index 설정 (굳이 필요 없을수도 있지만 혹시 몰라) */
+    position: relative; /* 버튼 자체에도 z-index 적용을 위해 relative 추가 */
+    z-index: 1; /* 입력창보다 위에 있도록 z-index 설정 (굳이 필요 없을수도 있지만 혹시 몰라) */
 }
 
 #input-area #send-button:hover {
@@ -265,7 +268,7 @@ h1 {
 
 /* 기록 목록 화면 스타일 */
 #history-area {
-     /* ⭐️ 기록 화면 영역 자체에도 z-index 적용 */
+     /* 기록 화면 영역 자체에도 z-index 적용 */
      position: relative;
      z-index: 5; /* 입력 영역보다는 아래, 메뉴보다는 아래 */
 }
@@ -287,7 +290,7 @@ h1 {
     max-height: calc(100vh - 200px);
     overflow-y: auto;
     background-color: rgba(0, 0, 0, 0.4);
-     /* ⭐️ 기록 목록 자체에도 z-index 적용 */
+     /* 기록 목록 자체에도 z-index 적용 */
      position: relative;
      z-index: 1;
 }
@@ -300,7 +303,7 @@ h1 {
     align-items: center;
     transition: background-color 0.2s ease;
     color: #fff;
-     /* ⭐️ 목록 아이템에도 z-index 적용 */
+     /* 목록 아이템에도 z-index 적용 */
      position: relative;
      z-index: 1;
 }
@@ -316,7 +319,7 @@ h1 {
 #history-list li input[type="checkbox"] {
     margin-right: 10px;
     flex-shrink: 0;
-     /* ⭐️ 체크박스에도 z-index 적용 */
+     /* 체크박스에도 z-index 적용 */
      position: relative;
      z-index: 2; /* 텍스트보다 위에 있도록 */
 }
@@ -326,7 +329,7 @@ h1 {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-     /* ⭐️ 텍스트에도 z-index 적용 */
+     /* 텍스트에도 z-index 적용 */
      position: relative;
      z-index: 1;
 }
@@ -337,7 +340,7 @@ h1 {
     display: flex;
     justify-content: center;
     gap: 10px;
-     /* ⭐️ 기록 버튼 영역에도 z-index 적용 */
+     /* 기록 버튼 영역에도 z-index 적용 */
      position: relative;
      z-index: 5;
 }
@@ -353,7 +356,7 @@ h1 {
     padding: 10px 15px;
     border-radius: 10px;
     max-width: 80%;
-     /* ⭐️ 로딩 인디케이터에도 z-index 적용 */
+     /* 로딩 인디케이터에도 z-index 적용 */
      position: relative;
      z-index: 1;
 }
@@ -370,7 +373,7 @@ h1 {
         padding: 10px;
         margin-top: 0;
         margin-bottom: 0;
-         overflow-y: auto; /* ⭐️ 모바일에서도 app-container 내부 스크롤 */
+         overflow-y: auto; /* 모바일에서도 app-container 내부 스크롤 */
     }
 
     h1 {
@@ -383,7 +386,7 @@ h1 {
          right: 5px;
          gap: 5px;
          flex-direction: column;
-         z-index: 99999; /* ⭐️ 모바일에서도 z-index 높게 */
+         z-index: 99999; /* 모바일에서도 z-index 높게 */
     }
      #fixed-menu .menu-button {
          padding: 8px 15px;
@@ -413,7 +416,7 @@ h1 {
         flex-direction: column;
         gap: 8px;
         padding-top: 10px;
-         z-index: 10; /* ⭐️ 모바일 입력 영역 z-index */
+         z-index: 10; /* 모바일 입력 영역 z-index */
     }
 
     #user-input, #input-area #send-button {
@@ -425,7 +428,11 @@ h1 {
          padding: 10px;
      }
 
-     #bottom-buttons, #history-buttons {
+     #bottom-buttons {
+         /* 모바일에서도 사용 안 함 */
+         display: none;
+     }
+     #history-buttons {
          flex-direction: column;
          gap: 8px;
      }
