@@ -149,7 +149,7 @@ function updateCurrentSession() {
     const currentMessages = getMessagesFromView();
 
     // ⭐️ 빈 대화 세션 판단 시 HTML에 있는 초기 메시지 텍스트와 비교! 👇
-    const initialAIMessageText = "츤츤거리면서 '뭐 할말있어?'";
+    const initialAIMessageText = "뭐 할말있어?";
     // 현재 메시지 목록이 0개이거나, 딱 1개이고 그 내용이 초기 AI 메시지와 같으면 빈 채팅으로 간주
     const isEmptyChat = currentMessages.length === 0 || (currentMessages.length === 1 && currentMessages[0]?.text.trim().toLowerCase() === initialAIMessageText.toLowerCase());
 
@@ -244,7 +244,7 @@ function startNewChat(saveCurrent = true) { // saveCurrent 파라미터로 저�
          console.log('현재 대화 저장 안 함. 바로 새 채팅 시작.');
          const currentMessages = getMessagesFromView();
          // ⭐️ HTML에 있는 초기 메시지 텍스트와 동일하게 비교! 👇
-         const initialAIMessageText = "츤츤거리면서 '뭐 할말있어?'";
+         const initialAIMessageText = "뭐 할말있어?";
          const isEmptyChat = currentMessages.length === 0 || (currentMessages.length === 1 && currentMessages[0]?.text.trim().toLowerCase() === initialAIMessageText.toLowerCase());
 
          if (currentSessionId !== null && isEmptyChat) {
@@ -264,7 +264,7 @@ function startNewChat(saveCurrent = true) { // saveCurrent 파라미터로 저�
     if (chatBox) {
         chatBox.innerHTML = ''; // 채팅창 비우기
         // ⭐️ HTML에 직접 넣은 초기 메시지를 새 채팅 시작 시 다시 추가! 👇
-        addMessageToChat('ai', "츤츤거리면서 '뭐 할말있어?'");
+        addMessageToChat('ai', "뭐 할말있어?");
          console.log('새 채팅 시작 - 초기 메시지 다시 추가됨.');
 
     } else console.error('chatBox 요소를 찾을 수 없어 채팅창을 비울 수 없습니다.');
