@@ -7,7 +7,8 @@ html, body {
   font-family: 'Noto Sans KR', sans-serif; /* Google Fonts 적용 */
   background: url('../images/BACKGROUND.jpeg') no-repeat center center fixed;
   background-size: cover;
-  color: white; /* 기본 글자색 하얀색 */
+  /* ⭐️ 글자색은 어둡게 유지해서 배경 위에서 잘 보이게! 👇 */
+  color: #222; /* 어두운 회색 */
 }
 
 /* 2. 최상위 앱 컨테이너 */
@@ -18,8 +19,9 @@ html, body {
   flex-direction: column;
   overflow: hidden; /* 내부 스크롤만 허용 */
   user-select: none;
-  background-color: rgba(255, 255, 255, 0.5); /* 배경 이미지 위에 반투명 흰 배경 */
-  box-shadow: inset 0 0 100px rgba(0,0,0,0.1);
+  /* ⭐️ app-container 배경 투명도를 아주 높게! (거의 안 보이게) 👇 */
+  background-color: rgba(255, 255, 255, 0.1); /* 흰색 바탕에 투명도 0.1 */
+  box-shadow: inset 0 0 100px rgba(0,0,0,0.05); /* 그림자 효과도 연하게 */
 }
 
 /* 3. 채팅 박스: 여기서만 스크롤 */
@@ -27,120 +29,174 @@ html, body {
   flex-grow: 1;
   padding: 15px;
   margin: 15px;
-  background: rgba(255, 255, 255, 0.7); /* 불투명하게 */
+  /* ⭐️ chat-box 배경 투명도를 아주 높게! 👇 */
+  background: rgba(255, 255, 255, 0.15); /* 흰색 바탕에 투명도 0.15 */
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* 그림자도 연하게 */
   overflow-y: auto;
   overflow-x: hidden;
   z-index: 2;
-  color: #222; /* 글자색 어두운 회색 */
+  /* 글자색은 어두운 색으로 그대로 둠 */
+  color: #222;
 }
 
-/* 4. 고정 메뉴 */
+/* 4. 고정 메뉴 컨테이너 */
 #fixed-menu {
-  position: fixed;
-  top: 15px;
-  right: 15px;
-  background: rgba(255, 255, 255, 0.9); /* 메뉴 배경 투명도 조절 */
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-  padding: 10px 15px;
-  z-index: 99999;
+  position: fixed; /* 화면에 고정 */
+  top: 15px; /* 위에서부터 15px 떨어진 위치 */
+  right: 15px; /* 오른쪽에서부터 15px 떨어진 위치 */
+  z-index: 99999; /* 다른 요소들 위에 표시 */
   user-select: none;
-  display: flex;
-  gap: 10px;
-  align-items: center;
+  /* ⭐️ 메뉴 전체 컨테이너 배경 투명도를 아주 높게! 👇 */
+  background-color: rgba(255, 255, 255, 0.1); /* 흰색 바탕에 투명도 0.1 */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* 테두리도 투명하게 */
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* 그림자 연하게 */
+  padding: 5px;
 }
 
-/* 5. 메뉴 아이콘 버튼 (점 3개 버튼) 스타일 */
+/* ⭐️ 메뉴 아이콘 버튼 (점 3개 버튼) 스타일 👇 */
 #menu-toggle-button {
   background-color: transparent; /* 배경 투명 */
   border: none; /* 테두리 없음 */
-  padding: 5px; /* 클릭 영역 확보를 위한 패딩 */
-  cursor: pointer; /* 마우스 커서 모양 */
-  font-size: 24px; /* 아이콘 크기 */
+  padding: 5px;
+  cursor: pointer;
+  font-size: 24px;
+  /* ⭐️ 아이콘 색상 어둡게 유지 👇 */
   color: #555; /* 어두운 회색 */
-  transition: color 0.3s ease; /* 부드러운 호버 효과 */
+  transition: color 0.3s ease;
 }
 
 #menu-toggle-button:hover {
    color: #222; /* 호버 시 더 진한 색 */
 }
 
-/* 6. 메뉴 항목 컨테이너 스타일 */
+
+/* ⭐️ 메뉴 항목들을 담는 컨테이너 스타일 👇 */
 #menu-items-container {
   position: absolute; /* 점 세 개 버튼 기준으로 위치 설정 */
-  top: calc(100% + 5px); /* #fixed-menu 바로 아래에 위치 */
-  right: 0; /* 점 세 개 버튼의 오른쪽에 맞춰 정렬 */
-  background-color: rgba(255, 255, 255, 0.9); /* 불투명하게 */
-  border: 1px solid #ddd; /* 테두리 */
-  border-radius: 5px; /* 모서리 둥글게 */
-  padding: 5px; /* 안쪽 여백 */
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
-  z-index: 1001; /* 다른 요소들 위에 표시 */
-  min-width: 120px; /* 최소 너비 설정 */
-  display: flex; /* 내부 버튼들을 flexbox로 배치 */
-  flex-direction: column; /* 세로 방향으로 쌓이게 */
-  gap: 5px; /* 버튼들 사이 간격 */
-  /* .hidden 클래스에서 display: none; 을 관리할 거예요 */
+  top: calc(100% + 5px);
+  right: 0;
+  /* ⭐️ 메뉴 항목 컨테이너 배경 투명도를 높게! 👇 */
+  background-color: rgba(255, 255, 255, 0.2); /* 흰색 바탕에 투명도 0.2 */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* 테두리도 투명하게 */
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.15); /* 그림자 연하게 */
+  z-index: 1001;
+  min-width: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  /* ⭐️ 이 컨테이너는 기본적으로 숨겨져 있어야 해요! HTML에 hidden 클래스가 있는지 확인하고, 없으면 CSS에서 기본적으로 display: none;을 적용하세요. 👇 */
+  /* HTML에 hidden 클래스가 있다면 이 부분은 필요 없어요 */
+  /* display: none; */
 }
 
+
 /* ⭐️ 메뉴 항목 컨테이너를 숨기는 클래스 (JS에서 토글) */
+/* 이 클래스가 적용되면 메뉴가 숨겨져요. */
 .hidden {
   display: none !important; /* 중요! display 속성이 덮어쓰이지 않도록 !important 사용 */
 }
 
-/* 7. 입력창 영역 */
+
+/* 5. 메뉴 버튼 (메뉴 항목 컨테이너 안의 버튼 스타일) */
+#menu-items-container .menu-button {
+  cursor: pointer;
+  padding: 8px 14px;
+  border-radius: 5px;
+  border: none; /* 테두리 없음 */
+  background-color: transparent; /* 배경 투명 */
+  transition: background-color 0.3s ease;
+  font-weight: 600;
+  /* ⭐️ 글자색을 어둡게 유지 👇 */
+  color: #222;
+  text-align: left;
+}
+
+#menu-items-container .menu-button:hover {
+  /* ⭐️ 메뉴 항목 버튼 호버 시 배경 투명도 조절 👇 */
+  background-color: rgba(240, 240, 240, 0.3); /* 살짝 투명한 연한 회색 */
+}
+
+
+/* 6. 입력창 영역 */
 #input-area {
   padding: 12px 20px;
-  border-top: 1px solid #ccc;
-  background-color: rgba(250, 250, 250, 0.95); /* 불투명하게 */
+  border-top: 1px solid rgba(204, 204, 204, 0.3); /* 테두리도 투명하게 */
+  /* ⭐️ 입력창 배경 투명도를 높게! 👇 */
+  background-color: rgba(250, 250, 250, 0.15); /* 연한 회색 바탕에 투명도 0.15 */
   box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
 }
 
-/* 8. 입력창 텍스트 색상 */
+/* 7. 입력창 텍스트 색상 */
 #input-area input[type="text"] {
-  color: #222; /* 입력되는 글자색 */
-  border: none; /* 입력창 자체 테두리 없앰 */
-  outline: none; /* 클릭 시 파란 테두리 없앰 */
-  width: 100%; /* 부모 요소 너비에 꽉 차게 */
-  padding: 0; /* 기본 패딩 제거 */
-  background: none; /* 기본 배경 제거 */
+  /* 글자색은 어둡게 유지 👇 */
+  color: #222;
+  border: none;
+  outline: none;
+  width: 100%;
+  padding: 0;
+  background: none;
 }
 
 #input-area input[type="text"]::placeholder {
-   color: #888; /* placeholder 글자색 (옅은 회색) */
+   /* placeholder 글자색도 어둡게 유지 👇 */
+   color: #888;
 }
 
-/* 9. 스크롤바 스타일 커스텀 (#chat-box) */
+/* 보내기 버튼 스타일 (기존 코드에 없었다면 추가) */
+#send-button {
+    cursor: pointer;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    /* ⭐️ 보내기 버튼 배경 투명도 조절 👇 */
+    background-color: rgba(0, 123, 255, 0.6); /* 파란색 계열에 투명도 0.6 */
+    color: white; /* 버튼 글자색은 하얗게 유지 */
+    font-weight: 600;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+}
+
+#send-button:hover {
+    /* ⭐️ 보내기 버튼 호버 시 배경 투명도 조절 👇 */
+    background-color: rgba(0, 123, 255, 0.8); /* 호버 시 조금 덜 투명하게 */
+}
+
+
+/* 8. 스크롤바 스타일 커스텀 (#chat-box) */
 #chat-box::-webkit-scrollbar {
   width: 10px;
 }
 
 #chat-box::-webkit-scrollbar-track {
-  background: rgba(240, 240, 240, 0.5); /* 살짝 투명한 연한 회색 */
+  /* ⭐️ 스크롤바 트랙 배경 투명도 조절 👇 */
+  background: rgba(240, 240, 240, 0.1); /* 아주 투명한 연한 회색 */
   border-radius: 10px;
 }
 
 #chat-box::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.3); /* 살짝 투명한 검정색 */
+  /* ⭐️ 스크롤바 썸 배경 투명도 조절 👇 */
+  background-color: rgba(0, 0, 0, 0.2); /* 살짝 투명한 검정색 */
   border-radius: 10px;
-  border: 2px solid rgba(240, 240, 240, 0.5);
+  /* ⭐️ 스크롤바 썸 테두리 투명도 조절 👇 */
+  border: 2px solid rgba(240, 240, 240, 0.1);
 }
 
-/* 10. 반응형 간단 처리 (필요시) */
+
+/* 9. 반응형 간단 처리 */
 @media (max-width: 600px) {
   #fixed-menu {
-      top: 10px; /* 모바일에서도 오른쪽 위에 두는 걸로 통일 */
+      top: 10px;
       right: 10px;
   }
-  
-  #menu-items-container {
-      top: calc(100% + 5px); /* #fixed-menu 바로 아래 */
-      right: 0;
-      min-width: 100px; /* 모바일에서 좀 더 작게 */
-  }
+
+   #menu-items-container {
+       top: calc(100% + 5px);
+       right: 0;
+       min-width: 100px;
+   }
 
   #chat-box {
     margin: 10px;
@@ -148,22 +204,23 @@ html, body {
   }
 
   #input-area {
-    padding: 8px 15px; /* 모바일에서 패딩 줄임 */
+    padding: 8px 15px;
   }
 
   #send-button {
-     padding: 6px 10px; /* 모바일 버튼 크기 조절 */
+     padding: 6px 10px;
      font-size: 14px;
      margin-left: 8px;
   }
 
   /* 메시지 버블 반응형 */
   .message {
-      max-width: 90%; /* 모바일에서 최대 너비 늘림 */
+      max-width: 90%;
   }
 }
 
-/* ⭐️ 대화 기록 영역 숨김 */
+/* ⭐️ HTML에서 .hidden 클래스를 사용하는 다른 요소들에 대한 스타일 (하루키 코드에 이미 있던 것들) 👇 */
+/* 대화 기록 영역 숨김 */
 #history-area.hidden {
   display: none;
 }
@@ -178,7 +235,7 @@ html, body {
     display: none;
 }
 
-/* ⭐️ 기본 메시지, 사용자 메시지, AI 메시지 스타일 */
+/* ⭐️ 기본 메시지, 사용자 메시지, AI 메시지 스타일 👇 */
 .message {
     margin-bottom: 10px;
     padding: 8px 12px;
@@ -186,22 +243,25 @@ html, body {
 }
 
 .user-message {
-    background-color: rgba(0, 123, 255, 0.9); /* 사용자 메시지 배경 */
-    color: white; /* 사용자 메시지 글자색 */
-    align-self: flex-end; /* 오른쪽 정렬 */
-    margin-left: auto; /* 오른쪽 정렬 */
+    /* ⭐️ 사용자 메시지 배경 투명도 조절 👇 */
+    background-color: rgba(0, 123, 255, 0.3); /* 파란색 계열에 투명도 0.3 */
+    color: #222; /* 배경이 투명해지니 글자색은 어두운게 잘 보여요 */
+    align-self: flex-end;
+    margin-left: auto;
 }
 
 .ai-message {
-    background-color: rgba(220, 220, 220, 0.95); /* AI 메시지 배경 */
-    color: #222; /* AI 메시지 글자색 어둡게 */
-    align-self: flex-start; /* 왼쪽 정렬 */
-    margin-right: auto; /* 왼쪽 정렬 */
+    /* ⭐️ AI 메시지 배경 투명도 조절 👇 */
+    background-color: rgba(220, 220, 220, 0.3); /* 연한 회색에 투명도 0.3 */
+    color: #222; /* 글자색 어둡게 유지 */
+    align-self: flex-start;
+    margin-right: auto;
 }
 
 /* 로딩 인디케이터 스타일 */
 .ai-message.loading-indicator {
-    background-color: rgba(180, 180, 180, 0.9); /* 로딩 인디케이터 배경 */
+    /* ⭐️ 로딩 인디케이터 배경 투명도 조절 👇 */
+    background-color: rgba(180, 180, 180, 0.4); /* 조금 더 진한 회색에 투명도 0.4 */
     font-style: italic;
-    color: #555; /* 로딩 텍스트 색상 어둡게 */
+    color: #555; /* 로딩 텍스트 색상 어둡게 유지 */
 }
