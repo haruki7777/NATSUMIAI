@@ -8,7 +8,7 @@ body {
     margin: 0;
     padding: 0; /* 바디 자체 패딩 제거 */
     box-sizing: border-box; /* 패딩 포함 크기 계산 */
-    color: #333;
+    color: #fff; /* ⭐️ 여기! 기본 글자 색깔 하얀색으로! */
 
     /* === 하루키! 여기에 원하는 배경 이미지를 넣어줘! === */
     /* 하루키 GitHub 파일 구조에 맞게 경로 수정! css 폴더에서 images 폴더 안으로! 👇 */
@@ -23,15 +23,13 @@ body {
 }
 
 #app-container {
-    /* ⭐️ 여기! 너비를 100vw, 높이를 100vh로 설정해서 전체 화면으로 만들자! */
     width: 100vw; /* 뷰포트 너비 전체 */
     height: 100vh; /* 뷰포트 높이 전체 */
     max-width: none; /* 최대 너비 제한 해제 */
     max-height: none; /* 최대 높이 제한 해제 */
     margin: 0; /* 마진 제거 */
     padding: 20px; /* 전체 화면이 되었으니 패딩 조절 (원하는 값으로) */
-    /* background-color: #fff; */ /* 앱 컨테이너 배경색 제거 또는 반투명 설정 */
-    background-color: rgba(255, 255, 255, 0.3); /* ⭐️ 여기! 하얀색 배경에 30% 투명도! 더 투명하게! */
+    background-color: rgba(0, 0, 0, 0.4); /* ⭐️ 여기! 배경색을 검은색에 40% 투명도로 바꿔서 하얀 글씨가 잘 보이게! */
     border-radius: 0; /* 전체 화면이니까 모서리 둥글기 제거 */
     box-shadow: none; /* 전체 화면이니까 그림자 제거 */
     display: flex;
@@ -48,7 +46,7 @@ body {
     top: 15px; /* 위에서부터 15px */
     right: 15px; /* 오른쪽에서부터 15px */
     z-index: 1000; /* 다른 요소들보다 항상 위에 오도록 큰 z-index 설정 */
-    display: flex; /* ⭐️ 여기! flex로 설정해서 메뉴 버튼 보이게! */
+    display: flex; /* 메뉴 버튼 보이게! */
     gap: 10px; /* 버튼 사이 간격 */
     /* background-color: rgba(255,255,255,0.5); */ /* 메뉴 배경에 살짝 투명도 */
     /* padding: 5px 10px; */
@@ -58,8 +56,8 @@ body {
 /* 고정 메뉴 안에 있는 버튼 스타일 (send-button 스타일 재활용) */
 #fixed-menu .menu-button { /* menu-button 클래스로 선택 */
      padding: 10px 20px; /* 패딩 조정 */
-     background-color: rgba(26, 115, 232, 0.4); /* ⭐️ 여기! 파란색 버튼에 40% 투명도 추가! */
-     color: white;
+     background-color: rgba(26, 115, 232, 0.5); /* 파란색 버튼에 50% 투명도 유지 */
+     color: white; /* ⭐️ 메뉴 버튼 글자색은 이미 하얀색이네! */
      border: none;
      border-radius: 20px; /* 둥근 버튼 */
      cursor: pointer;
@@ -73,7 +71,8 @@ body {
 
 /* 기록 화면에서 보이는 버튼 스타일 */
 #fixed-menu .history-view-button {
-     background-color: rgba(108, 117, 125, 0.4); /* ⭐️ 여기! 회색 계열 버튼에 40% 투명도! */
+     background-color: rgba(108, 117, 125, 0.5); /* 회색 계열 버튼에 50% 투명도 유지 */
+     color: white; /* ⭐️ 기록 버튼 글자색도 하얀색이네! */
 }
 #fixed-menu .history-view-button:hover {
      background-color: #545b62;
@@ -81,13 +80,6 @@ body {
 
 
 /* 요소를 숨기는 클래스 (JavaScript에서 사용) */
-/* ⭐️ hidden 클래스는 이제 메뉴에는 사용 안 해! */
-/*
-.hidden {
-    display: none !important; // !important로 다른 스타일에 우선하도록 함
-}
-*/
-/* 하지만 대화 기록 영역 전환에는 필요하니까 그대로 두자! */
 .hidden {
     display: none !important;
 }
@@ -95,59 +87,52 @@ body {
 
 
 h1 {
-    color: #000; /* 제목 색깔 검정 */
+    color: #fff; /* ⭐️ 여기! 제목 색깔 하얀색으로! */
     margin-top: 0;
     margin-bottom: 30px;
     font-size: 2em; /* 제목 크기 키움 */
     font-weight: 700; /* 제목 굵게 */
     text-align: center;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5); /* ⭐️ 그림자 살짝 넣어서 배경에 묻히지 않게 */
 }
 
 /* 주 대화 영역과 기록 영역 전환 */
 #main-chat-area {
     width: 100%;
-    flex-grow: 1; /* 남은 공간 다 차지하도록 */
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    /* 기본적으로 보이게 설정. .hidden 클래스가 붙으면 숨김 */
 }
 
 #history-area {
     width: 100%;
-     flex-grow: 1; /* 남은 공간 다 차지하도록 */
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-     /* 기본적으로 숨김. .hidden 클래스가 없으면 보임 */
 }
-
 
 #chat-container {
     width: 100%;
-     flex-grow: 1; /* 남은 공간 다 차지하도록 */
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-     /* background-color: #fff; */ /* 채팅 컨테이너 배경색 제거 또는 반투명 설정 */
-     background-color: transparent; /* 완전 투명! */
-     border: none; /* 테두리 제거 */
-     padding: 0; /* 패딩 제거 */
-     margin-bottom: 15px;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin-bottom: 15px;
 }
 
 #chat-box {
-    /* ⭐️ 높이를 고정하지 않고 flex-grow로 남은 공간 차지하도록 */
-    /* height: 450px; */
     flex-grow: 1;
     overflow-y: auto;
-    /* border: 1px solid #e0e0e0; */ /* 테두리 제거 */
     border-radius: 8px;
     padding: 15px;
     margin-bottom: 15px;
     display: flex;
     flex-direction: column;
-    gap: 12px; /* 메시지 버블 간 간격 */
-    /* background-color: #fff; */ /* 대화창 배경도 하얗게 */
-     background-color: transparent; /* 완전 투명! */
-     border: none; /* 테두리 제거 */
+    gap: 12px;
+    background-color: transparent;
+    border: none;
 }
 
 /* 스크롤바 스타일 (선택 사항) */
@@ -155,37 +140,38 @@ h1 {
     width: 8px;
 }
 #chat-box::-webkit-scrollbar-thumb {
-    background-color: #ccc;
+    background-color: rgba(255, 255, 255, 0.5); /* ⭐️ 여기! 스크롤바 색깔도 하얀색 계열에 투명도! */
     border-radius: 4px;
 }
 #chat-box::-webkit-scrollbar-track {
-    background: rgba(0,0,0,0.05); /* 스크롤바 트랙도 살짝 투명 */
+    background: rgba(255, 255, 255, 0.1); /* ⭐️ 여기! 스크롤바 트랙도 하얀색 계열에 투명도! */
 }
 
 
 #chat-box p {
-    margin: 0; /* 기본 마진 제거 */
-    padding: 12px 16px; /* 패딩 늘림 */
-    border-radius: 10px; /* 버블 모양 둥글기 줄임 */
-    max-width: 80%; /* 버블 최대 너비 */
+    margin: 0;
+    padding: 12px 16px;
+    border-radius: 10px;
+    max-width: 80%;
     word-wrap: break-word;
-    line-height: 1.6; /* 줄 간격 */
+    line-height: 1.6;
     position: relative;
+    color: #333; /* ⭐️ 여기! 버블 안의 글씨는 다시 어두운 색으로! */
 }
 
 .user-message {
-    align-self: flex-end; /* 사용자 메시지는 오른쪽에 */
-    background-color: rgba(233, 233, 235, 0.3); /* ⭐️ 여기! 사용자 메시지 배경 연한 회색 + 30% 투명도! */
-    color: #333; /* 사용자 메시지 글자색 */
-    border-radius: 10px 10px 2px 10px; /* 오른쪽 아래 모서리만 덜 둥글게 */
+    align-self: flex-end;
+    background-color: rgba(255, 255, 255, 0.8); /* ⭐️ 여기! 사용자 메시지 배경 하얀색에 80% 투명도! */
+    color: #333; /* 사용자 메시지 글자색 다시 어둡게 */
+    border-radius: 10px 10px 2px 10px;
 }
 
 .ai-message {
-    align-self: flex-start; /* AI 메시지는 왼쪽에 */
-    background-color: rgba(247, 247, 248, 0.3); /* ⭐️ 여기! AI 메시지 배경 아주 연한 회색 + 30% 투명도! */
-    color: #333; /* AI 메시지 글자색 */
-    border-radius: 10px 10px 10px 2px; /* 왼쪽 아래 모서리만 덜 둥글게 */
-    border: 1px solid rgba(224, 224, 224, 0.4); /* ⭐️ 여기! AI 메시지 얇은 테두리 + 40% 투명도! */
+    align-self: flex-start;
+    background-color: rgba(255, 255, 255, 0.8); /* ⭐️ 여기! AI 메시지 배경 하얀색에 80% 투명도! */
+    color: #333; /* AI 메시지 글자색 다시 어둡게 */
+    border-radius: 10px 10px 10px 2px;
+    border: 1px solid rgba(224, 224, 224, 0.8); /* 테두리도 하얀색 계열에 80% 투명도 */
     box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* 그림자 추가 */
 }
 
@@ -195,58 +181,62 @@ h1 {
 }
 
 #input-area {
-    display: flex; /* 입력창과 버튼을 가로로 나란히 */
+    display: flex;
     width: 100%;
-    gap: 10px; /* 입력창과 버튼 사이 간격 */
-    margin-bottom: 0; /* 마진 제거 */
-    padding-top: 15px; /* 위쪽 패딩 추가 */
-    border-top: 1px solid rgba(224, 224, 224, 0.4); /* ⭐️ 여기! 위쪽에 구분선 추가 + 40% 투명도! */
-    background-color: rgba(255, 255, 255, 0.3); /* ⭐️ 여기! 입력 영역 배경 하얗게 + 30% 투명도! */
-    border-radius: 0; /* 전체 화면이니까 아래쪽 모서리 둥글기 제거 */
+    gap: 10px;
+    margin-bottom: 0;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.5); /* ⭐️ 여기! 위쪽에 구분선 하얀색 계열에 50% 투명도! */
+    background-color: rgba(0, 0, 0, 0.4); /* ⭐️ 여기! 입력 영역 배경 검은색에 40% 투명도! */
+    border-radius: 0;
 }
 
 #user-input {
-    flex-grow: 1; /* 입력창이 남은 공간 다 차지 */
-    padding: 12px 15px; /* 패딩 조정 */
-    border: 1px solid rgba(204, 204, 204, 0.4); /* ⭐️ 여기! 테두리 + 40% 투명도! */
-    border-radius: 24px; /* 더 둥근 입력창 */
+    flex-grow: 1;
+    padding: 12px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.5); /* ⭐️ 여기! 테두리 하얀색 계열에 50% 투명도! */
+    border-radius: 24px;
     font-size: 1rem;
     outline: none;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    background-color: rgba(248, 248, 248, 0.3); /* ⭐️ 여기! 입력창 배경색 + 30% 투명도! */
+    background-color: rgba(255, 255, 255, 0.2); /* ⭐️ 여기! 입력창 배경색 하얀색에 20% 투명도! */
+    color: #fff; /* ⭐️ 여기! 입력창 글자색 하얀색으로! */
 }
 
+#user-input::placeholder { /* ⭐️ 플레이스홀더 글자색 */
+    color: rgba(255, 255, 255, 0.7); /* 하얀색에 70% 투명도 */
+}
+
+
 #user-input:focus {
-    border-color: #1a73e8; /* 클릭 시 테두리 색상 변경 */
-    box-shadow: 0 0 0 0.2rem rgba(26, 115, 232, 0.25); /* 포커스 시 그림자 효과 */
+    border-color: #fff; /* 포커스 시 테두리 색상 하얀색으로 */
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25); /* 포커스 시 그림자 효과 하얀색 계열 */
 }
 
 #bottom-buttons {
     width: 100%;
     display: flex;
-    justify-content: center; /* 버튼들을 가운데 정렬 */
-    gap: 10px; /* 버튼들 사이 간격 */
-    margin-top: 10px;
-    /* '대화 기록 보기' 버튼을 고정 메뉴로 옮기면서 여기는 비워둠 */
+    justify-content: center;
+    gap: 10px;
 }
 
 
 /* send-button 스타일 (input-area 안에 있음) */
 #input-area #send-button {
-    padding: 12px 25px; /* 패딩 조정 */
-    background-color: rgba(26, 115, 232, 0.5); /* ⭐️ 여기! 버튼 색상 + 50% 투명도! */
-    color: white;
+    padding: 12px 25px;
+    background-color: rgba(26, 115, 232, 0.5); /* 버튼 색상 파란색 유지 */
+    color: white; /* 버튼 글자색 하얀색 유지 */
     border: none;
-    border-radius: 24px; /* 더 둥근 버튼 */
+    border-radius: 24px;
     cursor: pointer;
     font-size: 1rem;
     transition: background-color 0.3s ease;
-    flex-shrink: 0; /* 줄바꿈 안 되게 */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* 버튼 그림자 */
+    flex-shrink: 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 #input-area #send-button:hover {
-    background-color: #0f4e8c; /* 호버 시 색상 변경 */
+    background-color: #0f4e8c;
 }
 
 
@@ -254,50 +244,51 @@ h1 {
 #history-area h2 {
     text-align: center;
     margin-bottom: 20px;
-    color: #000;
+    color: #fff; /* ⭐️ 여기! 기록 제목 색깔 하얀색으로! */
     font-size: 1.8em;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5); /* ⭐️ 그림자 살짝 넣어서 배경에 묻히지 않게 */
 }
 
 #history-list {
-    list-style: none; /* 목록 점 없애기 */
+    list-style: none;
     padding: 0;
     margin: 0 0 20px 0;
-    border: 1px solid rgba(224, 224, 224, 0.4); /* ⭐️ 여기! 테두리 + 40% 투명도! */
+    border: 1px solid rgba(255, 255, 255, 0.4); /* ⭐️ 여기! 테두리 하얀색 계열에 40% 투명도! */
     border-radius: 8px;
-    max-height: calc(100vh - 200px); /* ⭐️ 화면 높이에 맞춰 최대 높이 계산 (조절 가능) */
-    overflow-y: auto; /* 목록 넘치면 스크롤 */
-    background-color: rgba(255, 255, 255, 0.3); /* ⭐️ 여기! 기록 목록 배경 하얗게 + 30% 투명도! */
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    background-color: rgba(0, 0, 0, 0.4); /* ⭐️ 여기! 기록 목록 배경 검은색에 40% 투명도! */
 }
 
 #history-list li {
     padding: 12px 15px;
-    border-bottom: 1px solid rgba(238, 238, 238, 0.4); /* ⭐️ 여기! 아래 테두리 + 40% 투명도! */
-    cursor: pointer; /* 마우스 올리면 손가락 모양 */
-    display: flex; /* 체크박스랑 내용 정렬 */
-    align-items: center; /* 세로 가운데 정렬 */
-    /* justify-content: space-between; */ /* 체크박스 왼쪽, 내용 오른쪽으로 */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* ⭐️ 여기! 아래 테두리 하얀색 계열에 20% 투명도! */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
     transition: background-color 0.2s ease;
+    color: #fff; /* ⭐️ 여기! 목록 아이템 글자색 하얀색으로! */
 }
 
 #history-list li:last-child {
-    border-bottom: none; /* 마지막 목록 아이템 아래 테두리 없애기 */
+    border-bottom: none;
 }
 
 #history-list li:hover {
-    background-color: rgba(248, 248, 248, 0.4); /* ⭐️ 여기! 마우스 올리면 배경색 + 40% 투명도! */
+    background-color: rgba(255, 255, 255, 0.1); /* ⭐️ 여기! 호버 시 배경 하얀색 계열에 10% 투명도! */
 }
 
 #history-list li input[type="checkbox"] {
     margin-right: 10px;
      /* 체크박스 스타일 커스터마이징은 복잡해서 기본으로 둠 */
-    flex-shrink: 0; /* 체크박스가 줄바꿈 안 되게 */
+    flex-shrink: 0;
 }
 
 #history-list li span {
-    flex-grow: 1; /* 내용이 공간을 차지하게 */
-    white-space: nowrap; /* 줄바꿈 방지 */
-    overflow: hidden; /* 넘치는 내용 숨김 */
-    text-overflow: ellipsis; /* 넘치는 내용 ... 으로 표시 */
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 
@@ -306,25 +297,16 @@ h1 {
     display: flex;
     justify-content: center;
     gap: 10px;
-     /* 이 버튼들은 이제 고정 메뉴로 옮겼으므로 여기는 비워둠 */
 }
 
-/* history-buttons 안에 있는 버튼 스타일 (send-button 스타일 재활용) */
-/*
-#history-buttons button { ... }
-#history-buttons button:hover { ... }
-#history-buttons #delete-selected-button { ... }
-#history-buttons #delete-selected-button:hover { ... }
-*/
 
-
-/* 로딩 인디케이터 스타일 (script.js에서 주석 풀면 사용) */
-.loading-indicator { /* ⭐️ 로딩 인디케이터 스타일 주석 해제! */
+/* 로딩 인디케이터 스타일 */
+.loading-indicator {
     font-style: italic;
-    color: #888;
+    color: rgba(255, 255, 255, 0.8); /* ⭐️ 여기! 로딩 글자색 하얀색 계열에 80% 투명도! */
     align-self: flex-start;
-    margin-left: 15px; /* AI 메시지와 동일하게 왼쪽 정렬 */
-    background-color: rgba(224, 224, 224, 0.3); /* ⭐️ 여기! AI 메시지 배경색과 비슷하게 + 30% 투명도! */
+    margin-left: 15px;
+    background-color: rgba(0, 0, 0, 0.3); /* ⭐️ 여기! 로딩 배경 검은색에 30% 투명도! */
     padding: 10px 15px;
     border-radius: 10px;
     max-width: 80%;
@@ -334,86 +316,77 @@ h1 {
 /* 모바일 반응형 */
 @media (max-width: 600px) {
     #app-container {
-        padding: 10px; /* 모바일에서 패딩 줄임 */
+        padding: 10px;
         margin-top: 0;
         margin-bottom: 0;
     }
 
     h1 {
         font-size: 1.5em;
-        margin-bottom: 15px; /* 모바일에서 마진 줄임 */
+        margin-bottom: 15px;
     }
 
     #fixed-menu {
-         top: 5px; /* 모바일에서 상단 위치 조정 */
-         right: 5px; /* 모바일에서 우측 위치 조정 */
+         top: 5px;
+         right: 5px;
          gap: 5px;
-         flex-direction: column; /* 모바일에서는 메뉴 버튼 세로로 쌓기 */
+         flex-direction: column;
     }
-     #fixed-menu .menu-button { /* menu-button 클래스로 선택 */
+     #fixed-menu .menu-button {
          padding: 8px 15px;
          font-size: 0.8rem;
          border-radius: 15px;
-         width: 100%; /* 너비 꽉 채우기 */
+         width: 100%;
          text-align: center;
      }
 
 
     #chat-box {
-        /* ⭐️ 모바일에서도 높이 고정하지 않고 flex-grow로 */
-        /* height: 350px; */
         flex-grow: 1;
-        padding: 8px; /* 모바일에서 패딩 줄임 */
-        gap: 6px; /* 모바일에서 간격 줄임 */
+        padding: 8px;
+        gap: 6px;
     }
 
     #chat-box p {
         padding: 8px 12px;
-        max-width: 95%; /* 모바일에서 너비 조정 */
-        border-radius: 8px; /* 모바일에서 버블 둥글기 조금 줄임 */
+        max-width: 95%;
+        border-radius: 8px;
     }
      .user-message { border-radius: 8px 8px 2px 8px; }
      .ai-message { border-radius: 8px 8px 8px 2px; }
 
 
     #input-area {
-        flex-direction: column; /* 모바일에서 입력창과 버튼 세로로 쌓기 */
+        flex-direction: column;
         gap: 8px;
-        padding-top: 10px; /* 모바일에서 패딩 줄임 */
+        padding-top: 10px;
     }
 
     #user-input, #input-area #send-button {
-        width: 100%; /* 모바일에서 너비 꽉 채우기 */
+        width: 100%;
         margin-right: 0;
-        /* text-align: center; */
     }
 
      #input-area #send-button {
-         padding: 10px; /* 모바일 버튼 패딩 */
+         padding: 10px;
      }
 
-     #bottom-buttons, #history-buttons { /* 이 영역들은 이제 비워둠 */
-         flex-direction: column; /* 모바일에서 버튼 세로 정렬 */
+     #bottom-buttons, #history-buttons {
+         flex-direction: column;
          gap: 8px;
      }
-     /*
-     #bottom-buttons button {
-         width: 100%; // 모바일에서 버튼 너비 꽉 채우기
-         text-align: center;
-     }
-     */
 
      #history-area h2 {
          font-size: 1.5em;
      }
      #history-list {
-         max-height: calc(100vh - 180px); /* ⭐️ 모바일에서 높이 다시 계산 (조절 가능) */
+         max-height: calc(100vh - 180px);
      }
      #history-list li {
          padding: 10px 12px;
      }
 
-     .loading-indicator { /* ⭐️ 모바일 로딩 인디케이터 스타일 */
+     .loading-indicator {
          padding: 8px 12px;
      }
 }
