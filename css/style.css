@@ -1,498 +1,116 @@
-/* Google Fonts - Noto Sans KR (HTML에서 링크했는지 확인!) */
-html, body { /* html, body에 기본 스타일 적용 */
-    font-family: 'Noto Sans KR', sans-serif; /* 한국어 지원 글꼴 */
-    margin: 0;
-    padding: 0;
-    width: 100%; /* 너비 100% */
-    height: 100%; /* 높이 100% */
-    overflow: hidden; /* ⭐️ 여기! 전체 화면에서 스크롤 안 생기게 */
-    box-sizing: border-box;
-    color: #fff; /* 기본 글자 색깔 하얀색으로! */
-
-    /* === 하루키! 여기에 원하는 배경 이미지를 넣어줘! === */
-     background-image: url('../images/BACKGROUND.jpeg'); /* 이미지 파일 경로를 정확하게! */
-     background-size: cover; /* 화면 전체를 꽉 채우도록 크기 조절 */
-     background-position: center; /* 이미지를 가운데 정렬 */
-     background-repeat: no-repeat; /* 이미지 반복 안 함 */
-     background-attachment: fixed; /* 스크롤 해도 배경 이미지는 고정 */
-    /* 단색 배경을 원하면 아래 주석을 풀고 색깔 코드를 바꿔줘! */
-    /* background-color: #f0f0f0; */
-    /* =========================================== */
-
-    /* 중요: 혹시 모를 position: fixed 문제 방지를 위해 transform, filter 제거 */
-    transform: none !important;
-    filter: none !important;
-
-    /* 터치 이벤트가 하위 요소로 잘 전달되도록 Pointer Events 설정 (모바일 문제 방지) */
-     pointer-events: auto; /* body에는 auto가 기본값이지만 명시적으로 */
+/* 1. 전체 화면 기본 세팅 */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* 화면 전체 스크롤 없앰 */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: url('../images/BACKGROUND.jpeg') no-repeat center center fixed;
+  background-size: cover;
+  color: #222;
 }
 
+/* 2. 최상위 앱 컨테이너 */
 #app-container {
-    width: 100vw; /* 뷰포트 너비 전체 */
-    height: 100vh; /* 뷰포트 높이 전체 */
-    max-width: none;
-    max-height: none;
-    margin: 0;
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.4); /* 배경색을 검은색에 40% 투명도로 */
-    border-radius: 0;
-    box-shadow: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* ⭐️ 여기! app-container에서는 overflow 제거! 스크롤은 chat-box에서! */
-    /* overflow-y: auto; */
-    overflow: hidden; /* 내부 요소가 넘치면 숨김 (스크롤은 chat-box 담당) */
-
-    position: relative;
-    z-index: 1; /* 배경 이미지 위에 올라오도록 z-index 설정 */
-
-    /* 중요: 혹시 #app-container에 transform, filter, perspective, will-change 같은 속성이 있다면 */
-    /* position: fixed 요소의 위치가 예상과 다를 수 있습니다. 해당 속성들을 확인해보세요! */
-    transform: none !important;
-    filter: none !important;
-
-    /* 터치 이벤트가 하위 요소로 잘 전달되도록 */
-    pointer-events: auto;
+  position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* 내부 스크롤만 허용 */
+  user-select: none;
+  background-color: rgba(255, 255, 255, 0.8); /* 배경이미지 위에 반투명 흰 배경 */
+  box-shadow: inset 0 0 100px rgba(0,0,0,0.1);
 }
 
-/* === 화면 상단 오른쪽 고정 메뉴 스타일! === */
-#fixed-menu {
-    position: fixed; /* 화면에 고정! */
-    top: 15px; /* 위에서부터 15px */
-    right: 15px; /* 오른쪽에서부터 15px */
-    z-index: 99999; /* 여기! z-index를 훨씬 더 높여봤어! 다른 요소 위에 오도록! */
-    display: flex; /* 메뉴 버튼 보이게! */
-    gap: 10px; /* 버튼 사이 간격 */
-    /* background-color: rgba(255,255,255,0.5); */
-    /* padding: 5px 10px; */
-    /* border-radius: 5px; */
-
-    /* 혹시 모를 문제 방지 */
-    transform: none !important;
-    filter: none !important;
-
-     /* 터치 이벤트가 메뉴에서 잘 작동하도록 */
-     pointer-events: auto;
-}
-
-/* 고정 메뉴 안에 있는 버튼 스타일 */
-#fixed-menu .menu-button {
-     padding: 10px 20px;
-     background-color: rgba(26, 115, 232, 0.5);
-     color: white;
-     border: none;
-     border-radius: 0; /* 네모 모양으로! */
-     cursor: pointer;
-     font-size: 0.9rem;
-     transition: background-color 0.3s ease;
-     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-
-     /* 혹시 모를 문제 방지 */
-     position: relative; /* z-index가 잘 작동하도록 relative 추가 */
-     z-index: 2; /* 메뉴 자체 z-index보다 약간 낮게 */
-
-     /* 터치 이벤트가 버튼에서 잘 작동하도록 */
-     pointer-events: auto;
-}
-#fixed-menu .menu-button:hover {
-    background-color: #0f4e8c;
-}
-
-/* 기록 화면에서 보이는 버튼 스타일 */
-#fixed-menu .history-view-button {
-     background-color: rgba(108, 117, 125, 0.5);
-     color: white;
-     border-radius: 0; /* 네모 모양으로! */
-     /* 혹시 모를 문제 방지 */
-     position: relative;
-     z-index: 2;
-     /* 터치 이벤트가 버튼에서 잘 작동하도록 */
-     pointer-events: auto;
-}
-#fixed-menu .history-view-button:hover {
-     background-color: #545b62;
-}
-
-
-/* 요소를 숨기는 클래스 (JavaScript에서 사용) */
-.hidden {
-    display: none !important;
-}
-/* ======================================= */
-
-
-h1 {
-    color: #fff;
-    margin-top: 0;
-    margin-bottom: 30px;
-    font-size: 2em;
-    font-weight: 700;
-    text-align: center;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-}
-
-/* 주 대화 영역과 기록 영역 전환 */
-#main-chat-area {
-    width: 100%;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    /* 터치 이벤트가 하위 요소로 잘 전달되도록 */
-    pointer-events: auto; /* 이 영역 안의 요소들이 클릭 가능하도록 */
-}
-
-#history-area {
-    width: 100%;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-     /* 기록 화면 영역 자체에도 z-index 적용 */
-     position: relative;
-     z-index: 5; /* 입력 영역보다는 아래, 메뉴보다는 아래 */
-     /* 터치 이벤트가 하위 요소로 잘 전달되도록 */
-     pointer-events: auto; /* 이 영역 안의 요소들이 클릭 가능하도록 */
-}
-
-#chat-container {
-    width: 100%;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    background-color: transparent;
-    border: none;
-    padding: 0;
-    margin-bottom: 15px;
-     /* 터치 이벤트가 하위 요소로 잘 전달되도록 */
-     pointer-events: auto;
-}
-
+/* 3. 채팅 박스: 여기서만 스크롤 */
 #chat-box {
-    flex-grow: 1;
-    /* ⭐️ 여기! chat-box에서만 스크롤되게! */
-    overflow-y: auto;
-    overflow-x: hidden; /* 가로 스크롤 방지 */
-
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    background-color: transparent;
-    border: none;
-     /* 터치 이벤트가 하위 요소로 잘 작동하도록 */
-     pointer-events: auto; /* 채팅 버블 클릭/스크롤 가능하게 */
+  flex-grow: 1;
+  padding: 15px;
+  margin: 15px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 2;
 }
 
-/* 스크롤바 스타일 (선택 사항) */
-#chat-box::-webkit-scrollbar {
-    width: 8px;
-}
-#chat-box::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 4px;
-}
-#chat-box::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-
-#chat-box p {
-    margin: 0;
-    padding: 12px 16px;
-    border-radius: 10px;
-    max-width: 80%;
-    word-wrap: break-word;
-    line-height: 1.6;
-    position: relative; /* 메시지 버블에도 z-index 적용을 위해 relative 추가 */
-    z-index: 1; /* 메뉴나 입력창보다 아래에 있도록 z-index 설정 */
-    color: #333;
-     /* 터치 이벤트가 메시지에서 잘 작동하도록 */
-     pointer-events: auto;
+/* 4. 고정 메뉴 */
+#fixed-menu {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  padding: 10px 15px;
+  z-index: 99999;
+  user-select: none;
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
-.user-message {
-    align-self: flex-end;
-    background-color: rgba(255, 255, 255, 0.8);
-    color: #333;
-    border-radius: 10px 10px 2px 10px;
+/* 5. 메뉴 버튼 */
+#fixed-menu .menu-button {
+  cursor: pointer;
+  padding: 8px 14px;
+  border-radius: 5px;
+  border: 1px solid #bbb;
+  background-color: #eee;
+  transition: background-color 0.3s ease;
+  font-weight: 600;
+  user-select: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-.ai-message {
-    align-self: flex-start;
-    background-color: rgba(255, 255, 255, 0.8);
-    color: #333;
-    border-radius: 10px 10px 10px 2px;
-    border: 1px solid rgba(224, 224, 224, 0.8);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+#fixed-menu .menu-button:hover {
+  background-color: #ddd;
 }
 
-/* 메시지 이름 (나, AI 비서) 숨기기 */
-#chat-box p strong {
-    display: none;
-}
-
+/* 6. 입력창 영역 (필요하면) */
 #input-area {
-    display: flex;
-    width: 100%;
-    gap: 10px;
-    margin-bottom: 0;
-    padding-top: 15px;
-    border-top: 1px solid rgba(255, 255, 255, 0.5);
-    background-color: rgba(0, 0, 0, 0.4);
-    border-radius: 0;
-    position: relative; /* 입력 영역에도 z-index 적용을 위해 relative 추가 */
-    z-index: 10; /* 메뉴보다는 약간 낮지만 채팅 버블보다는 위에 있도록 높게 설정 */
-     /* 터치 이벤트가 입력 영역에서 잘 작동하도록 */
-     pointer-events: auto;
+  padding: 12px 20px;
+  border-top: 1px solid #ccc;
+  background-color: rgba(250, 250, 250, 0.95);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
 }
 
-#user-input {
-    flex-grow: 1;
-    padding: 12px 15px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 24px;
-    font-size: 1rem;
-    outline: none;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    background-color: rgba(255, 255, 255, 0.2);
-    color: #fff;
-     /* 터치 이벤트가 입력창에서 잘 작동하도록 */
-     pointer-events: auto;
+/* 7. 스크롤바 스타일 커스텀 (#chat-box) */
+#chat-box::-webkit-scrollbar {
+  width: 10px;
 }
 
-#user-input::placeholder {
-    color: rgba(255, 255, 255, 0.7);
+#chat-box::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 10px;
 }
 
-
-#user-input:focus {
-    border-color: #fff;
-    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+#chat-box::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  border: 2px solid #f0f0f0;
 }
 
-#bottom-buttons {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    /* 이 영역 이제 사용 안 함 */
-     display: none;
-}
-
-
-/* send-button 스타일 */
-#input-area #send-button {
-    padding: 12px 25px;
-    background-color: rgba(26, 115, 232, 0.5);
-    color: white;
-    border: none;
-    border-radius: 24px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-    flex-shrink: 0;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    position: relative; /* 버튼 자체에도 z-index 적용을 위해 relative 추가 */
-    z-index: 1; /* 입력창보다 위에 있도록 z-index 설정 (굳이 필요 없을수도 있지만 혹시 몰라) */
-     /* 터치 이벤트가 버튼에서 잘 작동하도록 */
-     pointer-events: auto;
-}
-
-#input-area #send-button:hover {
-    background-color: #0f4e8c;
-}
-
-
-/* 기록 목록 화면 스타일 */
-#history-area h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #fff;
-    font-size: 1.8em;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-}
-
-#history-list {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 20px 0;
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 8px;
-    max-height: calc(100vh - 200px);
-    overflow-y: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-     /* 기록 목록 자체에도 z-index 적용 */
-     position: relative;
-     z-index: 1;
-     /* 터치 이벤트가 하위 요소로 잘 전달되도록 */
-     pointer-events: auto;
-}
-
-#history-list li {
-    padding: 12px 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    transition: background-color 0.2s ease;
-    color: #fff;
-     /* 목록 아이템에도 z-index 적용 */
-     position: relative;
-     z-index: 1;
-     /* 터치 이벤트가 목록 아이템에서 잘 작동하도록 */
-     pointer-events: auto;
-}
-
-#history-list li:last-child {
-    border-bottom: none;
-}
-
-#history-list li:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-#history-list li input[type="checkbox"] {
-    margin-right: 10px;
-    flex-shrink: 0;
-     /* 체크박스에도 z-index 적용 */
-     position: relative;
-     z-index: 2; /* 텍스트보다 위에 있도록 */
-     /* 터치 이벤트가 체크박스에서 잘 작동하도록 */
-     pointer-events: auto;
-}
-
-#history-list li span {
-    flex-grow: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-     /* 텍스트에도 z-index 적용 */
-     position: relative;
-     z-index: 1;
-     /* 터치 이벤트가 span에서 잘 작동하도록 */
-     pointer-events: auto;
-}
-
-
-#history-buttons {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-     /* 기록 버튼 영역에도 z-index 적용 */
-     position: relative;
-     z-index: 5;
-     /* 터치 이벤트가 하위 요소로 잘 전달되도록 */
-     pointer-events: auto;
-}
-
-
-/* 로딩 인디케이터 스타일 */
-.loading-indicator {
-    font-style: italic;
-    color: rgba(255, 255, 255, 0.8);
-    align-self: flex-start;
-    margin-left: 15px;
-    background-color: rgba(0, 0, 0, 0.3);
-    padding: 10px 15px;
-    border-radius: 10px;
-    max-width: 80%;
-     /* 로딩 인디케이터에도 z-index 적용 */
-     position: relative;
-     z-index: 1;
-     /* 터치 이벤트 방지 (클릭할 필요 없는 요소) */
-     pointer-events: none;
-}
-
-
-/* 모바일 반응형 */
+/* 8. 반응형 간단 처리 (필요시) */
 @media (max-width: 600px) {
-     html, body {
-         /* 모바일에서 혹시 모를 스크롤 문제 방지 */
-         overflow: hidden;
-     }
-
-    #app-container {
-        padding: 10px;
-        margin-top: 0;
-        margin-bottom: 0;
-         overflow-y: auto; /* ⭐️ 모바일에서도 app-container 내부 스크롤 */
-    }
-
-    h1 {
-        font-size: 1.5em;
-        margin-bottom: 15px;
-    }
-
-    #fixed-menu {
-         top: 5px;
-         right: 5px;
-         gap: 5px;
-         flex-direction: column;
-         z-index: 99999; /* 모바일에서도 z-index 높게 */
-    }
-     #fixed-menu .menu-button {
-         padding: 8px 15px;
-         font-size: 0.8rem;
-         border-radius: 0; /* 모바일에서도 네모 모양으로! */
-         width: 100%;
-         text-align: center;
-     }
-
-
-    #chat-box {
-        flex-grow: 1;
-        padding: 8px;
-        gap: 6px;
-    }
-
-    #chat-box p {
-        padding: 8px 12px;
-        max-width: 95%;
-        border-radius: 8px;
-    }
-     .user-message { border-radius: 8px 8px 2px 8px; }
-     .ai-message { border-radius: 8px 8px 8px 2px; }
-
-
-    #input-area {
-        flex-direction: column;
-        gap: 8px;
-        padding-top: 10px;
-         z-index: 10; /* 모바일 입력 영역 z-index */
-    }
-
-    #user-input, #input-area #send-button {
-        width: 100%;
-        margin-right: 0;
-    }
-
-     #input-area #send-button {
-         padding: 10px;
-     }
-
-     #bottom-buttons {
-         /* 모바일에서도 사용 안 함 */
-         display: none;
-     }
-     #history-buttons {
-         flex-direction: column;
-         gap: 8px;
-     }
-
-     #history-area h2 {
-         font-size: 1.5em;
-     }
-     #history-list {
-         max-height: calc(100vh - 180px);
-     }
-     #history-list li {
-         padding: 10px 12px;
-     }
-
-     .loading-indicator {
-         padding: 8px 12px;
-     }
+  #fixed-menu {
+    top: auto;
+    bottom: 15px;
+    right: 50%;
+    transform: translateX(50%);
+    padding: 8px 12px;
+    gap: 8px;
+  }
+  
+  #fixed-menu .menu-button {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+  
+  #chat-box {
+    margin: 10px;
+    padding: 10px;
+  }
 }
