@@ -7,8 +7,10 @@ html, body {
   font-family: 'Noto Sans KR', sans-serif; /* Google Fonts 적용 */
   background: url('../images/BACKGROUND.jpeg') no-repeat center center fixed;
   background-size: cover;
-  /* ⭐️ 글자색은 어둡게 유지해서 배경 위에서 잘 보이게! 👇 */
-  color: #222; /* 어두운 회색 */
+  /* ⭐️ 모든 글자색을 하얀색으로! 👇 */
+  color: white;
+  /* 하얀 글자가 배경 위에서 잘 보이게 텍스트 그림자 추가 (원하면 주석 해제) */
+   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 /* 2. 최상위 앱 컨테이너 */
@@ -19,9 +21,9 @@ html, body {
   flex-direction: column;
   overflow: hidden; /* 내부 스크롤만 허용 */
   user-select: none;
-  /* ⭐️ app-container 배경 투명도를 아주 높게! (거의 안 보이게) 👇 */
-  background-color: rgba(255, 255, 255, 0.1); /* 흰색 바탕에 투명도 0.1 */
-  box-shadow: inset 0 0 100px rgba(0,0,0,0.05); /* 그림자 효과도 연하게 */
+  /* app-container 배경 투명도 유지 */
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 100px rgba(0,0,0,0.05);
 }
 
 /* 3. 채팅 박스: 여기서만 스크롤 */
@@ -29,29 +31,31 @@ html, body {
   flex-grow: 1;
   padding: 15px;
   margin: 15px;
-  /* ⭐️ chat-box 배경 투명도를 아주 높게! 👇 */
-  background: rgba(255, 255, 255, 0.15); /* 흰색 바탕에 투명도 0.15 */
+  /* chat-box 배경 투명도 유지 */
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* 그림자도 연하게 */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   overflow-y: auto;
   overflow-x: hidden;
   z-index: 2;
-  /* 글자색은 어두운 색으로 그대로 둠 */
-  color: #222;
+  /* ⭐️ 채팅 박스 안 글자색도 하얀색으로! 👇 */
+  color: white;
+  /* 하얀 글자가 배경 위에서 잘 보이게 텍스트 그림자 추가 (원하면 주석 해제) */
+   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 /* 4. 고정 메뉴 컨테이너 */
 #fixed-menu {
-  position: fixed; /* 화면에 고정 */
-  top: 15px; /* 위에서부터 15px 떨어진 위치 */
-  right: 15px; /* 오른쪽에서부터 15px 떨어진 위치 */
-  z-index: 99999; /* 다른 요소들 위에 표시 */
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 99999;
   user-select: none;
-  /* ⭐️ 메뉴 전체 컨테이너 배경 투명도를 아주 높게! 👇 */
-  background-color: rgba(255, 255, 255, 0.1); /* 흰색 바탕에 투명도 0.1 */
-  border: 1px solid rgba(255, 255, 255, 0.1); /* 테두리도 투명하게 */
+  /* 메뉴 전체 컨테이너 배경 투명도 유지 */
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* 그림자 연하게 */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   padding: 5px;
 }
 
@@ -62,41 +66,39 @@ html, body {
   padding: 5px;
   cursor: pointer;
   font-size: 24px;
-  /* ⭐️ 아이콘 색상 어둡게 유지 👇 */
-  color: #555; /* 어두운 회색 */
+  /* ⭐️ 아이콘 색상도 하얀색으로! 👇 */
+  color: white;
   transition: color 0.3s ease;
+   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* 그림자 */
 }
 
 #menu-toggle-button:hover {
-   color: #222; /* 호버 시 더 진한 색 */
+   /* ⭐️ 호버 시 색상도 하얀색 계열로! 👇 */
+   color: rgba(255, 255, 255, 0.8); /* 살짝 투명한 하얀색 */
 }
 
 
 /* ⭐️ 메뉴 항목들을 담는 컨테이너 스타일 👇 */
 #menu-items-container {
-  position: absolute; /* 점 세 개 버튼 기준으로 위치 설정 */
+  position: absolute;
   top: calc(100% + 5px);
   right: 0;
-  /* ⭐️ 메뉴 항목 컨테이너 배경 투명도를 높게! 👇 */
-  background-color: rgba(255, 255, 255, 0.2); /* 흰색 바탕에 투명도 0.2 */
-  border: 1px solid rgba(255, 255, 255, 0.2); /* 테두리도 투명하게 */
+  /* 메뉴 항목 컨테이너 배경 투명도 유지 */
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 5px;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.15); /* 그림자 연하게 */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.15);
   z-index: 1001;
   min-width: 120px;
   display: flex;
   flex-direction: column;
   gap: 5px;
-  /* ⭐️ 이 컨테이너는 기본적으로 숨겨져 있어야 해요! HTML에 hidden 클래스가 있는지 확인하고, 없으면 CSS에서 기본적으로 display: none;을 적용하세요. 👇 */
-  /* HTML에 hidden 클래스가 있다면 이 부분은 필요 없어요 */
-  /* display: none; */
 }
 
 
 /* ⭐️ 메뉴 항목 컨테이너를 숨기는 클래스 (JS에서 토글) */
-/* 이 클래스가 적용되면 메뉴가 숨겨져요. */
 .hidden {
-  display: none !important; /* 중요! display 속성이 덮어쓰이지 않도록 !important 사용 */
+  display: none !important;
 }
 
 
@@ -105,63 +107,67 @@ html, body {
   cursor: pointer;
   padding: 8px 14px;
   border-radius: 5px;
-  border: none; /* 테두리 없음 */
+  border: none;
   background-color: transparent; /* 배경 투명 */
   transition: background-color 0.3s ease;
   font-weight: 600;
-  /* ⭐️ 글자색을 어둡게 유지 👇 */
-  color: #222;
+  /* ⭐️ 메뉴 버튼 글자색도 하얀색으로! 👇 */
+  color: white;
   text-align: left;
+   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* 그림자 */
 }
 
 #menu-items-container .menu-button:hover {
   /* ⭐️ 메뉴 항목 버튼 호버 시 배경 투명도 조절 👇 */
-  background-color: rgba(240, 240, 240, 0.3); /* 살짝 투명한 연한 회색 */
+  background-color: rgba(240, 240, 240, 0.3);
 }
 
 
 /* 6. 입력창 영역 */
 #input-area {
   padding: 12px 20px;
-  border-top: 1px solid rgba(204, 204, 204, 0.3); /* 테두리도 투명하게 */
-  /* ⭐️ 입력창 배경 투명도를 높게! 👇 */
-  background-color: rgba(250, 250, 250, 0.15); /* 연한 회색 바탕에 투명도 0.15 */
+  border-top: 1px solid rgba(204, 204, 204, 0.3);
+  /* 입력창 배경 투명도 유지 */
+  background-color: rgba(250, 250, 250, 0.15);
   box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
 }
 
 /* 7. 입력창 텍스트 색상 */
 #input-area input[type="text"] {
-  /* 글자색은 어둡게 유지 👇 */
-  color: #222;
+  /* ⭐️ 입력창 글자색도 하얀색으로! 👇 */
+  color: white;
   border: none;
   outline: none;
   width: 100%;
   padding: 0;
   background: none;
+   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* 그림자 */
 }
 
 #input-area input[type="text"]::placeholder {
-   /* placeholder 글자색도 어둡게 유지 👇 */
-   color: #888;
+   /* ⭐️ placeholder 글자색도 살짝 투명한 하얀색으로! 👇 */
+   color: rgba(255, 255, 255, 0.7); /* 살짝 투명한 하얀색 */
+   text-shadow: none; /* placeholder에는 그림자 없애거나 조절 */
 }
 
-/* 보내기 버튼 스타일 (기존 코드에 없었다면 추가) */
+/* 보내기 버튼 스타일 */
 #send-button {
     cursor: pointer;
     padding: 8px 15px;
     border: none;
     border-radius: 5px;
-    /* ⭐️ 보내기 버튼 배경 투명도 조절 👇 */
-    background-color: rgba(0, 123, 255, 0.6); /* 파란색 계열에 투명도 0.6 */
-    color: white; /* 버튼 글자색은 하얗게 유지 */
+    /* 보내기 버튼 배경 투명도 유지 */
+    background-color: rgba(0, 123, 255, 0.6);
+    /* ⭐️ 보내기 버튼 글자색은 이미 하얀색이었지만 명시적으로! 👇 */
+    color: white;
     font-weight: 600;
     margin-left: 10px;
     transition: background-color 0.3s ease;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* 그림자 */
 }
 
 #send-button:hover {
-    /* ⭐️ 보내기 버튼 호버 시 배경 투명도 조절 👇 */
-    background-color: rgba(0, 123, 255, 0.8); /* 호버 시 조금 덜 투명하게 */
+    background-color: rgba(0, 123, 255, 0.8);
 }
 
 
@@ -171,16 +177,15 @@ html, body {
 }
 
 #chat-box::-webkit-scrollbar-track {
-  /* ⭐️ 스크롤바 트랙 배경 투명도 조절 👇 */
-  background: rgba(240, 240, 240, 0.1); /* 아주 투명한 연한 회색 */
+  /* 스크롤바 트랙 배경 투명도 유지 */
+  background: rgba(240, 240, 240, 0.1);
   border-radius: 10px;
 }
 
 #chat-box::-webkit-scrollbar-thumb {
-  /* ⭐️ 스크롤바 썸 배경 투명도 조절 👇 */
-  background-color: rgba(0, 0, 0, 0.2); /* 살짝 투명한 검정색 */
+  /* 스크롤바 썸 배경 투명도 유지 */
+  background-color: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
-  /* ⭐️ 스크롤바 썸 테두리 투명도 조절 👇 */
   border: 2px solid rgba(240, 240, 240, 0.1);
 }
 
@@ -220,20 +225,9 @@ html, body {
 }
 
 /* ⭐️ HTML에서 .hidden 클래스를 사용하는 다른 요소들에 대한 스타일 (하루키 코드에 이미 있던 것들) 👇 */
-/* 대화 기록 영역 숨김 */
-#history-area.hidden {
-  display: none;
-}
-
-/* 하단 버튼 영역 (사용 안함) 숨김 */
-#bottom-buttons.hidden {
-  display: none;
-}
-
-/* 대화 기록 화면의 버튼들 숨김 */
-.history-view-button.hidden {
-    display: none;
-}
+#history-area.hidden { display: none; }
+#bottom-buttons.hidden { display: none; }
+.history-view-button.hidden { display: none; }
 
 /* ⭐️ 기본 메시지, 사용자 메시지, AI 메시지 스타일 👇 */
 .message {
@@ -243,25 +237,31 @@ html, body {
 }
 
 .user-message {
-    /* ⭐️ 사용자 메시지 배경 투명도 조절 👇 */
-    background-color: rgba(0, 123, 255, 0.3); /* 파란색 계열에 투명도 0.3 */
-    color: #222; /* 배경이 투명해지니 글자색은 어두운게 잘 보여요 */
+    /* 사용자 메시지 배경 투명도 유지 */
+    background-color: rgba(0, 123, 255, 0.3);
+    /* ⭐️ 사용자 메시지 글자색도 하얀색으로! 👇 */
+    color: white; /* 파란 배경에 하얀 글자가 잘 보여요 */
     align-self: flex-end;
     margin-left: auto;
+     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* 그림자 */
 }
 
 .ai-message {
-    /* ⭐️ AI 메시지 배경 투명도 조절 👇 */
-    background-color: rgba(220, 220, 220, 0.3); /* 연한 회색에 투명도 0.3 */
-    color: #222; /* 글자색 어둡게 유지 */
+    /* AI 메시지 배경 투명도 유지 */
+    background-color: rgba(220, 220, 220, 0.3);
+    /* ⭐️ AI 메시지 글자색도 하얀색으로! 👇 */
+    color: white;
     align-self: flex-start;
     margin-right: auto;
+     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* 그림자 */
 }
 
 /* 로딩 인디케이터 스타일 */
 .ai-message.loading-indicator {
-    /* ⭐️ 로딩 인디케이터 배경 투명도 조절 👇 */
-    background-color: rgba(180, 180, 180, 0.4); /* 조금 더 진한 회색에 투명도 0.4 */
+    /* 로딩 인디케이터 배경 투명도 유지 */
+    background-color: rgba(180, 180, 180, 0.4);
     font-style: italic;
-    color: #555; /* 로딩 텍스트 색상 어둡게 유지 */
+    /* ⭐️ 로딩 텍스트 색상도 하얀색 계열로! 👇 */
+    color: rgba(255, 255, 255, 0.8); /* 살짝 투명한 하얀색 */
+     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* 그림자 */
 }
