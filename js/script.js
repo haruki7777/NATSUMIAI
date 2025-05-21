@@ -236,7 +236,7 @@ function startNewChat(saveCurrent = true) {
     } else {
          console.log('현재 대화 저장 안 함. 바로 새 채팅 시작.');
          const currentMessages = getMessagesFromView();
-         const initialAIMessageText = "츤츤거리면서 '뭐 할말있어?'";
+         const initialAIMessageText = "뭐 할말있어?";
          const isEmptyChat = currentMessages.length === 0 || (currentMessages.length === 1 && currentMessages[0]?.text.trim().toLowerCase() === initialAIMessageText.toLowerCase());
 
          if (currentSessionId !== null && isEmptyChat) {
@@ -272,7 +272,7 @@ function startNewChat(saveCurrent = true) {
         console.log('새 채팅 시작 시 메뉴 항목 숨김.');
     }
 
-    addMessageToChat('ai', "츤츤거리면서 '뭐 할말있어?'");
+    addMessageToChat('ai', "뭐 할말있어?");
     console.log('새 채팅 시작 기능 실행 완료. 초기 메시지 추가됨.');
 }
 
