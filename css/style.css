@@ -22,6 +22,9 @@ html, body { /* html, body에 기본 스타일 적용 */
     /* 중요: 혹시 모를 position: fixed 문제 방지를 위해 transform, filter 제거 */
     transform: none !important;
     filter: none !important;
+
+    /* ⭐️ 터치 이벤트가 하위 요소로 잘 전달되도록 Pointer Events 설정 (모바일 문제 방지) */
+     /* pointer-events: auto; */ /* body에는 auto가 기본값이지만 명시적으로 */
 }
 
 #app-container {
@@ -45,6 +48,9 @@ html, body { /* html, body에 기본 스타일 적용 */
     /* position: fixed 요소의 위치가 예상과 다를 수 있습니다. 해당 속성들을 확인해보세요! */
     transform: none !important;
     filter: none !important;
+
+    /* ⭐️ 터치 이벤트가 하위 요소로 잘 전달되도록 */
+    /* pointer-events: auto; */
 }
 
 /* === 화면 상단 오른쪽 고정 메뉴 스타일! === */
@@ -52,7 +58,7 @@ html, body { /* html, body에 기본 스타일 적용 */
     position: fixed; /* 화면에 고정! */
     top: 15px; /* 위에서부터 15px */
     right: 15px; /* 오른쪽에서부터 15px */
-    z-index: 99999; /* 여기! z-index를 훨씬 더 높여봤어! */
+    z-index: 99999; /* ⭐️ 여기! z-index를 훨씬 더 높여봤어! 다른 요소 위에 오도록! */
     display: flex; /* 메뉴 버튼 보이게! */
     gap: 10px; /* 버튼 사이 간격 */
     /* background-color: rgba(255,255,255,0.5); */
@@ -62,6 +68,9 @@ html, body { /* html, body에 기본 스타일 적용 */
     /* 혹시 모를 문제 방지 */
     transform: none !important;
     filter: none !important;
+
+     /* ⭐️ 터치 이벤트가 메뉴에서 잘 작동하도록 */
+     pointer-events: auto;
 }
 
 /* 고정 메뉴 안에 있는 버튼 스타일 */
@@ -79,6 +88,9 @@ html, body { /* html, body에 기본 스타일 적용 */
      /* 혹시 모를 문제 방지 */
      position: relative; /* z-index가 잘 작동하도록 relative 추가 */
      z-index: 2; /* 메뉴 자체 z-index보다 약간 낮게 */
+
+     /* ⭐️ 터치 이벤트가 버튼에서 잘 작동하도록 */
+     pointer-events: auto;
 }
 #fixed-menu .menu-button:hover {
     background-color: #0f4e8c;
@@ -92,6 +104,8 @@ html, body { /* html, body에 기본 스타일 적용 */
      /* 혹시 모를 문제 방지 */
      position: relative;
      z-index: 2;
+     /* ⭐️ 터치 이벤트가 버튼에서 잘 작동하도록 */
+     pointer-events: auto;
 }
 #fixed-menu .history-view-button:hover {
      background-color: #545b62;
@@ -121,6 +135,8 @@ h1 {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    /* ⭐️ 터치 이벤트가 하위 요소로 잘 전달되도록 */
+    /* pointer-events: auto; */
 }
 
 #history-area {
@@ -128,6 +144,11 @@ h1 {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+     /* 기록 화면 영역 자체에도 z-index 적용 */
+     position: relative;
+     z-index: 5; /* 입력 영역보다는 아래, 메뉴보다는 아래 */
+     /* ⭐️ 터치 이벤트가 하위 요소로 잘 전달되도록 */
+     /* pointer-events: auto; */
 }
 
 #chat-container {
@@ -139,6 +160,8 @@ h1 {
     border: none;
     padding: 0;
     margin-bottom: 15px;
+     /* ⭐️ 터치 이벤트가 하위 요소로 잘 전달되도록 */
+     /* pointer-events: auto; */
 }
 
 #chat-box {
@@ -152,6 +175,8 @@ h1 {
     gap: 12px;
     background-color: transparent;
     border: none;
+     /* ⭐️ 터치 이벤트가 하위 요소로 잘 전달되도록 */
+     pointer-events: auto; /* 채팅 버블 클릭/스크롤 가능하게 */
 }
 
 /* 스크롤바 스타일 (선택 사항) */
@@ -177,6 +202,8 @@ h1 {
     position: relative; /* 메시지 버블에도 z-index 적용을 위해 relative 추가 */
     z-index: 1; /* 메뉴나 입력창보다 아래에 있도록 z-index 설정 */
     color: #333;
+     /* ⭐️ 터치 이벤트가 메시지에서 잘 작동하도록 */
+     pointer-events: auto;
 }
 
 .user-message {
@@ -211,6 +238,8 @@ h1 {
     border-radius: 0;
     position: relative; /* 입력 영역에도 z-index 적용을 위해 relative 추가 */
     z-index: 10; /* 메뉴보다는 약간 낮지만 채팅 버블보다는 위에 있도록 높게 설정 */
+     /* ⭐️ 터치 이벤트가 입력 영역에서 잘 작동하도록 */
+     pointer-events: auto;
 }
 
 #user-input {
@@ -223,6 +252,8 @@ h1 {
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     background-color: rgba(255, 255, 255, 0.2);
     color: #fff;
+     /* ⭐️ 터치 이벤트가 입력창에서 잘 작동하도록 */
+     pointer-events: auto;
 }
 
 #user-input::placeholder {
@@ -259,6 +290,8 @@ h1 {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     position: relative; /* 버튼 자체에도 z-index 적용을 위해 relative 추가 */
     z-index: 1; /* 입력창보다 위에 있도록 z-index 설정 (굳이 필요 없을수도 있지만 혹시 몰라) */
+     /* ⭐️ 터치 이벤트가 버튼에서 잘 작동하도록 */
+     pointer-events: auto;
 }
 
 #input-area #send-button:hover {
@@ -267,12 +300,6 @@ h1 {
 
 
 /* 기록 목록 화면 스타일 */
-#history-area {
-     /* 기록 화면 영역 자체에도 z-index 적용 */
-     position: relative;
-     z-index: 5; /* 입력 영역보다는 아래, 메뉴보다는 아래 */
-}
-
 #history-area h2 {
     text-align: center;
     margin-bottom: 20px;
@@ -293,6 +320,8 @@ h1 {
      /* 기록 목록 자체에도 z-index 적용 */
      position: relative;
      z-index: 1;
+     /* ⭐️ 터치 이벤트가 하위 요소로 잘 전달되도록 */
+     pointer-events: auto;
 }
 
 #history-list li {
@@ -306,6 +335,8 @@ h1 {
      /* 목록 아이템에도 z-index 적용 */
      position: relative;
      z-index: 1;
+     /* ⭐️ 터치 이벤트가 목록 아이템에서 잘 작동하도록 */
+     pointer-events: auto;
 }
 
 #history-list li:last-child {
@@ -322,6 +353,8 @@ h1 {
      /* 체크박스에도 z-index 적용 */
      position: relative;
      z-index: 2; /* 텍스트보다 위에 있도록 */
+     /* ⭐️ 터치 이벤트가 체크박스에서 잘 작동하도록 */
+     pointer-events: auto;
 }
 
 #history-list li span {
@@ -332,6 +365,8 @@ h1 {
      /* 텍스트에도 z-index 적용 */
      position: relative;
      z-index: 1;
+     /* ⭐️ 터치 이벤트가 span에서 잘 작동하도록 */
+     pointer-events: auto;
 }
 
 
@@ -343,6 +378,8 @@ h1 {
      /* 기록 버튼 영역에도 z-index 적용 */
      position: relative;
      z-index: 5;
+     /* ⭐️ 터치 이벤트가 하위 요소로 잘 전달되도록 */
+     pointer-events: auto;
 }
 
 
@@ -359,6 +396,8 @@ h1 {
      /* 로딩 인디케이터에도 z-index 적용 */
      position: relative;
      z-index: 1;
+     /* ⭐️ 터치 이벤트 방지 (클릭할 필요 없는 요소) */
+     pointer-events: none;
 }
 
 
