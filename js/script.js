@@ -1,8 +1,9 @@
-console.log('1. script.js 로딩 완료!');
+console.log('1. script.js 로딩 시작!');
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('2. DOMContentLoaded 실행!');
 
+    // ⭐️ 필요한 DOM 요소들을 모두 가져옵니다.
     const sendButton = document.getElementById('send-button');
     const userInput = document.getElementById('user-input');
     const chatBox = document.getElementById('chat-box');
@@ -10,13 +11,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const newChatButton = document.getElementById('new-chat-button'); // 새 채팅 버튼
     const viewHistoryButton = document.getElementById('view-history-button'); // 대화 기록 보기 버튼
 
-    // 대화 기록 영역과 메인 채팅 영역 가져오기
+    // 대화 기록 영역과 메인 채팅 영역
     const historyArea = document.getElementById('history-area');
     const mainChatArea = document.getElementById('main-chat-area');
 
-    // 기록 화면에서 보이는 버튼들도 가져오자!
+    // 기록 화면에서 보이는 버튼들
     const deleteSelectedButton = document.getElementById('delete-selected-button');
     const backToChatButton = document.getElementById('back-to-chat-button');
+
+    // ⭐️ 요소들이 제대로 가져와졌는지 확인하는 콘솔 로그를 추가합니다.
+    console.log('DOM 요소 확인:');
+    console.log('sendButton:', sendButton);
+    console.log('userInput:', userInput);
+    console.log('chatBox:', chatBox);
+    console.log('newChatButton:', newChatButton);
+    console.log('viewHistoryButton:', viewHistoryButton);
+    console.log('historyArea:', historyArea);
+    console.log('mainChatArea:', mainChatArea);
+    console.log('deleteSelectedButton:', deleteSelectedButton);
+    console.log('backToChatButton:', backToChatButton);
 
 
     // 메시지 추가 함수
@@ -31,11 +44,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // 로딩 인디케이터 추가/제거 함수
     function showLoadingIndicator() {
         const loadingP = document.createElement('p');
-        loadingP.classList.add('ai-message', 'loading-indicator'); // CSS에서 로딩 스타일 적용!
+        loadingP.classList.add('ai-message', 'loading-indicator');
         loadingP.textContent = '... AI가 생각중...';
         chatBox.appendChild(loadingP);
         chatBox.scrollTop = chatBox.scrollHeight;
-        return loadingP; // 나중에 제거하기 위해 요소 반환
+        return loadingP;
     }
 
     function removeLoadingIndicator(indicatorElement) {
@@ -52,7 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ message: message })
             });
-             // ⭐️ 응답 코드가 200번대가 아니면 에러 처리 추가
             if (!res.ok) {
                 const errorData = await res.json();
                 throw new Error(`서버 에러: ${res.status} - ${errorData.reply || res.statusText}`);
@@ -61,73 +73,32 @@ document.addEventListener('DOMContentLoaded', () => {
             return data.reply || '응답이 없네... 멍청아!';
         } catch (err) {
             console.error('서버 통신 에러:', err);
-            // ⭐️ 에러 메시지를 좀 더 친절하게 표시
             return `서버 통신 에러: ${err.message || err}`;
         }
     }
 
     // 새 채팅 시작 함수
     function startNewChat() {
-        console.log('새 채팅 시작 버튼 클릭!'); // 클릭 로그 확인!
-        chatBox.innerHTML = ''; // 대화창 비우기
-        // 대화 기록 영역 숨기고 메인 채팅 영역 보이기
+        console.log('새 채팅 시작 버튼 클릭 감지!'); // 클릭 로그
+        chatBox.innerHTML = '';
         historyArea.classList.add('hidden');
         mainChatArea.classList.remove('hidden');
-
-        // 대화 기록 관련 버튼들도 숨기기 (만약 보이던 상태였다면)
-        // ⭐️ 여기서 hidden 클래스 토글이 아니라 확실하게 add!
         deleteSelectedButton.classList.add('hidden');
         backToChatButton.classList.add('hidden');
-
-        // 초기 AI 메시지 추가
-         addMessageToChat('ai', '새 채팅 시작! 뭐 물어볼래?');
-
-        console.log('새 채팅 시작 완료!');
+        addMessageToChat('ai', '새 채팅 시작! 뭐 물어볼래?');
+        console.log('새 채팅 시작 기능 실행 완료.');
     }
 
     // 대화 기록 보기 함수
     function viewHistory() {
-        console.log('대화 기록 보기 버튼 클릭!'); // 클릭 로그 확인!
-        // 메인 채팅 영역 숨기고 대화 기록 영역 보이기
+        console.log('대화 기록 보기 버튼 클릭 감지!'); // 클릭 로그
         mainChatArea.classList.add('hidden');
         historyArea.classList.remove('hidden');
-
-        // 대화 기록 관련 버튼들 보이기
-        // ⭐️ 여기서 hidden 클래스 토글이 아니라 확실하게 remove!
         deleteSelectedButton.classList.remove('hidden');
         backToChatButton.classList.remove('hidden');
 
-
-        // ⭐️ 여기에 실제 대화 기록 불러와서 historyList에 채워넣는 코드 추가해야 해!
-        // 예시:
-        // const history = loadChatHistory(); // 저장된 기록 불러오는 함수 (따로 만들어야 함)
-        // historyList.innerHTML = ''; // 목록 비우고
-        // history.forEach(item => {
-        //     const li = document.createElement('li');
-        //     // 체크박스 input 요소 직접 생성
-        //     const checkbox = document.createElement('input');
-        //     checkbox.type = 'checkbox';
-        //     // 체크박스에 고유한 id나 data-id 속성을 부여해서 어떤 기록인지 알 수 있게 하면 좋아!
-        //     // checkbox.dataset.historyId = item.id;
-
-        //     const span = document.createElement('span');
-        //     span.textContent = item.summary; // 기록 요약 표시 (item.summary 대신 item.timestamp나 item.firstMessage 같은 걸 써도 좋아!)
-
-        //     li.appendChild(checkbox);
-        //     li.appendChild(span);
-
-        //     li.addEventListener('click', (event) => {
-        //         // li 클릭 시 체크박스가 아닌 부분을 클릭했으면 해당 기록 로드 (따로 만들어야 함)
-        //         if (event.target !== checkbox) {
-        //              console.log('기록 선택됨:', item);
-        //              // loadChat(item.id); // 해당 기록을 불러와 채팅창에 표시하는 함수 호출
-        //         }
-        //     });
-        //     historyList.appendChild(li);
-        // });
-
-        // ⭐️ 지금은 임시로 몇 개 기록을 넣어보자!
-         historyList.innerHTML = ''; // 목록 비우고
+        // ⭐️ 대화 기록 불러와서 표시하는 임시 코드 (실제 구현 필요)
+         historyList.innerHTML = '';
          const dummyHistory = [
              { id: 1, summary: '2023-10-26 나츠미와 첫 대화' },
              { id: 2, summary: '2023-10-27 Gemini API 변경 문제 해결' },
@@ -137,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
              const li = document.createElement('li');
              const checkbox = document.createElement('input');
              checkbox.type = 'checkbox';
-             checkbox.dataset.historyId = item.id; // 데이터 속성으로 ID 저장
+             checkbox.dataset.historyId = item.id;
              const span = document.createElement('span');
              span.textContent = item.summary;
 
@@ -146,159 +117,162 @@ document.addEventListener('DOMContentLoaded', () => {
 
              // 목록 아이템 클릭 시 (체크박스 제외)
              li.addEventListener('click', (event) => {
-                 // 이벤트 버블링 막기 (체크박스 클릭 시 li 클릭 이벤트 막기)
                  if (event.target.type !== 'checkbox') {
                      console.log('기록 선택됨 (클릭):', item);
                      // 여기에 해당 기록 불러오는 로직 추가
                  }
              });
 
-             // 체크박스 클릭 시 (이벤트 버블링으로 li 클릭 막을 필요 없음)
+             // 체크박스 클릭 시
               checkbox.addEventListener('click', (event) => {
                  console.log('체크박스 클릭됨:', item.id, '상태:', event.target.checked);
-                 // 여기서 선택된 기록 ID를 어딘가에 저장해서 '선택 삭제' 버튼이 활용하게 해야 함
              });
-
 
              historyList.appendChild(li);
          });
-
-
-        console.log('대화 기록 보기 완료!');
+        console.log('대화 기록 보기 기능 실행 완료.');
     }
 
     // 채팅 화면으로 돌아가기 함수
     function backToChat() {
-        console.log('채팅으로 돌아가기 버튼 클릭!'); // 클릭 로그 확인!
-        // 대화 기록 영역 숨기고 메인 채팅 영역 보이기
+        console.log('채팅으로 돌아가기 버튼 클릭 감지!'); // 클릭 로그
         historyArea.classList.add('hidden');
         mainChatArea.classList.remove('hidden');
-
-        // 대화 기록 관련 버튼들도 숨기기
-        // ⭐️ 여기서 hidden 클래스 토글이 아니라 확실하게 add!
         deleteSelectedButton.classList.add('hidden');
         backToChatButton.classList.add('hidden');
-
-         // 돌아왔을 때 채팅창 스크롤 맨 아래로
-         chatBox.scrollTop = chatBox.scrollHeight;
-
-
-        console.log('채팅으로 돌아가기 완료!');
+        chatBox.scrollTop = chatBox.scrollHeight;
+        console.log('채팅으로 돌아가기 기능 실행 완료.');
     }
 
-    // ⭐️ 선택 삭제 버튼 기능 (나중에 구현해야 함)
+    // 선택 삭제 버튼 기능 (실제 구현 필요)
      function handleDeleteSelected() {
-         console.log('선택 삭제 버튼 클릭!'); // 클릭 로그 확인!
+         console.log('선택 삭제 버튼 클릭 감지!'); // 클릭 로그
          const selectedCheckboxes = historyList.querySelectorAll('input[type="checkbox"]:checked');
          const selectedIds = Array.from(selectedCheckboxes).map(cb => cb.dataset.historyId);
 
          if (selectedIds.length === 0) {
              alert('삭제할 기록을 선택해주세요!');
+             console.warn('삭제할 기록이 선택되지 않음.');
              return;
          }
 
          console.log('선택된 기록 ID:', selectedIds);
-         // ⭐️ 여기에 선택된 ID들을 서버로 보내서 삭제하는 로직 추가!
-         // deleteChatHistory(selectedIds);
+         // 여기에 선택된 ID들을 서버로 보내서 삭제하는 로직 추가!
 
-         // 삭제 후 목록 새로고침 (임시로 다시 그림)
-         viewHistory(); // 대화 기록 다시 불러와서 표시 (삭제 로직 구현 후 수정 필요)
+         // 삭제 후 목록 새로고침 (임시)
+         viewHistory();
 
-         alert(`${selectedIds.length}개의 기록을 삭제했습니다!`); // 임시 알림
+         alert(`${selectedIds.length}개의 기록을 삭제했습니다!`);
+         console.log('선택 삭제 기능 실행 완료.');
      }
 
 
     // 보내기 버튼 클릭 또는 Enter 누를 때 실행
     async function handleSend() {
+        console.log('보내기 버튼/Enter 키 입력 감지!'); // 입력 로그
         const message = userInput.value.trim();
-        if (!message) return;
+        if (!message) {
+            console.warn('입력 메시지가 비어있습니다.');
+            return;
+        }
 
         addMessageToChat('user', message);
         userInput.value = '';
+        console.log('사용자 메시지 추가됨.');
 
         const loadingIndicator = showLoadingIndicator(); // 로딩 표시
+        console.log('로딩 인디케이터 표시됨.');
 
         const aiReply = await sendMessageToServer(message);
+        console.log('AI 응답 수신:', aiReply);
 
         removeLoadingIndicator(loadingIndicator); // 로딩 제거
+        console.log('로딩 인디케이터 제거됨.');
 
         addMessageToChat('ai', aiReply);
+        console.log('AI 메시지 추가됨.');
 
-        // ⭐️ 메시지를 보낼 때마다 대화 기록에 저장하는 기능도 나중에 추가해야 해!
-        // saveMessageToHistory('user', message);
-        // saveMessageToHistory('ai', aiReply);
+        // 메시지 저장 기능 나중에 추가
     }
 
-    // 이벤트 리스너 연결
+    // ⭐️ 이벤트 리스너 연결 부분을 더 확실하게!
+    // 각 버튼 요소가 null이 아닌지 다시 한번 확인하고 연결합니다.
     if (sendButton) {
         sendButton.addEventListener('click', handleSend);
-         console.log('sendButton 이벤트 리스너 연결됨!');
+        console.log('sendButton 이벤트 리스너 연결 완료.');
     } else {
-         console.error('Error: sendButton 요소를 찾을 수 없습니다!');
+        console.error('Error: ID가 send-button인 요소를 찾을 수 없습니다.');
     }
 
     if (userInput) {
         userInput.addEventListener('keydown', e => {
-            if (e.key === 'Enter') {
-                e.preventDefault(); // Enter 키 기본 동작(새 줄) 막기
+            if (e.key === 'Enter' && !e.shiftKey) { // Shift + Enter는 새 줄로 인식하도록 !e.shiftKey 추가
+                e.preventDefault();
                 handleSend();
             }
         });
-         console.log('userInput keydown 이벤트 리스너 연결됨!');
+        console.log('userInput keydown 이벤트 리스너 연결 완료.');
     } else {
-         console.error('Error: userInput 요소를 찾을 수 없습니다!');
+        console.error('Error: ID가 user-input인 요소를 찾을 수 없습니다.');
     }
 
-
-    // ⭐️ 메뉴 버튼 이벤트 리스너 연결! (script.js에서는 토글 기능 삭제했었지!)
     if (newChatButton) {
-        newChatButton.addEventListener('click', startNewChat); // 새 채팅 버튼에 연결
-         console.log('newChatButton 이벤트 리스너 연결됨!');
+        newChatButton.addEventListener('click', startNewChat);
+        console.log('newChatButton 이벤트 리스너 연결 완료.');
     } else {
-         console.error('Error: newChatButton 요소를 찾을 수 없습니다!');
+        console.error('Error: ID가 new-chat-button인 요소를 찾을 수 없습니다.');
     }
 
     if (viewHistoryButton) {
-        viewHistoryButton.addEventListener('click', viewHistory); // 대화 기록 보기 버튼에 연결
-         console.log('viewHistoryButton 이벤트 리스너 연결됨!');
+        viewHistoryButton.addEventListener('click', viewHistory);
+        console.log('viewHistoryButton 이벤트 리스너 연결 완료.');
     } else {
-         console.error('Error: viewHistoryButton 요소를 찾을 수 없습니다!');
+        console.error('Error: ID가 view-history-button인 요소를 찾을 수 없습니다.');
     }
 
     if (backToChatButton) {
-        backToChatButton.addEventListener('click', backToChat); // 채팅으로 돌아가기 버튼에 연결
-         console.log('backToChatButton 이벤트 리스너 연결됨!');
+        backToChatButton.addEventListener('click', backToChat);
+        console.log('backToChatButton 이벤트 리스너 연결 완료.');
     } else {
-         console.error('Error: backToChatButton 요소를 찾을 수 없습니다!');
+        console.error('Error: ID가 back-to-chat-button인 요소를 찾을 수 없습니다.');
     }
 
-    // ⭐️ 선택 삭제 버튼 기능 연결!
      if (deleteSelectedButton) {
          deleteSelectedButton.addEventListener('click', handleDeleteSelected);
-         console.log('deleteSelectedButton 이벤트 리스너 연결됨!');
+         console.log('deleteSelectedButton 이벤트 리스너 연결 완료.');
      } else {
-         console.error('Error: deleteSelectedButton 요소를 찾을 수 없습니다!');
+         console.error('Error: ID가 delete-selected-button인 요소를 찾을 수 없습니다.');
      }
 
 
-    // ⭐️ 페이지 로드 시 메인 채팅 화면만 보이도록 초기 설정
-    // ⭐️ HTML에서 hidden 클래스로 이미 숨겨져 있을테니, mainChatArea만 보이게 하면 돼!
-    mainChatArea.classList.remove('hidden'); // 메인 채팅 영역 보이게
-    // historyArea.classList.add('hidden'); // HTML에 hidden 클래스 있는지 확인!
+    // ⭐️ 페이지 로드 시 초기 화면 설정
+    // HTML에서 hidden 클래스로 초기 상태를 제어하는 것이 좋지만, JavaScript에서도 한번 더 확인합니다.
+    if (mainChatArea && historyArea) {
+        mainChatArea.classList.remove('hidden'); // 메인 채팅 영역 보이게
+        historyArea.classList.add('hidden'); // 대화 기록 영역 숨김
+        console.log('초기 화면 설정: 메인 채팅 영역 보임, 대화 기록 영역 숨김.');
+    } else {
+         console.error('Error: mainChatArea 또는 historyArea 요소를 찾을 수 없습니다.');
+    }
 
     // ⭐️ 대화 기록 관련 버튼들도 초기에는 숨겨두자
-    // ⭐️ HTML에서 hidden 클래스 있는지 확인!
-    deleteSelectedButton.classList.add('hidden');
-    backToChatButton.classList.add('hidden');
+    if (deleteSelectedButton) deleteSelectedButton.classList.add('hidden');
+    if (backToChatButton) backToChatButton.classList.add('hidden');
+    console.log('초기 기록 관련 버튼 숨김.');
 
 
-    // 초기 AI 메시지 추가
-    // ⭐️ 이미 HTML에 초기 메시지가 있다면 추가하지 않도록 조건문 추가
-    if (chatBox.children.length === 0 || (chatBox.children.length === 1 && chatBox.firstElementChild.classList.contains('loading-indicator'))) {
+    // 초기 AI 메시지 추가 (대화창이 비어있을 때만)
+    if (chatBox && (chatBox.children.length === 0 || (chatBox.children.length === 1 && chatBox.firstElementChild.classList.contains('loading-indicator')))) {
          addMessageToChat('ai', '뭐야, 할 말이라도 있는 거야?');
+         console.log('초기 AI 메시지 추가됨.');
+    } else if (!chatBox) {
+         console.error('Error: chatBox 요소를 찾을 수 없습니다. 초기 메시지를 추가할 수 없습니다.');
+    } else {
+        console.log('대화창에 이미 메시지가 있어 초기 AI 메시지를 추가하지 않습니다.');
     }
 
 
-    console.log('3. 이벤트 리스너 전부 연결 완료!');
-     console.log('초기 화면 설정 완료: 메인 채팅 영역 보임, 대화 기록 영역 숨김');
+    console.log('3. DOMContentLoaded 실행 완료!');
 });
+
+console.log('4. script.js 로딩 완료 (DOMContentLoaded 외부).');
