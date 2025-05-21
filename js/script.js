@@ -146,7 +146,7 @@ function removeLoadingIndicator(indicatorElement) {
 function updateCurrentSession() {
     const currentMessages = getMessagesFromView();
 
-    const initialAIMessageText = "츤츤거리면서 '뭐 할말있어?'";
+    const initialAIMessageText = "뭐 할말있어?";
     const isEmptyChat = currentMessages.length === 0 || (currentMessages.length === 1 && currentMessages[0]?.text.trim().toLowerCase() === initialAIMessageText.toLowerCase());
 
     if (isEmptyChat) {
