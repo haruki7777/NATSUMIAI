@@ -10,6 +10,9 @@
 
   <!-- Google Fonts - Noto Sans KR -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet" />
+
+  <!-- ⭐️ 아이콘 사용을 위한 Font Awesome (선택 사항, 네모 모양 버튼 텍스트로 충분하다면 없어도 돼!) -->
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> -->
 </head>
 <body>
   <div id="app-container">
@@ -19,23 +22,24 @@
     <div id="main-chat-area">
       <div id="chat-container">
         <div id="chat-box">
-          <!-- 초기 AI 메시지는 JS에서 추가하도록 HTML에서는 비워둡니다. -->
-          <!-- <p class="ai-message">뭐야, 할 말이라도 있는 거야?</p> -->
+          <!-- 초기 AI 메시지는 JavaScript에서 로드 시 추가됩니다. -->
         </div>
         <div id="input-area">
-          <input type="text" id="user-input" placeholder="여기에 질문을 입력하세요!" />
+          <input type="text" id="user-input" placeholder="여기에 질문을 입력하세요!" autocomplete="off" /> <!-- autocomplete off 추가 -->
           <button id="send-button" type="button">보내기</button> <!-- 🔧 중요: type="button" -->
         </div>
       </div>
     </div>
 
-    <!-- 하단 버튼 영역 (이제 사용 안 함) -->
+    <!-- 하단 버튼 영역 (이제 사용 안 함, CSS에서 display: none 처리) -->
     <div id="bottom-buttons" class="hidden"></div>
 
-    <!-- 대화 기록 영역 (처음에 숨김) -->
+    <!-- 대화 기록 영역 (처음에 숨김 - CSS와 JS에서 hidden 클래스 제어) -->
     <div id="history-area" class="hidden">
       <h2>대화 기록</h2>
-      <ul id="history-list"></ul>
+      <ul id="history-list">
+        <!-- 대화 기록 목록은 JavaScript에서 동적으로 추가됩니다. -->
+      </ul>
       <div id="history-buttons">
         <!-- 숨김 상태로 시작되는 버튼들 (script.js에서 hidden 클래스 제어) -->
         <button id="delete-selected-button" class="menu-button history-view-button hidden" type="button">선택 삭제</button>
@@ -47,8 +51,9 @@
   <!-- ⭐️ 오른쪽 상단 고정 메뉴: hidden 클래스 제거! 이제 항상 보입니다. -->
   <!-- ⭐️ 메뉴 토글 버튼 (...)은 이제 필요 없으니 삭제했습니다. -->
   <div id="fixed-menu">
-    <button id="new-chat-button" class="menu-button chat-view-button" type="button">새 채팅 시작</button>
-    <button id="view-history-button" class="menu-button chat-view-button" type="button">대화 기록 보기</button>
+    <!-- ⭐️ 메뉴 버튼들은 class="menu-button"으로 묶여있고, CSS에서 스타일을 적용합니다. -->
+    <button id="new-chat-button" class="menu-button chat-view-button" type="button">새 채팅</button> <!-- 글자 줄임 -->
+    <button id="view-history-button" class="menu-button chat-view-button" type="button">기록 보기</button> <!-- 글자 줄임 -->
   </div>
 
   <!-- JS 파일 연결 (항상 body 맨 끝에!) -->
