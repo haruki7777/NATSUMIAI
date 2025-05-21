@@ -302,6 +302,8 @@ function startNewChat(saveCurrent = true) { // saveCurrent 파라미터로 저�
     const mainChatArea = document.getElementById('main-chat-area'); // 함수 내부에서 요소 다시 가져옴
     const deleteSelectedButton = document.getElementById('delete-selected-button'); // 함수 내부에서 요소 다시 가져옴
     const backToChatButton = document.getElementById('back-to-chat-button'); // 함수 내부에서 요소 다시 가져옴
+    // ⭐️ 메뉴 항목 컨테이너 요소 가져오기 👇
+    const menuItemsContainer = document.getElementById('menu-items-container');
 
 
     // ⭐️ chatBox 요소가 있는지 확인
@@ -322,6 +324,14 @@ function startNewChat(saveCurrent = true) { // saveCurrent 파라미터로 저�
     console.log('UI switched to chat view.');
 
 
+    // ⭐️ 새 채팅 시작 시 메뉴 항목 닫기 👇
+    // menuItemsContainer 요소가 있는지 확인하고 hidden 클래스 추가
+    if (menuItemsContainer && !menuItemsContainer.classList.contains('hidden')) {
+        menuItemsContainer.classList.add('hidden');
+        console.log('새 채팅 시작 시 메뉴 항목 숨김.');
+    }
+
+
     // ⭐️ 초기 메시지 추가 (하루키가 원하는 츤츤 메시지로 변경!)
     addMessageToChat('ai', "츤츤거리면서 '뭐 할말있어?'");
     console.log('새 채팅 시작 기능 실행 완료. 초기 메시지 추가됨.');
@@ -337,6 +347,8 @@ function backToChat() {
     const deleteSelectedButton = document.getElementById('delete-selected-button'); // 함수 내부에서 요소 다시 가져옴
     const backToChatButton = document.getElementById('back-to-chat-button'); // 함수 내부에서 요소 다시 가져옴
     const chatBox = document.getElementById('chat-box'); // 함수 내부에서 요소 다시 가져옴
+    // ⭐️ 메뉴 항목 컨테이너 요소 가져오기 👇
+    const menuItemsContainer = document.getElementById('menu-items-container');
 
 
      // ⭐️ historyArea가 hidden인지 확인하고, 이미 hidden이면 불필요한 동작 방지
@@ -351,7 +363,9 @@ function backToChat() {
      if (currentSessionId === null || !sessionToLoad) {
          console.warn('현재 세션이 없거나 찾을 수 없습니다. 새 채팅 화면으로 전환합니다.');
          // 새 채팅 시작 함수를 호출하여 빈 화면 또는 초기 메시지 상태로 만듦 (저장 안 함)
-         startNewChat(false); // startNewChat이 이미 UI 전환 및 초기 메시지 처리를 함
+         // startNewChat이 이미 UI 전환 및 초기 메시지 처리를 함.
+         // startNewChat 함수 내부에서 메뉴 닫기도 처리됨.
+         startNewChat(false);
          return;
      }
 
@@ -369,6 +383,14 @@ function backToChat() {
      if (deleteSelectedButton) deleteSelectedButton.classList.add('hidden');
      if (backToChatButton) backToChatButton.classList.add('hidden');
 
+    // ⭐️ 채팅으로 돌아갈 때 메뉴 항목 닫기 👇
+    // menuItemsContainer 요소가 있는지 확인하고 hidden 클래스 추가
+    if (menuItemsContainer && !menuItemsContainer.classList.contains('hidden')) {
+        menuItemsContainer.classList.add('hidden');
+        console.log('채팅으로 돌아가기 시 메뉴 항목 숨김.');
+    }
+
+
      console.log('채팅 화면으로 돌아가기 완료. 현재 세션 로드됨.');
 }
 
@@ -382,6 +404,8 @@ function viewHistory() {
     const deleteSelectedButton = document.getElementById('delete-selected-button'); // 함수 내부에서 요소 다시 가져옴
     const backToChatButton = document.getElementById('back-to-chat-button'); // 함수 내부에서 요소 다시 가져옴
     const historyList = document.getElementById('history-list'); // 함수 내부에서 요소 다시 가져옴
+    // ⭐️ 메뉴 항목 컨테이너 요소 가져오기 👇
+    const menuItemsContainer = document.getElementById('menu-items-container');
 
 
     // ⭐️ 현재 채팅창 내용을 저장 (기록 목록 보기 전에 현재 대화 상태를 저장)
@@ -401,6 +425,14 @@ function viewHistory() {
     if (deleteSelectedButton) deleteSelectedButton.classList.remove('hidden'); // 기록 관련 버튼 표시
     if (backToChatButton) backToChatButton.classList.remove('hidden');
     console.log('UI switched to history view. History buttons shown.');
+
+
+    // ⭐️ 기록 보기 시 메뉴 항목 닫기 👇
+    // menuItemsContainer 요소가 있는지 확인하고 hidden 클래스 추가
+    if (menuItemsContainer && !menuItemsContainer.classList.contains('hidden')) {
+        menuItemsContainer.classList.add('hidden');
+        console.log('기록 보기 시 메뉴 항목 숨김.');
+    }
 
 
     // 기록 목록 채우기
@@ -477,32 +509,35 @@ function loadSession(sessionId) {
     const deleteSelectedButton = document.getElementById('delete-selected-button'); // 함수 내부에서 요소 다시 가져옴
     const backToChatButton = document.getElementById('back-to-chat-button'); // 함수 내부에서 요소 다시 가져옴
     const chatBox = document.getElementById('chat-box'); // 함수 내부에서 요소 다시 가져옴
+    // ⭐️ 메뉴 항목 컨테이너 요소 가져오기 👇
+    const menuItemsContainer = document.getElementById('menu-items-container');
+
 
     if (sessionToLoad) {
-        console.log('Found session to load:', sessionToLoad);
-        // 로드하려는 세션으로 현재 세션 ID 업데이트
-        currentSessionId = sessionToLoad.id;
-        saveSessionsToLocalStorage(); // localStorage에 현재 세션 ID 저장
+        // ... (기존 세션 로드, currentSessionId 업데이트, localStorage 저장 코드)
 
         // 해당 세션의 메시지들을 채팅창에 표시
         loadChatMessagesIntoView(sessionToLoad.messages);
 
         // 화면을 채팅 화면으로 전환
-        // 해당 요소가 실제로 존재하는지 확인 후 클래스 추가/제거
         if (historyArea) historyArea.classList.add('hidden');
         if (mainChatArea) mainChatArea.classList.remove('hidden');
-        // 기록 화면 버튼들은 숨김
         if (deleteSelectedButton) deleteSelectedButton.classList.add('hidden');
         if (backToChatButton) backToChatButton.classList.add('hidden');
 
+        // ⭐️ 세션 로드 후 채팅 화면으로 갈 때 메뉴 항목 닫기 👇
+        // menuItemsContainer 요소가 있는지 확인하고 hidden 클래스 추가
+        if (menuItemsContainer && !menuItemsContainer.classList.contains('hidden')) {
+            menuItemsContainer.classList.add('hidden');
+            console.log('세션 로드 시 메뉴 항목 숨김.');
+        }
+
+
         console.log('세션 로드 완료:', sessionId);
     } else {
-        console.error('Error: 세션을 찾을 수 없습니다:', sessionId);
-        alert('해당 대화 기록을 찾을 수 없습니다!');
-        // 세션 로드 실패 시 현재 세션 ID 초기화 및 localStorage 삭제
-        currentSessionId = null;
-        localStorage.removeItem('currentSessionId');
-        // 로드 실패 시 채팅 화면으로 돌아가기 (새 채팅 시작 함수 재활용 - 저장 안 함)
+         // ... (기존 세션 로드 실패 시 처리 코드)
+         // loadSession 실패 시 startNewChat(false)가 호출되므로,
+         // 메뉴 닫기는 startNewChat 함수 안에서 처리될 거예요.
          startNewChat(false);
     }
 }
@@ -513,6 +548,9 @@ function handleDeleteSelected() {
     console.log('선택 삭제 버튼 클릭 감지!');
     const historyList = document.getElementById('history-list'); // 함수 내부에서 요소 다시 가져옴
     const deleteSelectedButton = document.getElementById('delete-selected-button'); // 함수 내부에서 요소 다시 가져옴
+    // ⭐️ 메뉴 항목 컨테이너 요소 가져오기 👇 (삭제 후 화면 전환은 없지만, 혹시 몰라)
+    const menuItemsContainer = document.getElementById('menu-items-container');
+
 
     if (!historyList || !deleteSelectedButton) {
          console.error('필수 요소를 찾을 수 없습니다 (historyList 또는 deleteSelectedButton). 삭제를 진행할 수 없습니다.');
@@ -554,6 +592,7 @@ function handleDeleteSelected() {
         console.log('현재 세션이 삭제되었습니다. 새 채팅을 시작합니다.');
         // 새 채팅 시작 함수 호출 (현재 대화 저장 안 함, 이미 삭제될 거니까)
         // startNewChat 함수가 이미 localStorage 저장까지 처리
+        // startNewChat 내부에서 메뉴 닫기도 처리됨.
         startNewChat(false);
 
         // 삭제 완료 알림은 startNewChat 실행 후에 표시
@@ -564,6 +603,7 @@ function handleDeleteSelected() {
          // 현재 세션이 삭제되지 않았다면 변경된 세션 목록을 저장하고 기록 화면을 새로고침
         saveSessionsToLocalStorage(); // 변경사항 localStorage에 저장
         viewHistory(); // 기록 목록 화면을 새로고침해서 삭제된 항목이 안 보이게 함
+        // viewHistory 함수 내부에서 메뉴 닫기도 처리됨.
         alert(`${deletedCount}개의 기록을 삭제했습니다!`); // 삭제 완료 알림
     }
 
@@ -615,6 +655,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const backToChatButton = document.getElementById('back-to-chat-button');
     const historyList = document.getElementById('history-list'); // historyList도 여기서 가져옴
 
+    // ⭐️ 새로 추가된 메뉴 관련 요소들 가져오기! 👇
+    const menuToggleButton = document.getElementById('menu-toggle-button');
+    const menuItemsContainer = document.getElementById('menu-items-container');
+
+
     // ⭐️ 요소들이 제대로 가져와졌는지 확인하는 콘솔 로그
     console.log('DOM 요소 확인:');
     console.log('sendButton:', sendButton);
@@ -627,11 +672,14 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('deleteSelectedButton:', deleteSelectedButton);
     console.log('backToChatButton:', backToChatButton);
     console.log('historyList:', historyList);
+    // ⭐️ 새로 추가된 메뉴 요소 확인! 👇
+    console.log('menuToggleButton:', menuToggleButton);
+    console.log('menuItemsContainer:', menuItemsContainer);
 
 
      // ⭐️ 필수 요소가 누락되었는지 확인하고 누락 시 스크립트 중단
-     // historyList도 필수 요소에 추가
-     if (!sendButton || !userInput || !chatBox || !newChatButton || !viewHistoryButton || !historyArea || !mainChatArea || !deleteSelectedButton || !backToChatButton || !historyList) {
+     // 새로 추가된 메뉴 요소들도 필수 요소에 포함시킬지 결정 (여기서는 포함) 👇
+     if (!sendButton || !userInput || !chatBox || !newChatButton || !viewHistoryButton || !historyArea || !mainChatArea || !deleteSelectedButton || !backToChatButton || !historyList || !menuToggleButton || !menuItemsContainer) {
          console.error('Error: 필수 DOM 요소를 찾을 수 없습니다. 스크립트 실행을 중단합니다.');
          alert('페이지 로딩 오류! 일부 요소가 없습니다. 브라우저 콘솔을 확인해주세요.');
          return; // 스크립트 실행 중단
@@ -670,7 +718,34 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('deleteSelectedButton 이벤트 리스너 연결 완료.');
 
 
-    console.log('3. DOMContentLoaded 실행 완료! 대화 기록 기능 연결됨.');
+    // ⭐️ 새로 추가: 메뉴 아이콘 클릭 시 메뉴 항목 토글 👇
+    // menuToggleButton, menuItemsContainer 요소가 존재하는지는 위에서 필수 요소 검사할 때 확인했음
+    menuToggleButton.addEventListener('click', (event) => {
+        // 버튼 클릭 시 이벤트 버블링 막기 (나중에 전체 화면 클릭으로 메뉴 닫기 구현 시 필요)
+        event.stopPropagation();
+        // hidden 클래스를 토글해서 보이기/숨기기
+        menuItemsContainer.classList.toggle('hidden');
+        console.log('메뉴 항목 컨테이너 토글됨. 현재 상태 hidden:', menuItemsContainer.classList.contains('hidden'));
+    });
+    console.log('menuToggleButton 이벤트 리스너 연결 완료.');
+
+
+    // ⭐️ (선택 사항) 메뉴 항목이 열려 있을 때 화면 아무 곳이나 클릭하면 닫히게 하려면 추가 👇
+    document.addEventListener('click', (event) => {
+        // 클릭된 요소가 메뉴 컨테이너나 토글 버튼 안에 있지 않다면 메뉴를 숨김
+        if (menuItemsContainer && !menuItemsContainer.classList.contains('hidden')) {
+            // event.target이 menuItemsContainer 요소 자체 또는 그 안에 포함된 요소가 아니고,
+            // event.target이 menuToggleButton 자체도 아니라면
+            if (!menuItemsContainer.contains(event.target) && event.target !== menuToggleButton) {
+                menuItemsContainer.classList.add('hidden');
+                 console.log('화면 외부 클릭으로 메뉴 항목 숨김.');
+            }
+        }
+    });
+    console.log('전체 화면 클릭 이벤트 리스너 연결 완료 (메뉴 닫기용).');
+
+
+    console.log('3. DOMContentLoaded 실행 완료! 대화 기록 기능 및 메뉴 기능 연결됨.');
 });
 
 console.log('4. script.js 로딩 완료 (DOMContentLoaded 외부).');
