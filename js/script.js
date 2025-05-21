@@ -25,7 +25,8 @@ function loadSessionsFromLocalStorage() {
     const storedCurrentSessionId = localStorage.getItem('currentSessionId');
     if (storedCurrentSessionId) {
         // 이전에 보고 있던 대화 세션이 있다면 그걸 불러옴
-        const sessionToLoad = chatSessions.find(session => session.id === parseFloat(storedCurrentSessionId)); // localStorage는 문자열로 저장하니 숫자로 변환
+        // localStorage는 문자열로 저장하니 숫자로 변환해서 비교
+        const sessionToLoad = chatSessions.find(session => session.id === parseFloat(storedCurrentSessionId));
         if (sessionToLoad) {
              currentSessionId = parseFloat(storedCurrentSessionId);
              loadChatMessagesIntoView(sessionToLoad.messages); // 해당 대화 메시지들을 채팅창에 표시
@@ -37,20 +38,24 @@ function loadSessionsFromLocalStorage() {
         }
     } else if (chatSessions.length > 0) {
         // 보고 있던 대화 세션 ID가 없으면 가장 최근 대화를 불러옴
-        const latestSession = chatSessions[chatSessions.length - 1]; // 가장 마지막 세션
+        // 최신순 정렬 후 가장 첫 번째 요소
+        const latestSession = chatSessions.sort((a, b) => b.timestamp - a.timestamp)[0];
         currentSessionId = latestSession.id;
         loadChatMessagesIntoView(latestSession.messages);
         console.log('No current session ID. Loaded latest chat:', currentSessionId);
     } else {
         // 저장된 대화가 하나도 없으면 새 채팅 시작
         console.log('No sessions found. Starting new chat.');
-        startNewChat(false); // 저장 안 하고 새 채팅 시작 (어차피 빈 대화라 저장할 것도 없지만)
+        startNewChat(false); // 저장 안 하고 새 채팅 시작
     }
 }
 
 // ⭐️ 현재 대화 세션들을 localStorage에 저장하는 함수
 function saveSessionsToLocalStorage() {
     try {
+        // 저장하기 전에 세션을 시간순(최신순)으로 다시 한번 정렬
+        chatSessions.sort((a, b) => b.timestamp - a.timestamp);
+
         localStorage.setItem('chatSessions', JSON.stringify(chatSessions));
         if (currentSessionId !== null) { // 현재 보고 있는 세션 ID도 저장
              localStorage.setItem('currentSessionId', currentSessionId);
@@ -67,15 +72,14 @@ function saveSessionsToLocalStorage() {
 // ⭐️ 현재 채팅창에 표시된 메시지들을 배열로 가져오는 함수
 function getMessagesFromView() {
     const messages = [];
-    const messageElements = chatBox.querySelectorAll('p.user-message, p.ai-message, p.loading-indicator');
+    // 로딩 인디케이터 요소는 제외
+    const messageElements = chatBox.querySelectorAll('p.user-message, p.ai-message:not(.loading-indicator)');
     messageElements.forEach(el => {
-        // 로딩 인디케이터는 저장하지 않음
-        if (!el.classList.contains('loading-indicator')) {
-             messages.push({
-                 sender: el.classList.contains('user-message') ? 'user' : 'ai',
-                 text: el.textContent
-             });
-        }
+         messages.push({
+             sender: el.classList.contains('user-message') ? 'user' : 'ai',
+             text: el.textContent,
+             timestamp: Date.now() // 메시지별 타임스탬프 (나중에 필요할 수도)
+         });
     });
     return messages;
 }
@@ -84,7 +88,11 @@ function getMessagesFromView() {
 function loadChatMessagesIntoView(messages) {
     chatBox.innerHTML = ''; // 채팅창 비우기
     messages.forEach(msg => {
-        addMessageToChat(msg.sender, msg.text); // 기존 addMessageToChat 함수 재사용
+        // 메시지 버블에 클래스만 추가하고 내용은 텍스트로 넣어줌 (strong 태그 제거)
+        const p = document.createElement('p');
+        p.classList.add(msg.sender === 'user' ? 'user-message' : 'ai-message');
+        p.textContent = msg.text; // 바로 텍스트만 넣음
+        chatBox.appendChild(p);
     });
      chatBox.scrollTop = chatBox.scrollHeight; // 맨 아래로 스크롤
      console.log('Messages loaded into chat view.');
@@ -95,26 +103,36 @@ function loadChatMessagesIntoView(messages) {
 function updateCurrentSession() {
     const currentMessages = getMessagesFromView();
 
-    if (currentMessages.length === 0) {
-         // 현재 대화가 비어있으면 해당 세션을 sessions 배열에서 삭제
-         chatSessions = chatSessions.filter(session => session.id !== currentSessionId);
-         currentSessionId = null; // 현재 세션 ID 초기화
-         console.log('Current chat is empty, session removed.');
-         saveSessionsToLocalStorage(); // 변경사항 저장
-         return; // 빈 대화는 저장 안 함
+    // ⭐️ 빈 대화 세션은 저장하지 않음 (초기 "뭐야" 메시지만 있는 경우 포함)
+    // 첫 AI 메시지 "뭐야, 할 말이라도 있는 거야?"만 있다면 빈 대화로 간주
+    const isEmptyChat = currentMessages.length <= 1 && currentMessages[0]?.text.includes('할 말이라도 있는 거야?');
+
+    if (isEmptyChat) {
+         // 현재 대화가 비어있으면 해당 세션을 sessions 배열에서 삭제 (만약 존재한다면)
+         if (currentSessionId !== null) {
+              chatSessions = chatSessions.filter(session => session.id !== currentSessionId);
+              console.log('Empty chat session removed:', currentSessionId);
+              currentSessionId = null; // 현재 세션 ID 초기화
+              localStorage.removeItem('currentSessionId'); // localStorage에서도 삭제
+         }
+         saveSessionsToLocalStorage(); // 변경사항 저장 (삭제된 세션 반영)
+         console.log('Current chat is empty or initial message. No session saved/updated.');
+         return; // 빈 대화는 저장/업데이트 안 함
     }
+
 
     let currentSession = chatSessions.find(session => session.id === currentSessionId);
 
     if (!currentSession) {
         // 현재 세션 ID가 배열에 없으면 (새로운 대화 시작 후 첫 메시지 등) 새로 생성
-        // 첫 사용자 메시지를 요약으로 사용하거나, 없으면 기본값 사용
+        // 첫 사용자 메시지를 요약으로 사용하거나, 없으면 타임스탬프로 요약
         const firstUserMsg = currentMessages.find(msg => msg.sender === 'user');
-        const summary = firstUserMsg ? firstUserMsg.text.substring(0, 50) + (firstUserMsg.text.length > 50 ? '...' : '') : '새 대화';
+        const summary = firstUserMsg ? firstUserMsg.text.substring(0, 50) + (firstUserMsg.text.length > 50 ? '...' : '') : `대화 ${new Date().toLocaleString()}`;
+
         currentSessionId = Date.now(); // 현재 타임스탬프를 고유 ID로 사용
         currentSession = {
              id: currentSessionId,
-             timestamp: Date.now(), // 정렬을 위한 타임스탬프
+             timestamp: Date.now(), // 정렬 및 요약을 위한 타임스탬프
              summary: summary,
              messages: currentMessages // 현재 메시지 목록
         };
@@ -123,18 +141,15 @@ function updateCurrentSession() {
     } else {
         // 이미 있는 세션이면 메시지 목록만 업데이트
         currentSession.messages = currentMessages;
-        // 요약을 첫 메시지로 업데이트할 수도 있지만 (필요에 따라 주석 해제)
-        // const firstUserMsg = currentMessages.find(msg => msg.sender === 'user');
-        // if (firstUserMsg) {
-        //      currentSession.summary = firstUserMsg.text.substring(0, 50) + (firstUserMsg.text.length > 50 ? '...' : '');
-        // }
+        // ⭐️ 요약 내용도 최신 첫 사용자 메시지로 업데이트 (원하면 주석 해제)
+        const firstUserMsg = currentMessages.find(msg => msg.sender === 'user');
+        if (firstUserMsg) {
+             currentSession.summary = firstUserMsg.text.substring(0, 50) + (firstUserMsg.text.length > 50 ? '...' : '');
+        }
+        // 세션의 타임스탬프도 최신 상태로 업데이트 (최신 대화가 위로 오도록)
+        currentSession.timestamp = Date.now();
         console.log('Updated session:', currentSessionId);
     }
-
-    // 세션을 시간순으로 정렬 (선택 사항, 기록 화면에 표시할 때 유용)
-    // chatSessions.sort((a, b) => a.timestamp - b.timestamp); // 오름차순
-    chatSessions.sort((a, b) => b.timestamp - a.timestamp); // 내림차순 (최신순)
-
 
     // 업데이트된 세션 목록을 localStorage에 저장
     saveSessionsToLocalStorage();
@@ -156,6 +171,7 @@ async function handleSend() {
     console.log('사용자 메시지 추가됨.');
 
     // ⭐️ 사용자 메시지까지 포함된 현재 상태를 세션에 업데이트 (새 세션이면 생성)
+    // 첫 메시지 입력 시 새로운 세션이 여기서 생성됩니다.
     updateCurrentSession();
 
 
@@ -176,25 +192,26 @@ async function handleSend() {
     console.log('AI 메시지 추가됨.');
 
     // ⭐️ AI 메시지까지 포함된 최종 상태를 세션에 업데이트하고 localStorage에 저장
+    // 현재 세션 ID가 null인 경우는 이미 updateCurrentSession에서 처리했으므로
+    // 여기서는 그냥 바로 저장 함수를 호출해도 괜찮습니다.
     updateCurrentSession();
 }
 
 // ⭐️ 새 채팅 시작 함수 수정 (현재 대화 저장 기능 추가)
-function startNewChat(saveCurrent = true) { // saveCurrent 파라미터로 저장 여부 조절
+function startNewChat(saveCurrent = true) { // saveCurrent 파라미터로 저장 여부 조절 (기본값 true)
     console.log('새 채팅 시작 버튼 클릭 감지!');
 
-    // ⭐️ 현재 진행 중인 대화가 비어있지 않으면 저장
-    if (saveCurrent && getMessagesFromView().length > 0) {
+    // ⭐️ 현재 진행 중인 대화 저장 (updateCurrentSession 함수가 빈 대화는 알아서 처리)
+    if (saveCurrent) {
          console.log('현재 대화 저장 후 새 채팅 시작.');
-         // 현재 세션을 최종 업데이트해서 저장 목록에 반영
          updateCurrentSession(); // 이 함수 안에서 localStorage 저장까지 이루어짐
     } else {
-         console.log('현재 대화가 비어있거나 저장 안 함. 바로 새 채팅 시작.');
-         // 현재 대화가 비어있는데 currentSessionId가 있다면, 해당 세션을 목록에서 지워야 함.
-         if (currentSessionId !== null && getMessagesFromView().length === 0) {
-              chatSessions = chatSessions.filter(session => session.id !== currentSessionId);
-              saveSessionsToLocalStorage();
-              console.log('Empty current session removed from history.');
+         console.log('현재 대화 저장 안 함. 바로 새 채팅 시작.');
+         // 저장 안 하고 시작할 때 빈 대화였다면 currentSessionId를 미리 null로
+         if (getMessagesFromView().length <= 1 && getMessagesFromView()[0]?.text.includes('할 말이라도 있는 거야?')) {
+             currentSessionId = null;
+             localStorage.removeItem('currentSessionId');
+             console.log('Empty current session ignored.');
          }
     }
 
@@ -206,11 +223,17 @@ function startNewChat(saveCurrent = true) { // saveCurrent 파라미터로 저�
     // 화면 전환 및 버튼 표시 (CSS와 JS 초기 설정으로 대부분 처리되지만 여기서 한번 더 확인)
     historyArea.classList.add('hidden');
     mainChatArea.classList.remove('hidden');
+    // 기록 관련 버튼들은 숨김
+    // ⭐️ HTML에 hidden 클래스가 기본으로 있으므로 여기서 다시 숨길 필요는 없을 수도 있지만, 혹시 몰라 add
     deleteSelectedButton.classList.add('hidden');
     backToChatButton.classList.add('hidden');
 
-    addMessageToChat('ai', '새 채팅 시작! 뭐 물어볼래?'); // 초기 메시지 추가
+    // ⭐️ 초기 메시지 추가
+    addMessageToChat('ai', '새 채팅 시작! 뭐 물어볼래?');
     console.log('새 채팅 시작 기능 실행 완료.');
+
+    // 새 채팅 시작 시 바로 저장하지 않음 (첫 사용자 메시지 입력 시 저장됨)
+    // updateCurrentSession(); // 여기서 호출하면 빈 세션이 저장될 수 있음
 }
 
 
@@ -219,18 +242,9 @@ function viewHistory() {
     console.log('대화 기록 보기 버튼 클릭 감지!');
 
     // ⭐️ 현재 채팅창 내용을 저장 (기록 목록 보기 전에 현재 대화 상태를 저장)
-    // 빈 대화는 저장 안 함
-     if (getMessagesFromView().length > 0) {
-          console.log('대화 기록 보기 전 현재 대화 저장.');
-          updateCurrentSession(); // 현재 세션을 최종 업데이트하여 저장
-     } else {
-         // 현재 대화가 비어있는데 currentSessionId가 있다면, 해당 세션을 목록에서 지워야 함.
-         if (currentSessionId !== null) {
-              chatSessions = chatSessions.filter(session => session.id !== currentSessionId);
-              saveSessionsToLocalStorage();
-              console.log('Empty current session removed from history before viewing history.');
-         }
-     }
+    // updateCurrentSession 함수가 빈 대화는 알아서 처리
+     console.log('대화 기록 보기 전 현재 대화 저장 시도.');
+     updateCurrentSession(); // 현재 세션을 최종 업데이트하여 저장
 
 
     // localStorage에서 모든 세션을 다시 불러옴 (최신 상태 반영)
@@ -245,7 +259,11 @@ function viewHistory() {
     // 기록 목록 채우기
     historyList.innerHTML = ''; // 목록 비우기
 
-    if (chatSessions.length === 0) {
+    // 세션을 최신순으로 정렬 (loadSessionsFromLocalStorage에서 이미 했지만 혹시 몰라 다시)
+    const sortedSessions = [...chatSessions].sort((a, b) => b.timestamp - a.timestamp);
+
+
+    if (sortedSessions.length === 0) {
          const li = document.createElement('li');
          li.textContent = '저장된 대화 기록이 없습니다.';
          historyList.appendChild(li);
@@ -258,11 +276,8 @@ function viewHistory() {
          if(deleteSelectedButton) deleteSelectedButton.disabled = false;
     }
 
-    // 세션을 최신순으로 정렬 (loadSessionsFromLocalStorage에서 이미 했지만 혹시 몰라 다시)
-    // const sortedSessions = [...chatSessions].sort((a, b) => b.timestamp - a.timestamp);
 
-
-    chatSessions.forEach(session => {
+    sortedSessions.forEach(session => {
         const li = document.createElement('li');
         // 목록 아이템에 세션 ID와 요약 내용을 표시
         // 체크박스에 data-session-id 속성으로 세션 ID 저장
@@ -272,6 +287,7 @@ function viewHistory() {
         // ⭐️ 목록 아이템 (span 부분) 클릭 시 해당 대화 로드 이벤트 리스너
         const span = li.querySelector('span');
         if (span) {
+            span.style.cursor = 'pointer'; // 클릭 가능한 요소임을 명시
             span.addEventListener('click', () => {
                 console.log('기록 선택됨 (클릭): 세션 ID', session.id);
                 loadSession(session.id); // 선택된 세션을 로드하는 함수 호출
@@ -299,15 +315,24 @@ function viewHistory() {
 // ⭐️ 특정 대화 세션을 불러와서 채팅창에 표시하는 함수
 function loadSession(sessionId) {
     console.log('세션 로드 요청됨:', sessionId);
+    // 로드하려는 세션 ID를 숫자로 변환
+    const numericSessionId = parseFloat(sessionId);
+
     // currentSessionId가 null이 아니고 현재 세션 ID와 다르면 현재 대화를 저장
-    // 이건 viewHistory에서 이미 저장하니까 여기서 또 할 필요는 없을 것 같기도... 로직 고민
-    // 일단 viewHistory에서 저장했다고 가정하고, 여기서는 그냥 해당 세션 찾아서 로드
-    const sessionToLoad = chatSessions.find(session => session.id === parseFloat(sessionId)); // localStorage ID는 문자열이므로 parseFloat
+    // viewHistory에서 이미 저장하므로 여기서는 바로 로드만 진행
+    // if (currentSessionId !== null && currentSessionId !== numericSessionId) {
+    //      console.log('Loading new session, saving current chat before loading.');
+    //      updateCurrentSession(); // 현재 세션을 최종 업데이트하여 저장
+    // }
+
+
+    const sessionToLoad = chatSessions.find(session => session.id === numericSessionId);
 
     if (sessionToLoad) {
         // 로드하려는 세션으로 현재 세션 ID 업데이트
         currentSessionId = sessionToLoad.id;
-        localStorage.setItem('currentSessionId', currentSessionId); // localStorage에 현재 세션 ID 저장
+        saveSessionsToLocalStorage(); // localStorage에 현재 세션 ID 저장
+
 
         // 해당 세션의 메시지들을 채팅창에 표시
         loadChatMessagesIntoView(sessionToLoad.messages);
@@ -323,6 +348,9 @@ function loadSession(sessionId) {
     } else {
         console.error('Error: 세션을 찾을 수 없습니다:', sessionId);
         alert('해당 대화 기록을 찾을 수 없습니다!');
+        // 세션 로드 실패 시 현재 세션 ID 초기화 및 localStorage 삭제
+        currentSessionId = null;
+        localStorage.removeItem('currentSessionId');
     }
 }
 
@@ -330,10 +358,9 @@ function loadSession(sessionId) {
 // ⭐️ 선택된 대화 기록을 삭제하는 함수
 function handleDeleteSelected() {
     console.log('선택 삭제 버튼 클릭 감지!');
-    // historyList에서 체크된 체크박스들을 모두 찾음
     const selectedCheckboxes = historyList.querySelectorAll('input[type="checkbox"]:checked');
-    // 체크된 체크박스들의 data-session-id 값을 배열로 만듦
-    const selectedIds = Array.from(selectedCheckboxes).map(cb => parseFloat(cb.dataset.sessionId)); // localStorage ID는 문자열이니 숫자로 변환
+    // 체크된 체크박스들의 data-session-id 값을 숫자로 변환하여 배열로 만듦
+    const selectedIds = Array.from(selectedCheckboxes).map(cb => parseFloat(cb.dataset.sessionId));
 
     if (selectedIds.length === 0) {
         alert('삭제할 기록을 선택해주세요!');
@@ -350,23 +377,29 @@ function handleDeleteSelected() {
 
     console.log(`${deletedCount}개의 세션이 삭제되었습니다.`);
 
-    // ⭐️ 만약 현재 보고 있는 세션이 삭제 목록에 포함되어 있다면 새 채팅 시작
+
+    // ⭐️ 만약 현재 보고 있는 세션이 삭제 목록에 포함되어 있다면 새 채팅 시작 및 관련 상태 초기화
     if (currentSessionId !== null && selectedIds.includes(currentSessionId)) {
         console.log('현재 세션이 삭제되었습니다. 새 채팅을 시작합니다.');
         currentSessionId = null; // 현재 세션 ID 초기화
         localStorage.removeItem('currentSessionId'); // localStorage에서도 삭제
         chatBox.innerHTML = ''; // 채팅창 비우기
-        addMessageToChat('ai', '삭제된 대화 기록입니다. 새 채팅을 시작합니다!'); // 안내 메시지
+        // ⭐️ 삭제 안내 메시지는 startNewChat 함수 안에서 추가하도록 변경하거나 여기서 추가
+        // addMessageToChat('ai', '삭제된 대화 기록입니다. 새 채팅을 시작합니다!'); // 안내 메시지
         // 삭제 후에는 채팅 화면으로 돌아가는 게 자연스러움
-        backToChat();
+        backToChat(); // 이 함수 안에서 화면 전환 및 초기 메시지 추가
+
+        // 삭제 완료 알림은 backToChat 호출 이후에 표시
+         alert(`${deletedCount}개의 기록을 삭제했습니다!`);
+
     } else {
          // 현재 세션이 삭제되지 않았다면 변경된 세션 목록을 저장하고 기록 화면을 새로고침
         saveSessionsToLocalStorage(); // 변경사항 localStorage에 저장
         viewHistory(); // 기록 목록 화면을 새로고침해서 삭제된 항목이 안 보이게 함
+        alert(`${deletedCount}개의 기록을 삭제했습니다!`); // 삭제 완료 알림
     }
 
 
-    alert(`${deletedCount}개의 기록을 삭제했습니다!`); // 삭제 완료 알림
     console.log('선택 삭제 기능 실행 완료.');
 }
 
@@ -375,7 +408,7 @@ function handleDeleteSelected() {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('2. DOMContentLoaded 실행!');
 
-    // ⭐️ 필요한 DOM 요소들을 모두 가져옵니다.
+    // ⭐️ 필요한 DOM 요소들을 모두 가져옵니다. (var 대신 const 사용 추천)
     const sendButton = document.getElementById('send-button');
     const userInput = document.getElementById('user-input');
     const chatBox = document.getElementById('chat-box');
@@ -388,6 +421,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const deleteSelectedButton = document.getElementById('delete-selected-button');
     const backToChatButton = document.getElementById('back-to-chat-button');
+    const historyList = document.getElementById('history-list'); // historyList도 여기서 가져옴
 
     // ⭐️ 요소들이 제대로 가져와졌는지 확인하는 콘솔 로그
     console.log('DOM 요소 확인:');
@@ -400,12 +434,14 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('mainChatArea:', mainChatArea);
     console.log('deleteSelectedButton:', deleteSelectedButton);
     console.log('backToChatButton:', backToChatButton);
+    console.log('historyList:', historyList);
+
 
      // ⭐️ 필수 요소가 누락되었는지 확인하고 누락 시 스크립트 중단
-     if (!sendButton || !userInput || !chatBox || !newChatButton || !viewHistoryButton || !historyArea || !mainChatArea || !deleteSelectedButton || !backToChatButton) {
+     // historyList도 필수 요소에 추가
+     if (!sendButton || !userInput || !chatBox || !newChatButton || !viewHistoryButton || !historyArea || !mainChatArea || !deleteSelectedButton || !backToChatButton || !historyList) {
          console.error('Error: 필수 DOM 요소를 찾을 수 없습니다. 스크립트 실행을 중단합니다.');
-         // 사용자에게 오류 메시지를 보여줄 수도 있습니다.
-         // alert('페이지 로딩 오류! 일부 요소가 없습니다. 브라우저 콘솔을 확인해주세요.');
+         alert('페이지 로딩 오류! 일부 요소가 없습니다. 브라우저 콘솔을 확인해주세요.');
          return; // 스크립트 실행 중단
      }
 
@@ -415,24 +451,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // ⭐️ 이벤트 리스너 연결
+    // 각 버튼 요소가 null이 아닌지는 위에서 필수 요소 검사할 때 확인했으므로 여기서 다시 할 필요 없음
     sendButton.addEventListener('click', handleSend);
+    console.log('sendButton 이벤트 리스너 연결 완료.');
+
     userInput.addEventListener('keydown', e => {
-        // Enter 키만 눌렀을 때 전송 (Shift + Enter는 줄바꿈)
         if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault(); // 기본 줄바꿈 동작 막기
-            handleSend(); // 메시지 전송 함수 호출
+            e.preventDefault();
+            handleSend();
         }
     });
+    console.log('userInput keydown 이벤트 리스너 연결 완료.');
 
-    // 메뉴 버튼들에 이벤트 리스너 연결
-    newChatButton.addEventListener('click', startNewChat); // '새 채팅 시작' 버튼
-    viewHistoryButton.addEventListener('click', viewHistory); // '대화 기록 보기' 버튼
-    backToChatButton.addEventListener('click', backToChat); // '채팅으로 돌아가기' 버튼
-    deleteSelectedButton.addEventListener('click', handleDeleteSelected); // '선택 삭제' 버튼
+    newChatButton.addEventListener('click', () => startNewChat(true)); // 새 채팅 시작 시 현재 대화 저장하도록 인자 전달
+    console.log('newChatButton 이벤트 리스너 연결 완료.');
+
+    viewHistoryButton.addEventListener('click', viewHistory);
+    console.log('viewHistoryButton 이벤트 리스너 연결 완료.');
+
+    backToChatButton.addEventListener('click', backToChat);
+    console.log('backToChatButton 이벤트 리스너 연결 완료.');
+
+    deleteSelectedButton.addEventListener('click', handleDeleteSelected);
+    console.log('deleteSelectedButton 이벤트 리스너 연결 완료.');
 
 
     // ⭐️ 초기 화면 설정은 loadSessionsFromLocalStorage 함수에서 이미 처리됨
-    // 여기서는 혹시 몰라 요소의 hidden 클래스 상태를 다시 한번 확인하고 기록 관련 버튼들의 초기 상태를 설정
+    // 여기서는 기록 관련 버튼들의 초기 상태만 설정
      if (historyArea.classList.contains('hidden')) {
          // 기록 화면이 숨겨져 있다면 (즉, 채팅 화면이 보이는 상태라면)
          deleteSelectedButton.classList.add('hidden'); // 기록 버튼 숨김
@@ -442,6 +487,10 @@ document.addEventListener('DOMContentLoaded', () => {
          // 기록 화면이 보이는 상태라면
          deleteSelectedButton.classList.remove('hidden'); // 기록 버튼 표시
          backToChatButton.classList.remove('hidden');
+         // 기록 화면 로드 시 목록에 기록이 없으면 선택 삭제 버튼 비활성화
+         if (historyList.children.length === 0 && deleteSelectedButton) {
+             deleteSelectedButton.disabled = true;
+         }
          console.log('초기 로드 상태: 기록 화면. 기록 관련 버튼 표시.');
      }
 
