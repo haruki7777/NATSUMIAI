@@ -16,29 +16,31 @@ html, body {
 #app-container {
   position: relative;
   height: 100vh; /* 뷰포트 높이 꽉 채움 */
-  display: flex; /* 플렉스 컨테이너 */
+  display: flex; /* ⭐️ 플렉스 컨테이너로 설정! 👇 */
   flex-direction: column; /* 자식 요소들을 세로로 배열 */
   overflow: hidden; /* 앱 컨테이너 자체 스크롤 방지 */
   user-select: none;
   /* app-container 배경 투명도를 아주 높게! 배경 이미지 잘 보이게! */
-  background-color: rgba(255, 255, 255, 0.1); /* 흰색 바탕에 투명도 0.1 */
-  box-shadow: inset 0 0 100px rgba(0,0,0,0.05); /* 그림자도 연하게 */
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 100px rgba(0,0,0,0.05);
 }
 
 /* ⭐️ 메인 대화 영역 - app-container 안에서 남은 공간을 모두 사용하게! 👇 */
 #main-chat-area {
-    flex-grow: 1; /* app-container의 남은 세로 공간 모두 차지 */
-    display: flex; /* 플렉스 컨테이너 */
-    flex-direction: column; /* 자식 요소들 (chat-container) 세로 배열 */
+    flex-grow: 1; /* ⭐️ 부모(app-container)의 남은 세로 공간 모두 차지! 👇 */
+    display: flex; /* ⭐️ 자식 요소들 (chat-container)을 위한 플렉스 컨테이너 👇 */
+    flex-direction: column; /* 자식 요소들 세로 배열 */
     overflow: hidden; /* main-chat-area 자체 스크롤 방지 */
+     /* min-height: 0; */ /* Flexbox 자식에서 overflow 문제 발생 시 필요할 수도 있으나, 여기서는 chat-container가 처리 */
 }
 
 /* ⭐️ 채팅 컨테이너 - main-chat-area 안에서 남은 공간을 모두 사용하게! 👇 */
 #chat-container {
-     flex-grow: 1; /* main-chat-area의 남은 세로 공간 모두 차지 */
-     display: flex; /* 플렉스 컨테이너 */
-     flex-direction: column; /* 자식 요소들 (chat-box, input-area) 세로 배열 */
+     flex-grow: 1; /* ⭐️ 부모(main-chat-area)의 남은 세로 공간 모두 차지! 👇 */
+     display: flex; /* ⭐️ 자식 요소들 (chat-box, input-area)을 위한 플렉스 컨테이너 👇 */
+     flex-direction: column; /* 자식 요소들 세로 배열 */
      overflow: hidden; /* chat-container 자체 스크롤 방지 */
+     min-height: 0; /* ⭐️ 중요! Flex item (chat-box)에서 overflow 문제가 발생하지 않도록! 👇 */
 }
 
 
@@ -48,27 +50,31 @@ html, body {
   padding: 15px;
   margin: 15px;
   /* chat-box 배경 투명도를 아주 높게! */
-  background: rgba(255, 255, 255, 0.15); /* 흰색 바탕에 투명도 0.15 */
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* 그림자도 연하게 */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   overflow-y: auto; /* ⭐️ 세로 스크롤 활성화! 내용 넘치면 스크롤바 생겨요. 👇 */
   overflow-x: hidden;
   z-index: 2;
+  /* ⭐️ 중요! Flex item (chat-box)이 내용 때문에 부모를 넘치지 않도록 최소 높이를 0으로 설정! 👇 */
+  min-height: 0; /* Flexbox 안에서 스크롤 가능하게 하는 핵심! */
+
   /* 글자색은 전체 설정을 따르도록 (하얀색) 별도 설정 안함 */
   /* color: white; */
   /* 하얀 글자가 배경 위에서 잘 보이게 텍스트 그림자 추가 (전체 설정 따라감) */
    /* text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); */
 }
 
-/* 6. 입력창 영역 - chat-box 아래에 고정! */
+/* 6. 입력창 영역 - chat-box 아래에 딱! 고정되게! */
 #input-area {
   /* flex-grow: 1; ⭐️ flex-grow를 주지 않아야 고정된 높이를 가지고 아래에 붙어요! 👇 */
   padding: 12px 20px; /* 패딩으로 높이 확보 */
   border-top: 1px solid rgba(204, 204, 204, 0.3); /* 테두리도 투명하게 */
   /* 입력창 배경 투명도를 높게! */
-  background-color: rgba(250, 250, 250, 0.15); /* 연한 회색 바탕에 투명도 0.15 */
+  background-color: rgba(250, 250, 250, 0.15);
   box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
-  /* 필요한 경우 최소 높이 설정 */
+  /* height나 min-height를 명시적으로 줄 수도 있어요. 패딩으로 충분하다면 생략 가능. */
+  /* height: 50px; */
   /* min-height: 50px; */
 }
 
@@ -118,10 +124,10 @@ html, body {
   z-index: 99999; /* 다른 요소들 위에 표시 */
   user-select: none;
   /* 메뉴 전체 컨테이너 배경 투명도를 아주 높게! */
-  background-color: rgba(255, 255, 255, 0.1); /* 흰색 바탕에 투명도 0.1 */
-  border: 1px solid rgba(255, 255, 255, 0.1); /* 테두리도 투명하게 */
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* 그림자 연하게 */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   padding: 5px;
 }
 
@@ -131,7 +137,7 @@ html, body {
   border: none; /* 테두리 없음 */
   padding: 5px;
   cursor: pointer;
-  font-size: 24px; /* 아이콘 크기 */
+  font-size: 24px;
   /* 아이콘 색상도 하얀색으로! */
   color: white;
   transition: color 0.3s ease;
@@ -146,25 +152,25 @@ html, body {
 
 /* ⭐️ 메뉴 항목들을 담는 컨테이너 스타일 👇 */
 #menu-items-container {
-  position: absolute; /* 점 세 개 버튼 기준으로 위치 설정 */
+  position: absolute;
   top: calc(100% + 5px);
   right: 0;
   /* 메뉴 항목 컨테이너 배경 투명도를 높게! */
-  background-color: rgba(255, 255, 255, 0.2); /* 흰색 바탕에 투명도 0.2 */
-  border: 1px solid rgba(255, 255, 255, 0.2); /* 테두리도 투명하게 */
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 5px;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.15); /* 그림자 연하게 */
-  z-index: 1001; /* 메뉴 아이콘보다 위에 보이게 */
-  min-width: 120px; /* 최소 너비 */
-  display: flex; /* 내부 버튼들을 flexbox로 배치 */
-  flex-direction: column; /* 세로 방향으로 쌓이게 */
-  gap: 5px; /* 버튼들 사이 간격 */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.15);
+  z-index: 1001;
+  min-width: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
 
 /* ⭐️ 메뉴 항목 컨테이너를 숨기는 클래스 (JS에서 토글) */
 .hidden {
-  display: none !important; /* 중요! 다른 스타일보다 우선해서 display: none 적용 */
+  display: none !important;
 }
 
 
@@ -174,7 +180,7 @@ html, body {
   padding: 8px 14px;
   border-radius: 5px;
   border: none;
-  background-color: transparent; /* 배경 투명 */
+  background-color: transparent;
   transition: background-color 0.3s ease;
   font-weight: 600;
   /* 메뉴 버튼 글자색도 하얀색으로! */
@@ -185,7 +191,7 @@ html, body {
 
 #menu-items-container .menu-button:hover {
   /* 메뉴 항목 버튼 호버 시 배경 투명도 조절 */
-  background-color: rgba(240, 240, 240, 0.3); /* 살짝 투명한 연한 회색 */
+  background-color: rgba(240, 240, 240, 0.3);
 }
 
 
@@ -196,13 +202,13 @@ html, body {
 
 #chat-box::-webkit-scrollbar-track {
   /* 스크롤바 트랙 배경 투명도 조절 */
-  background: rgba(240, 240, 240, 0.1); /* 아주 투명한 연한 회색 */
+  background: rgba(240, 240, 240, 0.1);
   border-radius: 10px;
 }
 
 #chat-box::-webkit-scrollbar-thumb {
   /* 스크롤바 썸 배경 투명도 조절 */
-  background-color: rgba(0, 0, 0, 0.2); /* 살짝 투명한 검정색 */
+  background-color: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   border: 2px solid rgba(240, 240, 240, 0.1);
 }
@@ -222,12 +228,22 @@ html, body {
    }
 
   #chat-box {
-    margin: 8px; /* 모바일에서 여백 줄임 */
-    padding: 8px; /* 모바일에서 패딩 줄임 */
+    margin: 8px;
+    padding: 8px;
+     /* ⭐️ 모바일에서 채팅창 마진 조정 (필요시) */
+     /* margin-bottom: calc(6px + 12px + 8px + 8px); /* input-area 높이 + input-area margin + input-area padding 고려 */
   }
 
   #input-area {
-    padding: 6px 12px; /* 모바일에서 패딩 줄임 */
+    padding: 6px 12px;
+    /* ⭐️ 모바일에서 입력창 아래에 붙도록 조정 (fixed나 absolute 사용도 가능) */
+    /* position: fixed; */
+    /* bottom: 0; */
+    /* left: 0; */
+    /* right: 0; */
+    /* width: 100%; */
+    /* z-index: 100; */
+    /* background-color: rgba(250, 250, 250, 0.9); 좀 더 불투명하게 */
   }
 
   /* 입력창 텍스트 크기 조절 (필요시) */
@@ -237,16 +253,16 @@ html, body {
 
 
   #send-button {
-     padding: 5px 8px; /* 모바일 버튼 크기 조절 */
+     padding: 5px 8px;
      font-size: 13px;
-     margin-left: 6px; /* 간격 조절 */
+     margin-left: 6px;
   }
 
   /* 메시지 버블 반응형 */
   .message {
-      max-width: 90%; /* 모바일에서 최대 너비 늘림 */
-      padding: 6px 10px; /* 메시지 버블 패딩 조절 */
-      font-size: 15px; /* 메시지 글자 크기 조절 */
+      max-width: 90%;
+      padding: 6px 10px;
+      font-size: 15px;
   }
 
   /* 메뉴 아이콘 크기 조절 */
@@ -271,27 +287,22 @@ html, body {
     margin-bottom: 10px;
     padding: 8px 12px;
     border-radius: 8px;
-    /* max-width는 반응형에서 조절 */
-    /* 글자색은 전체 설정(white)을 따르므로 여기서 별도 설정 안함 */
-    /* color: white; */
-    /* 그림자도 전체 설정 따라감 */
-    /* text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); */
 }
 
 .user-message {
     /* 사용자 메시지 배경 투명도 유지 */
-    background-color: rgba(0, 123, 255, 0.3); /* 파란색 계열에 투명도 0.3 */
+    background-color: rgba(0, 123, 255, 0.3);
     /* 글자색은 전체 설정(white) 따름 */
     /* color: white; */
     align-self: flex-end;
     margin-left: auto;
-    /* 그림자도 전체 설정 따라감 */
+     /* 그림자도 전체 설정 따라감 */
     /* text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); */
 }
 
 .ai-message {
     /* AI 메시지 배경 투명도 유지 */
-    background-color: rgba(220, 220, 220, 0.3); /* 연한 회색에 투명도 0.3 */
+    background-color: rgba(220, 220, 220, 0.3);
      /* 글자색은 전체 설정(white) 따름 */
     /* color: white; */
     align-self: flex-start;
@@ -305,8 +316,8 @@ html, body {
     /* 로딩 인디케이터 배경 투명도 유지 */
     background-color: rgba(180, 180, 180, 0.4);
     font-style: italic;
-    /* ⭐️ 로딩 텍스트 색상도 하얀색 계열로! 👇 */
-    color: rgba(255, 255, 255, 0.8); /* 살짝 투명한 하얀색 */
+    /* 로딩 텍스트 색상도 하얀색 계열로! */
+    color: rgba(255, 255, 255, 0.8);
     /* 그림자도 전체 설정 따라감 */
     /* text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); */
 }
