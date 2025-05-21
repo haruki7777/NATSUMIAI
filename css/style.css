@@ -1,6 +1,6 @@
 /* 1. 전체 화면 기본 세팅 */
 html, body {
-  height: 100%;
+  height: 100%; /* 뷰포트 높이 꽉 채움 */
   margin: 0;
   padding: 0;
   overflow: hidden; /* 화면 전체 스크롤 없앰 */
@@ -9,15 +9,15 @@ html, body {
   background-size: cover;
   /* 모든 글자색을 하얀색으로! 배경 투명도 높아도 글자가 잘 보이게 그림자 추가! */
   color: white;
-   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* 하얀 글자에 검은 그림자 */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* 하얀 글자에 검은 그림자 */
 }
 
 /* 2. 최상위 앱 컨테이너 */
 #app-container {
   position: relative;
   height: 100vh; /* 뷰포트 높이 꽉 채움 */
-  display: flex; /* ⭐️ 플렉스 컨테이너로 설정! 👇 */
-  flex-direction: column; /* 자식 요소들을 세로로 배열 */
+  display: flex; /* ⭐️ 플렉스 컨테이너 설정! 👇 */
+  flex-direction: column; /* 자식 요소들을 세로로 배열 (h1, main-chat-area) */
   overflow: hidden; /* 앱 컨테이너 자체 스크롤 방지 */
   user-select: none;
   /* app-container 배경 투명도를 아주 높게! 배경 이미지 잘 보이게! */
@@ -25,26 +25,36 @@ html, body {
   box-shadow: inset 0 0 100px rgba(0,0,0,0.05);
 }
 
-/* ⭐️ 메인 대화 영역 - app-container 안에서 남은 공간을 모두 사용하게! 👇 */
-#main-chat-area {
-    flex-grow: 1; /* ⭐️ 부모(app-container)의 남은 세로 공간 모두 차지! 👇 */
-    display: flex; /* ⭐️ 자식 요소들 (chat-container)을 위한 플렉스 컨테이너 👇 */
-    flex-direction: column; /* 자식 요소들 세로 배열 */
-    overflow: hidden; /* main-chat-area 자체 스크롤 방지 */
-     /* min-height: 0; */ /* Flexbox 자식에서 overflow 문제 발생 시 필요할 수도 있으나, 여기서는 chat-container가 처리 */
+/* h1 제목 스타일 (필요시 추가/수정) - 기본적으로 내용만큼 높이를 차지 */
+#app-container h1 {
+    /* margin-top: 0; */ /* 필요시 상단 여백 제거 */
+    /* padding: 10px 20px; */ /* 필요시 패딩 추가 */
+    /* background-color: rgba(255,255,255,0.05); */ /* 필요시 배경 투명하게 */
 }
 
-/* ⭐️ 채팅 컨테이너 - main-chat-area 안에서 남은 공간을 모두 사용하게! 👇 */
+
+/* ⭐️ 메인 대화 영역 - h1 아래 남은 공간 모두 차지! 👇 */
+/* 이 컨테이너가 채팅 박스 (#chat-box)와 입력창 (#input-area)을 담는 부모 역할을 할 거예요. */
+#main-chat-area {
+    flex-grow: 1; /* ⭐️ app-container의 남은 세로 공간 모두 차지! 👇 */
+    display: flex; /* ⭐️ 플렉스 컨테이너 설정! 👇 */
+    flex-direction: column; /* 자식 요소들 (chat-box, input-area) 세로 배열 */
+    overflow: hidden; /* main-chat-area 자체 스크롤 방지 */
+    /* min-height: 0; */ /* Flexbox 자식에서 overflow 문제 발생 시 필요할 수도 있으나, chat-box에 직접 설정 */
+}
+
+/* chat-container는 이제 main-chat-area와 동일한 역할을 하므로, 구조를 단순화하기 위해 main-chat-area를 직접 사용하거나, chat-container의 스타일을 main-chat-area에 병합할 수 있습니다. 여기서는 기존 구조를 유지하되 flexbox 설정을 명확히 합니다. */
+/* ⭐️ 채팅 컨테이너 - main-chat-area 안에서 남은 공간 모두 차지! 👇 */
 #chat-container {
      flex-grow: 1; /* ⭐️ 부모(main-chat-area)의 남은 세로 공간 모두 차지! 👇 */
-     display: flex; /* ⭐️ 자식 요소들 (chat-box, input-area)을 위한 플렉스 컨테이너 👇 */
-     flex-direction: column; /* 자식 요소들 세로 배열 */
+     display: flex; /* ⭐️ 플렉스 컨테이너 설정! 👇 */
+     flex-direction: column; /* 자식 요소들 (chat-box, input-area) 세로 배열 */
      overflow: hidden; /* chat-container 자체 스크롤 방지 */
-     min-height: 0; /* ⭐️ 중요! Flex item (chat-box)에서 overflow 문제가 발생하지 않도록! 👇 */
+     min-height: 0; /* ⭐️ 중요! Flex item (chat-box)에서 overflow 문제가 발생하지 않도록 부모에 설정! 👇 */
 }
 
 
-/* 3. 채팅 박스: 여기서만 스크롤! */
+/* 3. 채팅 박스: 여기서만 스크롤! (chat-container의 자식) */
 #chat-box {
   flex-grow: 1; /* ⭐️ chat-container 안에서 남은 세로 공간 모두 차지! 👇 */
   padding: 15px;
@@ -56,7 +66,7 @@ html, body {
   overflow-y: auto; /* ⭐️ 세로 스크롤 활성화! 내용 넘치면 스크롤바 생겨요. 👇 */
   overflow-x: hidden;
   z-index: 2;
-  /* ⭐️ 중요! Flex item (chat-box)이 내용 때문에 부모를 넘치지 않도록 최소 높이를 0으로 설정! 👇 */
+  /* ⭐️ 중요! Flex item (chat-box)이 내용 때문에 부모를 넘치지 않고 스크롤되도록 최소 높이를 0으로 설정! 👇 */
   min-height: 0; /* Flexbox 안에서 스크롤 가능하게 하는 핵심! */
 
   /* 글자색은 전체 설정을 따르도록 (하얀색) 별도 설정 안함 */
@@ -65,7 +75,7 @@ html, body {
    /* text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); */
 }
 
-/* 6. 입력창 영역 - chat-box 아래에 딱! 고정되게! */
+/* 6. 입력창 영역 - chat-box 아래에 딱! 고정되게! (chat-container의 자식) */
 #input-area {
   /* flex-grow: 1; ⭐️ flex-grow를 주지 않아야 고정된 높이를 가지고 아래에 붙어요! 👇 */
   padding: 12px 20px; /* 패딩으로 높이 확보 */
@@ -76,6 +86,7 @@ html, body {
   /* height나 min-height를 명시적으로 줄 수도 있어요. 패딩으로 충분하다면 생략 가능. */
   /* height: 50px; */
   /* min-height: 50px; */
+   flex-shrink: 0; /* ⭐️ 혹시 부모가 줄어들 때 입력창이 같이 줄어드는 것을 방지 (필요시) */
 }
 
 /* 7. 입력창 텍스트 색상 */
@@ -230,20 +241,20 @@ html, body {
   #chat-box {
     margin: 8px;
     padding: 8px;
-     /* ⭐️ 모바일에서 채팅창 마진 조정 (필요시) */
-     /* margin-bottom: calc(6px + 12px + 8px + 8px); /* input-area 높이 + input-area margin + input-area padding 고려 */
+     /* ⭐️ 모바일에서 하단 입력창 높이 고려해서 하단 마진 추가 (필요시) 👇 */
+     /* height: calc(50vh - 8px*2 - <input-area height> - <h1 height>); 이런 계산 대신 flexbox 사용 */
   }
 
   #input-area {
     padding: 6px 12px;
-    /* ⭐️ 모바일에서 입력창 아래에 붙도록 조정 (fixed나 absolute 사용도 가능) */
-    /* position: fixed; */
+    /* ⭐️ 모바일에서 입력창 아래에 붙도록 flexbox 덕분에 자동으로 될 거예요! 👇 */
+    /* position: fixed; 같은 절대 위치 설정은 이제 필요 없어요 */
     /* bottom: 0; */
     /* left: 0; */
     /* right: 0; */
     /* width: 100%; */
     /* z-index: 100; */
-    /* background-color: rgba(250, 250, 250, 0.9); 좀 더 불투명하게 */
+    /* background-color: rgba(250, 250, 250, 0.9); */
   }
 
   /* 입력창 텍스트 크기 조절 (필요시) */
